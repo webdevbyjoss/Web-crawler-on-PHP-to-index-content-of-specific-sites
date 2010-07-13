@@ -1,17 +1,29 @@
 <?php echo $this->doctype() ?>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Наш Мастер</title>
+  <?php echo $this->headTitle('Наш Мастер')->setSeparator(' :: ') ?>
+  <?php echo $this->headLink()->appendStylesheet('/css/layout.css')
+                              ->appendStylesheet('/css/search-form.css') ?>
+  <?php echo $this->headScript()->prependFile('/js/jquery-1.4.2.min.js') //TODO: move to CDN ?>
 </head>
 <body>
-<div id="header">
-    <div id="header-logo">
-        <b>Приветствия!</b>
+
+<div id="page"><div id="page-inner">
+
+    <div id="header">
+        <?php /* ?>
+        <div id="logo"><a href="/"><img alt="Логотип Наш Мастер" src="images/logo.png" /></a></div>
+        <?php */ ?>
+        <div id="site-name"><a href="/"><strong>Наш Мастер</strong></a></div>
+        <div id="site-slogan">поиск специалистов по строительству и ремонту</div>
     </div>
-</div>
- 
-<?php echo $this->layout()->content ?>
- 
+    
+    <div id="main">
+        <?php echo $this->layout()->content ?>
+    </div>
+
+</div></div>
+
 </body>
 </html>

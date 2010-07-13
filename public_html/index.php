@@ -101,23 +101,15 @@ require_once 'Zend/Loader/PluginLoader.php';
 Zend_Loader_PluginLoader::setIncludeFileCache($classFileIncCache);
 
 
-// we trying to cache the application object to increase the perfomance
+// TODO: test the benefits and drawbacks of chaching
+//       Zend_Application object to increase perfomance according
+//       the technics described here: http://habrahabr.ru/blogs/zend_framework/64971/
 require_once 'Zend/Application.php';
-$frontendOptions = array(
-    'cached_entity' => new Zend_Application(
-        APPLICATION_ENV,
-        APPLICATION_PATH . DIRECTORY_SEPARATOR .  'configs' . DIRECTORY_SEPARATOR . 'application.ini'
-    )
+$application = new Zend_Application(
+    APPLICATION_ENV,
+    APPLICATION_PATH . DIRECTORY_SEPARATOR .  'configs' . DIRECTORY_SEPARATOR . 'application.ini'
 );
-
-$backendOptions = array(
-    'cache_dir' => APPLICATION_CACHE,
-    'hashed_directory_level' => 2
-);
-
-// Create application, bootstrap, and run
-$cache = Zend_Cache::factory('Class', 'File', $frontendOptions, $backendOptions);
 
 //Start
-$cache->bootstrap();
-$cache->run();
+$application->bootstrap();
+$application->run();

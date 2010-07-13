@@ -1,5 +1,7 @@
 // cache regions and cities data retrieved via ajax 
 // to eliminate the amount of calls to server
+// TODO: if browser supports client side storage then use that storage 
+//       to eliminate the amount of AJAX calls to the server
 var regionsCache = Array();
 var citiesCache = Array();
 
@@ -56,7 +58,7 @@ function openRegionBox()
 	});
 	
 	$('#selector-region-control-city').unbind('change').change(function(){
-		
+
 		if ($(this).val() > 0) {
 			enableRegionAddButton();
 		} else {
@@ -243,7 +245,9 @@ function openServicesBox()
 }
 
 
-
+//this will fill the regions selectbox with the available entries
+//if entries are available locally we will use that data otherwise 
+//the AJAX call will be made and data will be cached
 function loadRegions(countryId)
 {
 	elem = $('#selector-region-control-region');
@@ -258,9 +262,9 @@ function loadRegions(countryId)
 			elem.html(regionsCache[countryId]);
 			elem.attr('disabled', false);
 		} else {
-			elem.load('/searchdata/list/regiones/countryid/' + countryId, function(){
-				regionsCache[countryId] = elem.html();
-				elem.attr('disabled', false);
+			elem.load('/searchdata/list/regiones/countryid/' + countryId, null, function(){
+				regionsCache[countryId] = $(this).html();
+				$(this).attr('disabled', false);
 			});
 		}
 		
@@ -268,6 +272,9 @@ function loadRegions(countryId)
 	loadCities(0);
 }
 
+// this will fill the cities selectbox with the available entries
+// if entries are available locally we will use that data otherwise 
+// the AJAX call will be made and data will be cached
 function loadCities(regionId)
 {
 	elem = $('#selector-region-control-city');
@@ -279,6 +286,7 @@ function loadCities(regionId)
 		
 		// get data from the cache if available
 		if (citiesCache[regionId]) {
+			
 			elem.html(citiesCache[regionId]);
 			elem.attr('disabled', false);
 			
@@ -287,9 +295,10 @@ function loadCities(regionId)
 			excludeSelectedItems();
 			
 		} else {
-			elem.load('/searchdata/list/cities/regionid/' + regionId, function(){
-				citiesCache[regionId] = elem.html();
-				elem.attr('disabled', false);
+			elem.load('/searchdata/list/cities/regionid/' + regionId, null, function(){
+				
+				citiesCache[regionId] = $(this).html();
+				$(this).attr('disabled', false);
 				
 				// we need to exclude selected items from the list
 				// in order to disallow user to add same city twice

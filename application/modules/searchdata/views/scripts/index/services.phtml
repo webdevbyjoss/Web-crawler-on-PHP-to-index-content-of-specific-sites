@@ -1,0 +1,24 @@
+<div class="selector-service-bar-inner">
+    
+    <?php foreach ($this->topServices as $topService): ?>
+    <div class="selector-service-item">
+        <div class="selector-service-item-element">
+            <input id="service-<?php echo $topService->service_id ?>" type="checkbox" value="<?php echo $topService->service_id ?>" />
+            <label for="service-<?php echo $topService->service_id ?>"><?php echo $topService->name ?></label>
+            <?php if (0 !== count($this->subServices[$topService->service_id])): ?>
+                <a href="#" class="selector-service-switch">показать детали</a>
+            <?php endif; ?>
+        </div>
+        <?php if (0 !== count($this->subServices[$topService->service_id])): ?>
+        <div class="selector-service-details">
+            <?php foreach ($this->subServices[$topService->service_id] as $subService): ?>
+            <div class="selector-service-subitem">
+                <input id="service-<?php echo $subService->service_id ?>" type="checkbox" value="<?php echo $subService->service_id ?>" /> <label for="service-<?php echo $subService->service_id ?>"><?php echo $subService->name ?></label>
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php endif; ?>
+    </div>
+    <?php endforeach; ?>
+
+</div>

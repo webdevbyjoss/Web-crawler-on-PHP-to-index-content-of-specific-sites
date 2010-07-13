@@ -1,0 +1,34 @@
+<div class="selector-region-bar-inner">
+
+    <div id="selector-region-bar-selected"></div>
+
+    <div class="selector-region-bar-selects">
+    <div class="selector-region-bar-label">добавить регион поиска</div>
+    <div class="selector-region-bar-select-button">
+        <select id="selector-region-control-country" class="selector-region-bar-select-control">
+            <option value="0">[ выберите страну ]</option>
+        <?php foreach($this->countries as $country):?>
+            <option value="<?php echo $country->country_id ?>"
+            <?php if ($this->currentCountryId == $country->country_id): ?>selected="selected"<?php endif; ?>>
+            <?php echo $country->name ?></option>
+        <?php endforeach; ?>
+        </select>
+        <br />
+        <select id="selector-region-control-region" class="selector-region-bar-select-control" <?php if (empty($this->regions)):?>disabled="disabled"<?php endif; ?>>
+            <option value="0">[ выберите регион ]</option>
+        <?php foreach ($this->regions as $region): ?>
+            <option value="<?php echo $region->region_id ?>"><?php echo $region->name ?></option>
+        <?php endforeach; ?>
+        </select>
+        <br />
+        <select id="selector-region-control-city" class="selector-region-bar-select-control" disabled="disabled">
+            <option value="0">[ выберите город ]</option>
+        </select>
+        <br />
+        <input id="selector-region-control-button" disabled="disabled" type="button" value="Добавить" />
+    </div>
+    </div>
+
+
+    
+</div>

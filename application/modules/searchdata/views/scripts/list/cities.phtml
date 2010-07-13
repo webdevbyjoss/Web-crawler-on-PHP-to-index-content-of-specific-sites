@@ -1,0 +1,4 @@
+<option value="0">[ выберите город ]</option>
+<?php foreach ($this->cities as $region): ?>
+<option value="<?php echo $region->city_id ?>"><?php echo $region->name ?></option>
+<?php endforeach; ?>

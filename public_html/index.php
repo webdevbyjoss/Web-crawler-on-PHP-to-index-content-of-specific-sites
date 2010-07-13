@@ -16,18 +16,18 @@ define('APPLICATION_ENV', getenv('APPLICATION_ENV'));
  * app path and the database configuration path
  */
 define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application') );
-define('APPLICATION_LIBRARY_PATH', realpath(APPLICATION_PATH . '/../library'));
+define('APPLICATION_CACHE', APPLICATION_PATH . '/../temp');
 
-$paths = array(
-	APPLICATION_LIBRARY_PATH
-);
+define('APPLICATION_LIBRARY_PATH', realpath(APPLICATION_PATH . '/../library'));
 
 /*
  * Set the include paths to point to the new defined paths
  */
+$paths = array(
+    APPLICATION_LIBRARY_PATH
+);
+
 set_include_path(implode(PATH_SEPARATOR, $paths));
-
-
 
 
 /*
@@ -59,15 +59,13 @@ $frontendOptions = array(
        'make_id_with_cookie_variables' => true,
        'cache_with_cookie_variables' => true),
 
-       // TODO: investigate the problem with pages not being cached
-
-        '^/searchdata/list/regiones/countryid/$' => array('cache' => true,
+        '^/searchdata/list/regiones/countryid/' => array('cache' => true,
        'make_id_with_get_variables' => true,
        'cache_with_get_variables' => true,
        'make_id_with_cookie_variables' => true,
        'cache_with_cookie_variables' => true),
 
-        '^/searchdata/list/cities/regionid/$' => array('cache' => true,
+        '^/searchdata/list/cities/regionid/' => array('cache' => true,
        'make_id_with_get_variables' => true,
        'cache_with_get_variables' => true,
        'make_id_with_cookie_variables' => true,
@@ -77,7 +75,7 @@ $frontendOptions = array(
 );
 
 $backendOptions = array(
-    'cache_dir' => realpath(APPLICATION_PATH . '/../temp')
+    'cache_dir' => realpath(APPLICATION_CACHE)
 );
  
 // getting a Zend_Cache_Frontend_Page object
@@ -92,8 +90,6 @@ $res = $cache->start();
 // script stop here
 
 
-
-
 /*
  * Plugin loader cache
  */
@@ -105,13 +101,23 @@ require_once 'Zend/Loader/PluginLoader.php';
 Zend_Loader_PluginLoader::setIncludeFileCache($classFileIncCache);
 
 
-// Create application, bootstrap, and run
+// we trying to cache the application object to increase the perfomance
 require_once 'Zend/Application.php';
-$application = new Zend_Application(
-    APPLICATION_ENV,
-    APPLICATION_PATH . DIRECTORY_SEPARATOR .  'configs' . DIRECTORY_SEPARATOR . 'application.ini'
+$frontendOptions = array(
+    'cached_entity' => new Zend_Application(
+        APPLICATION_ENV,
+        APPLICATION_PATH . DIRECTORY_SEPARATOR .  'configs' . DIRECTORY_SEPARATOR . 'application.ini'
+    )
 );
 
+$backendOptions = array(
+    'cache_dir' => APPLICATION_CACHE,
+    'hashed_directory_level' => 2
+);
+
+// Create application, bootstrap, and run
+$cache = Zend_Cache::factory('Class', 'File', $frontendOptions, $backendOptions);
+
 //Start
-$application->bootstrap();
-$application->run();
+$cache->bootstrap();
+$cache->run();

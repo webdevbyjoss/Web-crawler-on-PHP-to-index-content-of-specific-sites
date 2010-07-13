@@ -3,7 +3,6 @@
 var regionsCache = Array();
 var citiesCache = Array();
 
-
 $(document).ready(function () {
 	
 	// load services & regions containers via AJAX
@@ -40,25 +39,23 @@ $(document).ready(function () {
 });
 
 
-
-
 function openRegionBox()
 {
 	$("#selector-region-container").text('клик для сохранения изменений');
 	$("#selector-region-container").addClass('selector-region-opened');
 	closeServicesBox();
 	
-	$('#selector-region-control-country').change(function() {
+	$('#selector-region-control-country').unbind('change').change(function() {
 		loadRegions($(this).val());
 		$('#selector-region-control-button').attr('disabled', true);
 	});
 	
-	$('#selector-region-control-region').change(function() {
+	$('#selector-region-control-region').unbind('change').change(function() {
 		loadCities($(this).val());
 		$('#selector-region-control-button').attr('disabled', true);
 	});
 	
-	$('#selector-region-control-city').change(function(){
+	$('#selector-region-control-city').unbind('change').change(function(){
 		
 		if ($(this).val() > 0) {
 			enableRegionAddButton();
@@ -73,7 +70,7 @@ function openRegionBox()
 	
 	// bind adding event that will collect all selected information
 	// and add new item to selected list
-	$('#selector-region-control-button').click(function(){
+	$('#selector-region-control-button').unbind('click').click(function(){
 		
 		$(this).attr('disabled', true);
 		
@@ -114,7 +111,7 @@ function openRegionBox()
 		// after item will be removed we need to reload 
 		// the list of available cities from the server
 		// to allow user to select the appropriate city one more time
-		$('.selector-region-bar-selected-item').click(function(){
+		$('.selector-region-bar-selected-item').unbind('click').click(function(){
 			$(this).remove();
 			loadCities($('#selector-region-control-region').find('option:selected').attr('value'));
 		});
@@ -162,22 +159,20 @@ function openServicesBox()
 	// bind services switch click event
 	// if user clicks this link then detailed subitems will be showed up
 	// and then after second click they will be hidden
-	$('.selector-service-switch').click(function() {
+	$('.selector-service-switch').unbind('click').click(function() {
 		
 		elem = $(this).parent().parent().find('.selector-service-details');
 		
 		// on open details event we will open the detailed block
 		// and remove hilighting class from the possible parent block 
 		// tо allow user to move its attention to the selected subitems
-		if ($(this).text() == 'показать детали') {
+		// TODO: move to user classes to determine the menu state instead of comparing text labels
+		if (!$(this).hasClass('selector-service-switch-opened')) {
 			
 			elem.show();
+			$(this).addClass('selector-service-switch-opened');
 			$(this).text('спрятать детали');
-			
-			//if (elem.find('input:checked').size() == 0) && (inpBox.attr('checked') == false)) {
-			//	$(this).parent().parent().find('.selector-service-item-element').removeClass('service-active');
-			//}
-			
+
 		// hide details block. In case some subitems were selected then 
 		// we hilighting the parent block with color to indicate that 
 		// there are selected items inside
@@ -187,6 +182,7 @@ function openServicesBox()
 		} else {
 			
 			elem.hide();
+			$(this).removeClass('selector-service-switch-opened');
 			$(this).text('показать детали');
 			
 			if (elem.find('input:checked').size() > 0) {
@@ -208,7 +204,7 @@ function openServicesBox()
 	// bind selection event
 	// if user clicks on CHECKBOX or LABEL to select the checkbox then we need to 
 	// select the active item and hilight it with color
-	$('.selector-service-item-element input, .selector-service-item-element label, .selector-service-subitem input, .selector-service-subitem label').click(function() {
+	$('.selector-service-item-element input, .selector-service-item-element label, .selector-service-subitem input, .selector-service-subitem label').unbind('click').click(function() {
 		
 		elem = $(this).parent().find('input');
 		
@@ -227,7 +223,7 @@ function openServicesBox()
 	// bind selection event
 	// if user clicks on BLOCK to select the checkbox then we need to 
 	// select the active item and hilight it with color
-	$('.selector-service-item-element, .selector-service-subitem').click(function() {
+	$('.selector-service-item-element, .selector-service-subitem').unbind('click').click(function() {
 		
 		elem = $(this).find('input');
 		
@@ -260,13 +256,14 @@ function loadRegions(countryId)
 		// get data from the cache if available
 		if (regionsCache[countryId]) {
 			elem.html(regionsCache[countryId]);
+			elem.attr('disabled', false);
 		} else {
-			elem.load('/searchdata/list/regiones/countryid/' + countryId);
-			// TODO: fix this code to wait until data will be loaded from server
-			// regionsCache[countryId] = elem.html();
+			elem.load('/searchdata/list/regiones/countryid/' + countryId, function(){
+				regionsCache[countryId] = elem.html();
+				elem.attr('disabled', false);
+			});
 		}
 		
-		elem.attr('disabled', false);
 	}
 	loadCities(0);
 }
@@ -283,17 +280,23 @@ function loadCities(regionId)
 		// get data from the cache if available
 		if (citiesCache[regionId]) {
 			elem.html(citiesCache[regionId]);
+			elem.attr('disabled', false);
+			
+			// we need to exclude selected items from the list
+			// in order to disallow user to add same city twice
+			excludeSelectedItems();
+			
 		} else {
-			elem.load('/searchdata/list/cities/regionid/' + regionId);
-			// TODO: fix this code to wait until data will be loaded from server
-			// citiesCache[regionId] = elem.html();
+			elem.load('/searchdata/list/cities/regionid/' + regionId, function(){
+				citiesCache[regionId] = elem.html();
+				elem.attr('disabled', false);
+				
+				// we need to exclude selected items from the list
+				// in order to disallow user to add same city twice
+				excludeSelectedItems();
+				
+			});
 		}
-		
-		elem.attr('disabled', false);
-		
-		// we need to exclude selected items from the list
-		// in order to disallow user to add same city twice
-		excludeSelectedItems();
 	}
 }
 

@@ -161,6 +161,7 @@ span.selector-region-bar-selected-remove:hover {
     margin-bottom: 7px;
     
     font-size: 1.1em;
+    cursor: pointer;
 }
 
 .selector-region-bar-label {

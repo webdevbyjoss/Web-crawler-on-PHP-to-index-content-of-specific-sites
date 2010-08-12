@@ -1,13 +1,10 @@
 body {
     padding: 0;
     margin: 0;
-}
-
-body {
-	color:#333333;
-	font-family:Helvetica,Arial,"Lucida Grande",Verdana,sans-serif;
-	font-size:75%;
-	line-height:1.5;
+    color:#333333;
+    font-family:Helvetica,Arial,"Lucida Grande",Verdana,sans-serif;
+    font-size:75%;
+    line-height:1.5;
 }
 
 body, caption, th, td, input, textarea, select, option, legend, fieldset {

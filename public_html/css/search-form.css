@@ -40,15 +40,20 @@ div.search-box-inner {
     padding-top: 3px;
 
     overflow: hidden;
-    color: silver;
+    color: black;
     text-decoration: none;
     
-    text-align:center;
+    text-align:left;
 }
 
 .selector-region:hover, .selector-service:hover {
     text-decoration: none;
+    /*color: gray;*/
+}
+
+.selector-service-opened, .selector-region-opened {
     color: gray;
+    text-align: center;
 }
 
 
@@ -162,6 +167,7 @@ span.selector-region-bar-selected-remove:hover {
     
     font-size: 1.1em;
     cursor: pointer;
+    padding: 3px;
 }
 
 .selector-region-bar-label {

@@ -133,20 +133,52 @@ function enableRegionAddButton()
 
 function closeRegionBox()
 {
-	$("#selector-region-container").text('клик для выбора региона');
+	// $("#selector-region-container").text('клик для выбора региона');
 	$("#selector-region-container").removeClass('selector-region-opened');
 	
 	$('#selector-region-bar').hide();
+	
+	// we need to clear the control content and add items selected 
+	// by user there as coma-separated values
+	$('#selector-region-container').text('');
+	$('.selector-region-bar-selected-city').each(function() {
+		
+		var initialText = $("#selector-region-container").text();
+		var itemText = $.trim($(this).text());
+		
+		if (initialText == '') {
+			$("#selector-region-container").text(itemText);
+		} else {
+			$("#selector-region-container").text(initialText + ', ' + itemText);
+		}
+		
+	});
 }
 
 
 function closeServicesBox()
 {
-	$("#selector-service-container").text('клик для выбора вида услуг');
+	// $("#selector-service-container").text('клик для выбора вида услуг');
 	$("#selector-service-container").removeClass('selector-service-opened');
 	
 	// show the regions box
 	$('#selector-service-bar').hide();
+	
+	// we need to clear the control content and add items selected by user there
+	// as coma-separated values
+	$("#selector-service-container").text('');
+	$('.selector-service-item input:checked').each(function(){
+		
+		var initialText = $("#selector-service-container").text();
+		var itemText = $.trim($('label[for="' + $(this).attr('id') + '"]').text());
+		if (initialText == "") {
+			$("#selector-service-container").text(itemText);
+		} else {
+			$("#selector-service-container").text(initialText + ', ' + itemText);
+		}
+		
+	});
+	
 }
 
 
@@ -168,13 +200,19 @@ function openServicesBox()
 		// on open details event we will open the detailed block
 		// and remove hilighting class from the possible parent block 
 		// tо allow user to move its attention to the selected subitems
-		// TODO: move to user classes to determine the menu state instead of comparing text labels
 		if (!$(this).hasClass('selector-service-switch-opened')) {
+
+			// close all other opened details
+			// before opening the current one
+			$('.selector-service-switch-opened').each(function() {
+				closeDetails($(this));
+			})
 			
 			elem.show();
 			$(this).addClass('selector-service-switch-opened');
 			$(this).text('спрятать детали');
-
+		
+			
 		// hide details block. In case some subitems were selected then 
 		// we hilighting the parent block with color to indicate that 
 		// there are selected items inside
@@ -182,20 +220,7 @@ function openServicesBox()
 		// as checking the checkbox will select all child checkboxes
 		// and is equivalent to the "select all" command
 		} else {
-			
-			elem.hide();
-			$(this).removeClass('selector-service-switch-opened');
-			$(this).text('показать детали');
-			
-			if (elem.find('input:checked').size() > 0) {
-				$(this).parent().parent().find('.selector-service-item-element').addClass('service-active');
-			} else {
-				inpBox = $(this).parent().parent().find('.selector-service-item-element > input');
-				if (inpBox.attr('checked') == false) {
-					$(this).parent().parent().find('.selector-service-item-element').removeClass('service-active');
-				}
-			}
-			
+			closeDetails($(this));
 		}
 		
 		return false;
@@ -242,6 +267,27 @@ function openServicesBox()
 	
 	// show the regions box
 	$('#selector-service-bar').show();
+}
+
+// this function will close the details box 
+// in services seceltion control
+function closeDetails(linkElement)
+{
+	var elem = linkElement.parent().parent().find('.selector-service-details'); 
+	
+	elem.hide();
+	
+	linkElement.removeClass('selector-service-switch-opened');
+	linkElement.text('показать детали');
+	
+	if (elem.find('input:checked').size() > 0) {
+		linkElement.parent().parent().find('.selector-service-item-element').addClass('service-active');
+	} else {
+		inpBox = linkElement.parent().parent().find('.selector-service-item-element > input');
+		if (inpBox.attr('checked') == false) {
+			linkElement.parent().parent().find('.selector-service-item-element').removeClass('service-active');
+		}
+	}
 }
 
 

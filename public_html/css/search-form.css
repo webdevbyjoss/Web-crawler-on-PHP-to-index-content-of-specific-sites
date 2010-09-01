@@ -200,6 +200,10 @@ span.selector-region-bar-selected-remove:hover {
 	background-color: #ffffb2;
 }
 
+.service-active:hover {
+    text-decoration: line-through;
+}
+
 .selector-service-details {
 	padding-left: 20px;
 	display:none;

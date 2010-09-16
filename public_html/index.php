@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Set timezone
+ */
+date_default_timezone_set('Europe/Helsinki');
+
 /*
  * Put errors on ON for debugging this file
  */

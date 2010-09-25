@@ -12,11 +12,11 @@
  */
 class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 {
-	protected $startingUrl = 'http://emarket.ua/construction/appartments-repair';
+	protected $_currentUrl = 'http://emarket.ua/construction/appartments-repair';
 
-	protected $encoding = 'CP1251';
+	protected $_encoding = 'CP1251';
 	
-	protected $dataLinksPatterns = array (
+	protected $_dataLinksPatterns = array (
 		  //'@http://emarket.ua/construction/appartments-repair.*@',
 
 		  // data pages
@@ -32,14 +32,10 @@ class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 		  // category pages with pagenation
 		  '@/construction/appartments-repair/[0-9]+\?.*@',
 	);
-	
-	// /^\/construction\/_[\d].html$/i
 
 	public function getData()
 	{
 		// this will be filled later
 	}
-	
 
-	
 }

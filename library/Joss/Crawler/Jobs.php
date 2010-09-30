@@ -24,8 +24,7 @@ class Joss_Crawler_Jobs {
 	 *
 	 * @param array $adapters
 	 */
-	public function __construct($adapters)
-	{
+	public function __construct($adapters) {
 		$this->_adapters = $adapters;
 	}
 	
@@ -34,11 +33,11 @@ class Joss_Crawler_Jobs {
 	 *
 	 * TODO: Check if prewious quele was finished and only then start new quelle
 	 */
-	public function startQuelle()
-	{
-		$DbJobs = new Joss_Crawler_Db_Jobs();
+	public function startQuelle() {
 		
-		if (!$DbJobs->isFinished()) {
+		$DbJobs = new Joss_Crawler_Db_Jobs ();
+		
+		if (! $DbJobs->isFinished ()) {
 			
 			/**
 			 * TODO: write appropriate message to the output and to the log
@@ -46,7 +45,11 @@ class Joss_Crawler_Jobs {
 			return false;
 		}
 		
-		return true;
-	}
+		foreach ( $this->_adapters as $adapterClass ) {
+			$Adapter = new $adapterClass();
+			$DbJobs->createJob($Adapter->getInitialUrl());
+		}
 	
+	}
+
 }

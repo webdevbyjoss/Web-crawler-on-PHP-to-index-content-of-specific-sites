@@ -1,7 +1,7 @@
 <?php
 /**
  * Web crawler adapter for "emarket.ua" domain
- * 
+ *
  * @name		Joss_Crawler_Adapter_Emarketua
  * @version		0.0.1
  * @package		joss-crawler
@@ -12,8 +12,8 @@
  */
 class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 {
-	protected $_currentUrl = 'http://emarket.ua/construction/appartments-repair';
-
+	protected $_initialUrl = 'http://emarket.ua/construction/appartments-repair';
+	
 	protected $_encoding = 'CP1251';
 	
 	protected $_dataLinksPatterns = array (

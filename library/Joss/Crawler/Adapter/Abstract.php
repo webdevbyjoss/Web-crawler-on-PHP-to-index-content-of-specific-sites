@@ -2,9 +2,6 @@
 /**
  * Web Crawler site abstract adapter that will parse graped content
  *
- * TODO: split variables to be "private" for thouse that need are internal variables
- *       and "protected" that will be used as *configuration* in child classes 
- *
  * @name		Joss_Crawler_Adapter_Abstract
  * @version		0.0.1
  * @package		joss-crawler
@@ -18,56 +15,63 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	/**
 	 * Initial URL to start crawling from
 	 * regulary its a homepage or category page
-	 * 
+	 *
 	 * @var string
 	 */
-	protected $_currentUrl = '';
-	
-	/**
-	 * The content of the last loaded page
-	 * 
-	 * @var string
-	 */
-	protected $_lastPageContent = '';
-	
-	/**
-	 * This variable will hold the data of the currently loaded page after
-	 * parse_url($url);
-	 */
-	protected $_urlData = null;
-	
+	protected $_initialUrl = '';
+
 	/**
 	 * Page encoding to use while dealing with text
-	 * 
+	 *
 	 * @var stirng
 	 */
 	protected $_encoding = 'UTF-8';
 	
 	/**
 	 * Data links patterns
-	 * 
+	 *
 	 * Reg exp patterns to match data URL
 	 * each element of the array should be a string that holds a correct regular expression
-	 * 
+	 *
 	 * regular expression will be matched using the following construct
 	 * if (preg_match($currentPattern, $link)) return true; else return false;
-	 * 
+	 *
 	 * @var array
 	 */
 	protected $_dataLinksPatterns = null;
+
+	/**
+	 * The url with the currently loaded content
+	 *
+	 * @var string
+	 */
+	private $_currentUrl = null;
+	
+	/**
+	 * The content of the last loaded page
+	 *
+	 * @var string
+	 */
+	private $_lastPageContent = '';
+	
+	/**
+	 * This variable will hold the data of the currently loaded page after
+	 * parse_url($url);
+	 */
+	private $_urlData = null;
 	
 	/**
 	 * Lets load thestarting URL page here
-	 * 
+	 *
 	 */
 	public function __construct()
 	{
-		$this->_loadPage($this->_currentUrl);
+		$this->_loadPage($this->_initialUrl);
 	}
 
 	/**
 	 * Will return all links on the loaded page
-	 * 
+	 *
 	 * @see Joss/Crawler/Adapter/Joss_Crawler_Adapter_Interface::getUrls()
 	 * @return array the array of the links on the page
 	 */
@@ -75,7 +79,16 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	{
 		return $this->_getUrls($this->_lastPageContent);
 	}
-
+	
+	/**
+	 * Returns initial URL of the adapter to start crawling from
+	 * @return string website URL
+	 */
+	public function getInitialUrl()
+	{
+		return $this->_initialUrl;
+	}
+	
 	/**
 	 * Returns the list of URLs holding the data we need to parse
 	 * @return string the list of links with data
@@ -97,9 +110,9 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	}
 	
 	/**
-	 * Loads content from the provided URL amd stores it into "lastPageContent" field 
-	 * 
-	 * @uses  Zend_Http_Client 
+	 * Loads content from the provided URL amd stores it into "lastPageContent" field
+	 *
+	 * @uses  Zend_Http_Client
 	 * @param string $url
 	 * @return null
 	 */
@@ -133,14 +146,14 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 		$this->_lastPageContent = $textHtml;
 		$this->_currentUrl = $url;
 		
-		// parse page meta data that will be used in advance for relative to absolute links transformation 
+		// parse page meta data that will be used in advance for relative to absolute links transformation
 		// get sitebase for the current page
 		$this->_urlData = parse_url($this->_currentUrl);
 	}
 
 	/**
-	 * Recognizes URL accoridng to the pattern and returns the list of available ones 
-	 * 
+	 * Recognizes URL accoridng to the pattern and returns the list of available ones
+	 *
 	 * @param text $htmlCode
 	 * @return array the array of the links
 	 */
@@ -166,9 +179,9 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	}
 
 	/**
-	 * Returns true if this link is recognized as link to page on site 
+	 * Returns true if this link is recognized as link to page on site
 	 * that holds data that we need to parse
-	 * 
+	 *
 	 * @param string $link the URL to check
 	 * @return boolean true if provided link matches the pattern
 	 */
@@ -185,9 +198,9 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	}
 	
 	/**
-	 * Checks for link to be relative 
+	 * Checks for link to be relative
 	 * and appends the domain from the currently processed page
-	 * 
+	 *
 	 * @param string $url
 	 * @return string normilized URL
 	 */
@@ -202,13 +215,13 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 
 	/**
 	 * Converts relative URl to absolute using the current page URL
-	 * 
+	 *
 	 * @param string $url relative URL
 	 * @return string absolute URL
 	 */
 	protected function _relativeToAbsoluteUrl($url)
 	{
-		return $this->_urlData['scheme'] . '://' . $this->_urlData['host'] . $url;  
+		return $this->_urlData['scheme'] . '://' . $this->_urlData['host'] . $url;
 	}
 	
 }

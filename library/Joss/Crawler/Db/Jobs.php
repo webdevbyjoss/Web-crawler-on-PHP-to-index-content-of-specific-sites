@@ -64,4 +64,89 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 		return true;
 	}
 	
+	/**
+	 * Creates new job in database table
+	 *
+	 * @param string $url
+	 * @return null
+	 */
+	public function createJob($url) {
+		
+		$data = array(
+			'url' => $url,
+			'updated' => new Zend_Db_Expr('NOW()'),
+			'created' => new Zend_Db_Expr('NOW()'),
+		);
+
+		$this->insert($data);
+	}
+	
+	/**
+	 * Assigns some available job from database to the provided client ID
+	 * and generates session hash based on client apiKey to make sure the result
+	 * received from the client for this job is 100% authentic
+	 *
+	 * @param int $clientId
+	 * @param string $apiKey
+	 * @return array
+	 */
+	public function assignJob($clientId, $apiKey)
+	{
+		$sql = 'SELECT crawl_jobs_id, url
+		FROM ' . $this->_name . '
+		WHERE status = 0
+		ORDER BY crawl_jobs_id DESC
+		LIMIT 1';
+		
+		$job = $this->getAdapter()->fetchRow($sql);
+		
+		if (empty($job)) {
+			return null;
+		}
+		
+		$data = array(
+			'client_id' => $clientId,
+			'session_hash' => md5($apiKey . $job['crawl_jobs_id']),
+			'status' => 1,
+		);
+		
+		$this->update($data, array('crawl_jobs_id' => $job['crawl_jobs_id']));
+		
+		// TODO: revise this to use Row Gateway pattern and return table row object
+		$res['url'] = $job['url'];
+		$res['id'] = $job['crawl_jobs_id'];
+		
+		return $res;
+	}
+	
+	/**
+	 * Check if provided session hash is correct
+	 * and updated jobs result data
+	 *
+	 * @param string $sessionHash
+	 * @param string $headers
+	 * @param string $content
+	 * @return boolean
+	 */
+	public function setJobResults($sessionHash, $content)
+	{
+		$sql = 'SELECT crawl_jobs_id
+		FROM ' . $this->_name . '
+		WHERE session_hash = "' . $sessionHash . '"';
+		
+		$jobId = $this->getAdapter()->fetchOne($sql);
+		
+		if (empty($jobId)) {
+			return null;
+		}
+		
+		$data = array(
+			'status' => 2,
+			'raw_body' => $content
+		);
+		
+		$this->update($data, array('crawl_jobs_id' => $jobId));
+		return true;
+	}
+	
 }

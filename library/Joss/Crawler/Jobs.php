@@ -33,8 +33,8 @@ class Joss_Crawler_Jobs {
 	 *
 	 * TODO: Check if prewious quele was finished and only then start new quelle
 	 */
-	public function startQuelle() {
-		
+	public function startQuelle()
+	{
 		$DbJobs = new Joss_Crawler_Db_Jobs ();
 		
 		if (! $DbJobs->isFinished ()) {
@@ -50,6 +50,42 @@ class Joss_Crawler_Jobs {
 			$DbJobs->createJob($Adapter->getInitialUrl());
 		}
 	
+	}
+	
+	public function processNextJob()
+	{
+		// 1. get job
+		$DbJobs = new Joss_Crawler_Db_Jobs();
+		$job = $DbJobs->getJobForProcessing();
+
+		// 2. recognize the adapter
+		foreach ($this->_adapters as $adapterClass) {
+
+ 			// Call static method when class name defined dinamically via variable (for versions before PHP 5.3.0)
+			$res = call_user_func(  array(&$adapterClass, 'matchDataLink') , $job['url'] );
+			// Call static method when class name defined dinamically via variable (for versions after PHP 5.3.0)
+			// $res = $adapterClass::matchDataLink($job['url']));
+			if (true == $res) {
+				break;
+			}
+		}
+		
+		// 3. extract content
+		$Adapter = new $adapterClass ();
+		
+		// $links = $Adapter->getDataLinks();
+
+		foreach ($links as $key => $link) {
+			// echo $key . "| " . $link['url'] . "| " . $link['content'] . "\n";
+			echo $link['url'] . "\n";
+		}
+		
+		// 4. grap the interesting URLs
+		
+		
+		// 5. grap the data from the page
+		
+		
 	}
 
 }

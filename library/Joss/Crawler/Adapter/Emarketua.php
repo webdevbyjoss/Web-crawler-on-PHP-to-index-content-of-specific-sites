@@ -12,11 +12,11 @@
  */
 class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 {
-	protected $_initialUrl = 'http://emarket.ua/construction/appartments-repair';
+	protected static $_initialUrl = 'http://emarket.ua/construction/appartments-repair';
 	
-	protected $_encoding = 'CP1251';
+	protected static $_encoding = 'CP1251';
 	
-	protected $_dataLinksPatterns = array (
+	protected static $_dataLinksPatterns = array (
 		  //'@http://emarket.ua/construction/appartments-repair.*@',
 
 		  // data pages

@@ -1,7 +1,8 @@
 <?php
 /**
- * Crawler clien that will go thrue specified site and grap the content using the appropriate adapter
- * 
+ * Crawler clien that will go thrue content from cpecific site and
+ * grap the information using the appropriate adapter
+ *
  * @name		Joss_Crawler_Client
  * @version		0.0.1
  * @package		joss-crawler
@@ -14,21 +15,21 @@ class Joss_Crawler_Client
 {
 	/**
 	 * Web crawler adapter that will parse content for appropriate site
-	 * 
+	 *
 	 * @var Joss_Crawler_Adapter_Interface
 	 */
 	protected $_adapter = null;
 
 	/**
-	 * Stores the list of links with the processing statuses 
-	 * 
+	 * Stores the list of links with the processing statuses
+	 *
 	 * @var Joss_Crawler_Links
 	 */
 	protected $_urls = null;
 
 	/**
 	 * Will set the adapter to use for the current site
-	 * 
+	 *
 	 * @param  Joss_Crawler_Adapter_Interface $adapters the array that will map the domain with the adapter
 	 */
 	public function __construct(Joss_Crawler_Adapter_Interface $adapter)
@@ -38,7 +39,7 @@ class Joss_Crawler_Client
 	
 	/**
 	 * This will allow to set the adapter in runtime
-	 * 
+	 *
 	 * @param Joss_Crawler_Adapter_Interface $adapter
 	 */
 	public function setAdapter(Joss_Crawler_Adapter_Interface $adapter)

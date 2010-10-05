@@ -94,7 +94,7 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 	{
 		$sql = 'SELECT crawl_jobs_id, url
 		FROM ' . $this->_name . '
-		WHERE status = 0
+		WHERE status = ' . self::LINK_ADDED . '
 		ORDER BY crawl_jobs_id DESC
 		LIMIT 1';
 		
@@ -107,7 +107,7 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 		$data = array(
 			'client_id' => $clientId,
 			'session_hash' => md5($apiKey . $job['crawl_jobs_id']),
-			'status' => 1,
+			'status' => self::LINK_IN_PROCESS,
 		);
 		
 		$this->update($data, array('crawl_jobs_id' => $job['crawl_jobs_id']));
@@ -141,7 +141,7 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 		}
 		
 		$data = array(
-			'status' => 2,
+			'status' => self::LINK_FINISHED,
 			'raw_body' => $content
 		);
 		
@@ -149,4 +149,27 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 		return true;
 	}
 	
+	/**
+	 * Retrieves next job from the database available for processing
+	 */
+	public function getJobForProcessing()
+	{
+		// get next available job from the database
+		$sql = 'SELECT crawl_jobs_id, url, raw_body
+		FROM ' . $this->_name . '
+		WHERE status = ' . self::LINK_FINISHED . '
+		ORDER BY crawl_jobs_id DESC
+		LIMIT 1';
+		
+		$job = $this->getAdapter()->fetchRow($sql);
+		
+		// mark it as in process to prevent double processing of the same job
+		$data = array(
+			'status' => self::CONTENT_IN_PROCESS
+		);
+		$this->update($data, array('crawl_jobs_id' => $job['crawl_jobs_id']));
+		
+		return $job;
+	}
+
 }

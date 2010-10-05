@@ -13,19 +13,24 @@
 abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Interface
 {
 	/**
+	 * Default encoding that we need to convert all pages to
+	 */
+	const DEFAULT_ENCODING = 'UTF-8';
+	
+	/**
 	 * Initial URL to start crawling from
 	 * regulary its a homepage or category page
 	 *
 	 * @var string
 	 */
-	protected $_initialUrl = '';
+	protected static $_initialUrl = '';
 
 	/**
 	 * Page encoding to use while dealing with text
 	 *
 	 * @var stirng
 	 */
-	protected $_encoding = 'UTF-8';
+	protected static $_encoding = 'UTF-8';
 	
 	/**
 	 * Data links patterns
@@ -38,7 +43,7 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	 *
 	 * @var array
 	 */
-	protected $_dataLinksPatterns = null;
+	protected static $_dataLinksPatterns = null;
 
 	/**
 	 * The url with the currently loaded content
@@ -66,9 +71,31 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	 */
 	public function __construct()
 	{
-		$this->_loadPage($this->_initialUrl);
+		$this->_loadPage(self::$_initialUrl);
 	}
 
+	/**
+	 * Returns true if this link is recognized as link to page on site
+	 * that holds data that we need to parse
+	 *
+	 * This method will allow us to recognize that this particular
+	 * adapter is aplicable to process content from the provided URL
+	 *
+	 * @access public static
+	 * @param string $link the URL to check
+	 * @return boolean true if provided link matches the pattern
+	 */
+	public static function matchDataLink($link)
+	{
+		foreach (self::$_dataLinksPatterns as $currentPattern) {
+			if (preg_match($currentPattern, $link)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * Will return all links on the loaded page
 	 *
@@ -86,7 +113,7 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	 */
 	public function getInitialUrl()
 	{
-		return $this->_initialUrl;
+		return self::$_initialUrl;
 	}
 	
 	/**
@@ -99,7 +126,7 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 		$dataLinks = array();
 		
 		foreach ($links as $index => $link) {
-			if ($this->_matchDataLink($link['url'])) {
+			if (self::matchDataLink($link['url'])) {
 				// we need to make all relative URL to be absolute using the domain of current page
 				$link['url'] = $this->_normalizeUrl($link['url']);
 				$dataLinks[$link['url']] = $link;
@@ -138,9 +165,9 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 		}
 		
 		// convert all encodings to UTF-8 as a standatd encoding for our database
-		if ($this->_encoding !== "UTF-8") {
+		if (self::$_encoding !== self::DEFAULT_ENCODING) {
 			// we have data in some other format, lets convert everything to UTF-8
-			$textHtml = iconv($this->_encoding, "UTF-8", $textHtml);
+			$textHtml = iconv(self::$_encoding, self::DEFAULT_ENCODING, $textHtml);
 		}
 		
 		$this->_lastPageContent = $textHtml;
@@ -179,25 +206,6 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	}
 
 	/**
-	 * Returns true if this link is recognized as link to page on site
-	 * that holds data that we need to parse
-	 *
-	 * @param string $link the URL to check
-	 * @return boolean true if provided link matches the pattern
-	 */
-	protected function _matchDataLink($link)
-	{
-
-		foreach ($this->_dataLinksPatterns as $currentPattern) {
-			if (preg_match($currentPattern, $link)) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	/**
 	 * Checks for link to be relative
 	 * and appends the domain from the currently processed page
 	 *
@@ -223,5 +231,4 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	{
 		return $this->_urlData['scheme'] . '://' . $this->_urlData['host'] . $url;
 	}
-	
 }

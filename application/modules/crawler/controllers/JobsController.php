@@ -34,4 +34,18 @@ class Crawler_JobsController extends Zend_Controller_Action
 		*/
 	}
 	
+	/**
+	 * This action will process information from
+	 */
+	public function processAction()
+	{
+		$adapters = array (
+			'Joss_Crawler_Adapter_Emarketua'
+		);
+		
+		$Jobs = new Joss_Crawler_Jobs($adapters);
+		
+		$Jobs->processNextJob();
+	}
+	
 }

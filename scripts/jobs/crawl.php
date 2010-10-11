@@ -31,6 +31,7 @@ define ('API_KEY', 'test'); // API key allows to identify the client for distrib
 // WARNING!!! You dont need to edit the code under this line
 // atleast you realy understand what are you doing as that can
 // brake the correct work of distributed web crawler client
+// script is quite laconic and dosn't depends on any external libraries, configs
 
 // server configuration
 define ('JOB_SERVER_DOMAIN', 'joseph-dev.nash-master.com');
@@ -65,8 +66,9 @@ $url = base64_decode($job['data']);
 $content = get_url_content($url, USER_AGENT_CLIENT);
 
 // post job results to job server
+$content = base64_encode($content);
 $data = 'id=' . md5(API_KEY . $job['id']);
-$data .= '&data=' . base64_encode($content);
+$data .= '&data=' . urlencode($content);
 
 $result = post_data($data, JOB_SERVER_DOMAIN, JOB_POST_URL, USER_AGENT);
 

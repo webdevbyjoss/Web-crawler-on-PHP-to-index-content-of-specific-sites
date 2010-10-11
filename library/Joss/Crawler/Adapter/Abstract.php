@@ -23,14 +23,14 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	 *
 	 * @var string
 	 */
-	protected static $_initialUrl = '';
+	protected $_initialUrl = '';
 
 	/**
 	 * Page encoding to use while dealing with text
 	 *
 	 * @var stirng
 	 */
-	protected static $_encoding = 'UTF-8';
+	protected $_encoding = 'UTF-8';
 	
 	/**
 	 * Data links patterns
@@ -43,7 +43,7 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	 *
 	 * @var array
 	 */
-	protected static $_dataLinksPatterns = null;
+	protected $_dataLinksPatterns = null;
 
 	/**
 	 * The url with the currently loaded content
@@ -69,10 +69,7 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	 * Lets load thestarting URL page here
 	 *
 	 */
-	public function __construct()
-	{
-		$this->_loadPage(self::$_initialUrl);
-	}
+	public function __construct() {}
 
 	/**
 	 * Returns true if this link is recognized as link to page on site
@@ -81,13 +78,12 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	 * This method will allow us to recognize that this particular
 	 * adapter is aplicable to process content from the provided URL
 	 *
-	 * @access public static
 	 * @param string $link the URL to check
 	 * @return boolean true if provided link matches the pattern
 	 */
-	public static function matchDataLink($link)
+	public function matchDataLink($link)
 	{
-		foreach (self::$_dataLinksPatterns as $currentPattern) {
+		foreach ($this->_dataLinksPatterns as $currentPattern) {
 			if (preg_match($currentPattern, $link)) {
 				return true;
 			}
@@ -113,7 +109,7 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	 */
 	public function getInitialUrl()
 	{
-		return self::$_initialUrl;
+		return $this->_initialUrl;
 	}
 	
 	/**
@@ -126,7 +122,7 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 		$dataLinks = array();
 		
 		foreach ($links as $index => $link) {
-			if (self::matchDataLink($link['url'])) {
+			if ($this->matchDataLink($link['url'])) {
 				// we need to make all relative URL to be absolute using the domain of current page
 				$link['url'] = $this->_normalizeUrl($link['url']);
 				$dataLinks[$link['url']] = $link;
@@ -137,47 +133,31 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	}
 	
 	/**
-	 * Loads content from the provided URL amd stores it into "lastPageContent" field
+	 * Loads content and stores it into "lastPageContent" field
 	 *
-	 * @uses  Zend_Http_Client
 	 * @param string $url
+	 * @param string $headers
+	 * @param string $body
 	 * @return null
 	 */
-	protected function _loadPage($url)
+	public function loadPage($url, $body)
 	{
-		$config = array(
-			'useragent' => "IE 7 – Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 5.1; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.04506.30)"
-		);
-		
-		// DOTO: add the fucntionality to respect "robots.txt" rules,
-		// see: http://www.the-art-of-web.com/php/parse-links/
-		//      http://www.the-art-of-web.com/php/parse-robots/
-
-		$client = new Zend_Http_Client($url, $config);
-		$response = $client->request();
-		
-		// deal with gzip-content
-		$headers = $response->getHeaders();
-		if ($headers['Content-encoding'] == 'gzip') {
-			$textHtml = $response->decodeGzip($response->getRawBody());
-		} else {
-			$textHtml = $response->getBody();
-		}
-		
 		// convert all encodings to UTF-8 as a standatd encoding for our database
-		if (self::$_encoding !== self::DEFAULT_ENCODING) {
+		if ($this->_encoding !== self::DEFAULT_ENCODING) {
 			// we have data in some other format, lets convert everything to UTF-8
-			$textHtml = iconv(self::$_encoding, self::DEFAULT_ENCODING, $textHtml);
+			// TODO: we need to look at encoding autodetection here to avoid situation when
+			// encoding has been chaned on site and content was encoded incorrectly
+			$body = iconv($this->_encoding, self::DEFAULT_ENCODING . '//TRANSLIT//IGNORE', $body);
 		}
 		
-		$this->_lastPageContent = $textHtml;
+		$this->_lastPageContent = $body;
 		$this->_currentUrl = $url;
 		
 		// parse page meta data that will be used in advance for relative to absolute links transformation
-		// get sitebase for the current page
+		// and sitebase calculaton for current page
 		$this->_urlData = parse_url($this->_currentUrl);
 	}
-
+	
 	/**
 	 * Recognizes URL accoridng to the pattern and returns the list of available ones
 	 *
@@ -196,7 +176,6 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 		$links = array();
 		for ($i = 0; $i < $lenght; $i++) {
 			$links[] = array(
-		//		'link' => $out[0][$i],
 				'url' => $out[1][$i],
 				'content' => $out[2][$i],
 			);
@@ -230,5 +209,11 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	protected function _relativeToAbsoluteUrl($url)
 	{
 		return $this->_urlData['scheme'] . '://' . $this->_urlData['host'] . $url;
+	}
+	
+	
+	public function getData()
+	{
+		// this will be filled later
 	}
 }

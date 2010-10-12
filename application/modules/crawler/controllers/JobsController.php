@@ -4,6 +4,13 @@
  */
 class Crawler_JobsController extends Zend_Controller_Action
 {
+	const JOBS_PER_TIME = 100;
+	
+	// define available adapters
+	protected $_adapters = array(
+		'Joss_Crawler_Adapter_Emarketua'
+	);
+	
 	public function init()
 	{
 		// we 100% that actions from this controller will be
@@ -14,24 +21,14 @@ class Crawler_JobsController extends Zend_Controller_Action
 	
 	public function indexAction()
 	{
-		// define available adapters
-		$adapters = array(
-			'Joss_Crawler_Adapter_Emarketua'
-		);
-		
-		$Client = new Joss_Crawler_Jobs($adapters);
+		$Client = new Joss_Crawler_Jobs($this->_adapters);
 		$res = $Client->startQuelle();
-		
-		/*
-		$Client = new Joss_Crawler_Adapter_Emarketua();
-		$links = $Client->getDataLinks();
-		
-		
-		foreach ($links as $key => $link) {
-			// echo $key . "| " . $link['url'] . "| " . $link['content'] . "\n";
-			echo $link['url'] . "\n";
+		if (false === $res) {
+			echo "\nThere are still some jobs in processing\n";
+			return;
 		}
-		*/
+		
+		echo "\nQuelle started!\n";
 	}
 	
 	/**
@@ -39,13 +36,19 @@ class Crawler_JobsController extends Zend_Controller_Action
 	 */
 	public function processAction()
 	{
-		$adapters = array (
-			'Joss_Crawler_Adapter_Emarketua'
-		);
+		$Jobs = new Joss_Crawler_Jobs($this->_adapters);
 		
-		$Jobs = new Joss_Crawler_Jobs($adapters);
+		for ($i = 0; $i < self::JOBS_PER_TIME; $i++) {
+			
+			$res = $Jobs->processNextJob();
+			
+			if (false === $res) {
+				echo "\nAll jobs are completed\n";
+				return;
+			}
+		}
 		
-		$Jobs->processNextJob();
+		echo "\nJob(s) processed!\n";
 	}
-	
+
 }

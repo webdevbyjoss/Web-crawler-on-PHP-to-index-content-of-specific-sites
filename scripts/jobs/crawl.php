@@ -42,37 +42,57 @@ define ('USE_SSL', false);
 // client configuration
 define ('USER_AGENT', 'PHP Distributed Web Crawler/1.0');
 define ('USER_AGENT_CLIENT', 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)');
+define ('CALLS_PER_RUN', 20);
 
-// prepare information
-// we randomly generating some salt to avoid stealing our mp5() hash by network sniffer
-$salt = rand(1000, 9999);
-$key = 'id=' . md5(API_KEY . $salt) . '&data=' . $salt;
+// lets measre the time of script execution
+$mtime = microtime();
+$mtime = explode(" ",$mtime);
+$mtime = $mtime[1] + $mtime[0];
+$starttime = $mtime;
 
-// receive job from server
-$result = post_data($key, JOB_SERVER_DOMAIN, JOB_GET_URL, USER_AGENT);
-$job = json_decode($result, true);
+for ($i = 0; $i < CALLS_PER_RUN; $i++) {
 
-if (empty($job)) {
-	throw new Exception($result);
+	// prepare information
+	// we randomly generating some salt to avoid stealing our mp5() hash by network sniffer
+	$salt = rand(1000, 9999);
+	$key = 'id=' . md5(API_KEY . $salt) . '&data=' . $salt;
+	
+	// receive job from server
+	$result = post_data($key, JOB_SERVER_DOMAIN, JOB_GET_URL, USER_AGENT);
+	$job = json_decode($result, true);
+	
+	if (empty($job)) {
+		echo "\nERROR: $result\n";
+	}
+	
+	if (!empty($job['message'])) {
+		echo "\nERROR: " . $job['message'] . "\n";
+	}
+	
+	// process received job
+	$url = base64_decode($job['data']);
+	$content = get_url_content($url, USER_AGENT_CLIENT);
+	
+	// post job results to job server
+	$content = base64_encode($content);
+	$data = 'id=' . md5(API_KEY . $job['id']);
+	$data .= '&data=' . urlencode($content);
+	
+	$result = post_data($data, JOB_SERVER_DOMAIN, JOB_POST_URL, USER_AGENT);
+	
+	echo "OK: " . $result . "\n";
+	// we need a pause during 1 second between calls to avoid web-server overload
+	sleep(1);
 }
 
-if (!empty($job['message'])) {
-	die ($job['message'] . "\n");
-	// throw new Exception($job['message']);
-}
+// calculate total execution time
+$mtime = microtime();
+$mtime = explode(" ",$mtime);
+$mtime = $mtime[1] + $mtime[0];
+$endtime = $mtime;
+$totaltime = ($endtime - $starttime);
 
-// process received job
-$url = base64_decode($job['data']);
-$content = get_url_content($url, USER_AGENT_CLIENT);
-
-// post job results to job server
-$content = base64_encode($content);
-$data = 'id=' . md5(API_KEY . $job['id']);
-$data .= '&data=' . urlencode($content);
-
-$result = post_data($data, JOB_SERVER_DOMAIN, JOB_POST_URL, USER_AGENT);
-
-echo $result . "\n";
+echo "\nTotal time: " . $totaltime . " seconds\n";
 exit;
 
 /**

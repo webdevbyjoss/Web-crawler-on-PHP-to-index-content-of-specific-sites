@@ -67,10 +67,17 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 	/**
 	 * Creates new job in database table
 	 *
+	 *
+	 *
 	 * @param string $url
 	 * @return null
 	 */
-	public function createJob($url) {
+	public function createJob($url)
+	{
+		// create new job only if there are no unprocessed jobs available in database
+		if ($this->_isJob($url)) {
+			return null;
+		}
 		
 		$data = array(
 			'url' => $url,
@@ -110,7 +117,8 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 			'status' => self::LINK_IN_PROCESS,
 		);
 		
-		$this->update($data, array('crawl_jobs_id' => $job['crawl_jobs_id']));
+		$where = $this->getAdapter()->quoteInto('crawl_jobs_id = ?', $job['crawl_jobs_id']);
+		$this->update($data, $where);
 		
 		// TODO: revise this to use Row Gateway pattern and return table row object
 		$res['url'] = $job['url'];
@@ -145,7 +153,8 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 			'raw_body' => $content
 		);
 		
-		$this->update($data, array('crawl_jobs_id' => $jobId));
+		$where = $this->getAdapter()->quoteInto('crawl_jobs_id = ?', $jobId);
+		$this->update($data, $where);
 		return true;
 	}
 	
@@ -163,13 +172,58 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 		
 		$job = $this->getAdapter()->fetchRow($sql);
 		
+		// check if there were no any jobs available
+		if (empty($job)) {
+			return null;
+		}
+		
 		// mark it as in process to prevent double processing of the same job
 		$data = array(
 			'status' => self::CONTENT_IN_PROCESS
 		);
-		$this->update($data, array('crawl_jobs_id' => $job['crawl_jobs_id']));
+		
+		$where = $this->getAdapter()->quoteInto('crawl_jobs_id = ?', $job['crawl_jobs_id']);
+		$this->update($data, $where);
 		
 		return $job;
+	}
+
+	/**
+	 * Temporrary function to finish job manually
+	 *
+	 * @param int $jobId
+	 */
+	public function finishJob($jobId)
+	{
+		$data = array(
+			'status' => self::CONTENT_FINISHED
+		);
+		
+		$where = $this->getAdapter()->quoteInto('crawl_jobs_id = ?', $jobId);
+		$this->update($data, $where);
+	}
+	
+	/**
+	 * Checks if there are any unprocessed jobs in database from under the specified URL
+	 *
+	 * @param string $url
+	 * @return boolean
+	 */
+	protected function _isJob($url)
+	{
+		// get next available job from the database
+		$sql = 'SELECT crawl_jobs_id
+		FROM ' . $this->_name . ' USE INDEX (url)
+		WHERE  url = "' . addslashes($url) . '" LIMIT 1'; // AND status <> ' . self::CONTENT_FINISHED . ' LIMIT 1';
+
+		$job = $this->getAdapter()->fetchRow($sql);
+		
+		// check if there were no any jobs available
+		if (empty($job)) {
+			return false;
+		}
+		
+		return true;
 	}
 
 }

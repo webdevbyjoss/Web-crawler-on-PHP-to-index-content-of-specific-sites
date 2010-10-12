@@ -17,8 +17,6 @@ class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 	protected $_encoding = 'CP1251';
 	
 	protected $_dataLinksPatterns = array (
-		  //'@http://emarket.ua/construction/appartments-repair.*@',
-
 		  // data pages
 		  '@/construction/.*_[0-9]+\.html$@',
 		  '@http://emarket.kiev.ua/construction/.*_[0-9]+\.html@',

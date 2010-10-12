@@ -75,13 +75,6 @@ class Crawler_ApiController extends Zend_Controller_Action
 	{
 		$request = $this->getRequest();
 
-		/*
-		$content = base64_decode($request->data);
-		$headersEndPosition = strpos($content, "\r\n\r\n") + 4;
-      	$headers = substr($content, 0, $headersEndPosition);
-      	unset($content);
-      	*/
-
       	$JobsManager = new Joss_Crawler_Db_Jobs();
       	$res = $JobsManager->setJobResults($request->id, $request->data);
       	

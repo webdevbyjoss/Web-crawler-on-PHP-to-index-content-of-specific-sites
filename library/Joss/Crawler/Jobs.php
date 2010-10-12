@@ -54,38 +54,44 @@ class Joss_Crawler_Jobs {
 	
 	public function processNextJob()
 	{
-		// 1. get job
+		// 1. get next job from database
 		$DbJobs = new Joss_Crawler_Db_Jobs();
 		$job = $DbJobs->getJobForProcessing();
 
+		if (null == $job) {
+			/**
+			 * TODO: write appropriate message to the output and to the log
+			 */
+			return false;
+		}
+		
 		// 2. recognize the adapter
+		// TODO: adapter recognision can be done in more elegance maner
 		foreach ($this->_adapters as $adapterClass) {
-
- 			// Call static method when class name defined dinamically via variable (for versions before PHP 5.3.0)
-			$res = call_user_func(  array(&$adapterClass, 'matchDataLink') , $job['url'] );
-			// Call static method when class name defined dinamically via variable (for versions after PHP 5.3.0)
-			// $res = $adapterClass::matchDataLink($job['url']));
-			if (true == $res) {
+			$Adapter = new $adapterClass();
+			if ($Adapter->matchDataLink($job['url'])) {
 				break;
 			}
 		}
-		
-		// 3. extract content
-		$Adapter = new $adapterClass ();
-		
-		// $links = $Adapter->getDataLinks();
 
+		// 3. extract content
+		$job['raw_body'] = base64_decode($job['raw_body']);
+		$Adapter->loadPage($job['url'], $job['raw_body']);
+		
+		// 4. grap the URLs with interesting  data and create new jobs for that pages
+		$links = $Adapter->getDataLinks();
 		foreach ($links as $key => $link) {
 			// echo $key . "| " . $link['url'] . "| " . $link['content'] . "\n";
-			echo $link['url'] . "\n";
+			$DbJobs->createJob($link['url']);
 		}
-		
-		// 4. grap the interesting URLs
-		
 		
 		// 5. grap the data from the page
 		
 		
+		
+		// FIXME: this is temporrary code that helps to run crawling without actual processing of content
+		$DbJobs->finishJob($job['crawl_jobs_id']);
+		return true;
 	}
 
 }

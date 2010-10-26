@@ -54,5 +54,4 @@ class Joss_Crawler_Client
 	{
 		echo 'Done!';
 	}
-	
 }

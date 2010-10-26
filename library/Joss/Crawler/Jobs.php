@@ -10,8 +10,8 @@
  * @copyright	2010
  * @license		GPL
  */
-class Joss_Crawler_Jobs {
-	
+class Joss_Crawler_Jobs
+{
 	/**
 	 * The list of supported creawler adapters
 	 *
@@ -24,7 +24,8 @@ class Joss_Crawler_Jobs {
 	 *
 	 * @param array $adapters
 	 */
-	public function __construct($adapters) {
+	public function __construct($adapters)
+	{
 		$this->_adapters = $adapters;
 	}
 	
@@ -81,13 +82,17 @@ class Joss_Crawler_Jobs {
 		// 4. grap the URLs with interesting  data and create new jobs for that pages
 		$links = $Adapter->getDataLinks();
 		foreach ($links as $key => $link) {
-			// echo $key . "| " . $link['url'] . "| " . $link['content'] . "\n";
 			$DbJobs->createJob($link['url']);
 		}
 		
+		$Items = new Joss_Crawler_Db_Items();
 		// 5. grap the data from the page
-		
-		
+		$data = $Adapter->getData();
+		if (null !== $data) {
+			foreach ($data as $advert) {
+				$Items->add($advert);
+			}
+		}
 		
 		// FIXME: this is temporrary code that helps to run crawling without actual processing of content
 		$DbJobs->finishJob($job['crawl_jobs_id']);

@@ -31,9 +31,26 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	 * @var stirng
 	 */
 	protected $_encoding = 'UTF-8';
+
+	/**
+	 * Link patterns that match category pages
+	 *
+	 * @var array
+	 */
+	protected $_categoryLinks = null;
 	
 	/**
-	 * Data links patterns
+	 * Link patterns that match pages with data
+	 *
+	 * this will allow us to understand wether we need to try and search
+	 * data on page or parse only links without any data extraction
+	 *
+	 * @var array
+	 */
+	protected $_dataLinks = null;
+	
+	/**
+	 * All pages links patterns
 	 *
 	 * Reg exp patterns to match data URL
 	 * each element of the array should be a string that holds a correct regular expression
@@ -41,10 +58,13 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	 * regular expression will be matched using the following construct
 	 * if (preg_match($currentPattern, $link)) return true; else return false;
 	 *
+	 * this array will be merged in the constructor from all the data URLs
+	 * we have in $_categoryLinks and $_dataLinks
+	 *
 	 * @var array
 	 */
 	protected $_dataLinksPatterns = null;
-
+	
 	/**
 	 * The url with the currently loaded content
 	 *
@@ -66,10 +86,12 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	private $_urlData = null;
 	
 	/**
-	 * Lets load thestarting URL page here
-	 *
+	 * We need to build the list of all links we have for this site
+	 * that will be used for crawling
 	 */
-	public function __construct() {}
+	public function __construct() {
+		$this->_dataLinksPatterns = array_merge($this->_categoryLinks, $this->_dataLinks);
+	}
 
 	/**
 	 * Returns true if this link is recognized as link to page on site
@@ -210,10 +232,5 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	{
 		return $this->_urlData['scheme'] . '://' . $this->_urlData['host'] . $url;
 	}
-	
-	
-	public function getData()
-	{
-		// this will be filled later
-	}
+
 }

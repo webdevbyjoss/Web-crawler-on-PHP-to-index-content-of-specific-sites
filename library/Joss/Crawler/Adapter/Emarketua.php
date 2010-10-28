@@ -77,10 +77,70 @@ class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 		  '@http://emarket.crimea.ua/construction/.*_[0-9]+\.html@',
 		  '@http://emarket.dp.ua/construction/.*_[0-9]+\.html@',
 	);
-
-	public function getData()
+	
+	protected function extractItems()
 	{
-		// this will be filled later
+		// we will use a special class to parse the page data
+		require_once realpath(dirname(__FILE__) . '/../../../') . '/simple_html_dom.php';
 		
+		$html = file_get_html($this->_lastPageContent);
+		
+		
+		$info = array();
+		// set adapter ID
+		$info['adapter'] = __CLASS__;
+		
+		// recognize item ID
+		preg_match('@/construction/.*_([0-9]+)\.html$@', $this->_currentUrl, $matches);
+		$info['id'] = $matches[1];
+		
+		// Find all article blocks
+		$info['info']['title'] = $html->find('div#content_container_detail h1.title', 0)->plaintext;
+		$info['info']['description'] = $html->find('div#block5 table tr td span', 0)->plaintext;
+		$info['info']['contact_name'] = $html->find('div.lot table table tr td b', 1)->plaintext;
+		$info['info']['phone'] = $this->_normalizePhoneNumber($html->find('div.lot table table table tr td b i', 0)->plaintext);
+		
+		$info['regions'] = $this->getRegions();
+		$info['services'] = $this->getServices();
+		
+		return array($info);
 	}
+	
+	public function getRegions()
+	{
+		// recognize regions
+		$regionsMapping = array(
+			0 => 'http://emarket.kiev.ua',
+			1 => 'http://emarket.kh.ua',
+			2 => 'http://emarket.dn.ua',
+			3 => 'http://emarket-ua.od.ua',
+			4 => 'http://emarket.zp.ua',
+			5 => 'http://emarket.crimea.ua',
+			6 => 'http://emarket.dp.ua',
+		);
+		
+		foreach ($regionsMapping as $id => $pattern) {
+			if (false !== strpos($this->_currentUrl, $pattern)) {
+				$regionId = $id;
+				break;
+			}
+		}
+		
+		$regionTags = explode(', ', $html->find('span.region_ad', 0)->plaintext);
+		
+		$regions[] = array('id' => $regionId, 'tags' => $regionTags);
+
+		return $regions;
+	}
+	
+	public function getServices()
+	{
+		$serviceId = 2;
+		$serviceTags = $html->find('tr#multitag td', 1)->plaintext;
+		
+		$services[] = array('id' => $serviceId, 'tags' => $serviceTags);
+		
+		return $services;
+	}
+
 }

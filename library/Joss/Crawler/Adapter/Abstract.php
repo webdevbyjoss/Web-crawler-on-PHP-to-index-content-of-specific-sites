@@ -18,6 +18,11 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	const DEFAULT_ENCODING = 'UTF-8';
 	
 	/**
+	 * Used for "matchDataLink" method to match data pages only
+	 */
+	const MATCH_DATA_ONLY = true;
+	
+	/**
 	 * Initial URL to start crawling from
 	 * regulary its a homepage or category page
 	 *
@@ -45,6 +50,9 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	 * this will allow us to understand wether we need to try and search
 	 * data on page or parse only links without any data extraction
 	 *
+	 * NOTE! In case you have a category page and data page under
+	 *       the same URL then palce it under _dataLinks list
+	 *
 	 * @var array
 	 */
 	protected $_dataLinks = null;
@@ -70,26 +78,27 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	 *
 	 * @var string
 	 */
-	private $_currentUrl = null;
-	
+	protected $_currentUrl = null;
+
 	/**
 	 * The content of the last loaded page
 	 *
 	 * @var string
 	 */
-	private $_lastPageContent = '';
+	protected $_lastPageContent = '';
 	
 	/**
 	 * This variable will hold the data of the currently loaded page after
 	 * parse_url($url);
 	 */
-	private $_urlData = null;
+	protected $_urlData = null;
 	
 	/**
 	 * We need to build the list of all links we have for this site
 	 * that will be used for crawling
 	 */
-	public function __construct() {
+	public function __construct()
+	{
 		$this->_dataLinksPatterns = array_merge($this->_categoryLinks, $this->_dataLinks);
 	}
 
@@ -103,9 +112,15 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	 * @param string $link the URL to check
 	 * @return boolean true if provided link matches the pattern
 	 */
-	public function matchDataLink($link)
+	public function matchDataLink($link, $onlyData = false)
 	{
-		foreach ($this->_dataLinksPatterns as $currentPattern) {
+		if ($onlyData) {
+			$dataLinksPatterns = $this->_dataLinks;
+		} else {
+			$dataLinksPatterns = $this->_dataLinksPatterns;
+		}
+		
+		foreach ($dataLinksPatterns as $currentPattern) {
 			if (preg_match($currentPattern, $link)) {
 				return true;
 			}
@@ -152,6 +167,24 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 		}
 		
 		return $dataLinks;
+	}
+
+	/**
+	 * Returns the list of data
+	 *
+	 * generally on this level of abstraction we will check if specified
+	 * URL contains data and in case it does we will extract that data from the page
+	 *
+	 * @see Joss_Crawler_Adapter_Interface::getData()
+	 * @return array the list of data
+	 */
+	public function getData()
+	{
+		if (!$this->matchDataLink($this->_currentUrl, self::MATCH_DATA_ONLY)) {
+			return null;
+		}
+		
+		return $this->extractItems();
 	}
 	
 	/**
@@ -221,6 +254,36 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 		
 		return $url;
 	}
+	
+	/**
+	 * This function normalizes phone number to the standart international format
+	 * +112223333333
+	 * where
+	 * 11      - area code
+	 * 222     - phone network code
+	 * 3333333 - personal phone number
+	 *
+	 * @param string $number phone number
+	 * @param string $areaCode default area code
+	 * @return normalized phone number according to international phone numbers format
+	 */
+	protected function _normalizePhoneNumber($number, $defaultAreaCode = '38')
+	{
+		// strip all non-numeric characters
+		$number = preg_replace('/[^0-9]/', '', $number);
+
+		// parse phone number
+		$phoneNumber = substr($number, -7);
+		$networkCode = substr($number, -10, 3);
+		$areaCode = substr($number, -12, 3);
+
+		// process area code in case the area code incorrect or it omited
+		if (strlen($areaCode) < strlen($defaultAreaCode) ) {
+			$areaCode = $defaultAreaCode;
+		}
+
+		return '+' . $areaCode . $networkCode . $phoneNumber;
+	}
 
 	/**
 	 * Converts relative URl to absolute using the current page URL
@@ -232,5 +295,4 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	{
 		return $this->_urlData['scheme'] . '://' . $this->_urlData['host'] . $url;
 	}
-
 }

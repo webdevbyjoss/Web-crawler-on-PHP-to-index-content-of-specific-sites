@@ -28,12 +28,10 @@ define('APPLICATION_LIBRARY_PATH', realpath(APPLICATION_PATH . '/../library'));
 /*
  * Set the include paths to point to the new defined paths
  */
-$paths = array(
-    APPLICATION_LIBRARY_PATH
-);
+$paths = explode(PATH_SEPARATOR, get_include_path());
+$paths[] = APPLICATION_LIBRARY_PATH;
 
 set_include_path(implode(PATH_SEPARATOR, $paths));
-
 
 /*
 * You should avoid putting too many lines before the cache section.
@@ -75,14 +73,13 @@ $frontendOptions = array(
        'cache_with_get_variables' => true,
        'make_id_with_cookie_variables' => true,
        'cache_with_cookie_variables' => true),
-
     )
 );
 
 $backendOptions = array(
     'cache_dir' => realpath(APPLICATION_CACHE)
 );
- 
+
 // getting a Zend_Cache_Frontend_Page object
 require_once 'Zend/Cache.php';
 $cache = Zend_Cache::factory('Page',

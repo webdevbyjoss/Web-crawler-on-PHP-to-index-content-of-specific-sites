@@ -24,11 +24,11 @@ class Crawler_JobsController extends Zend_Controller_Action
 		$Client = new Joss_Crawler_Jobs($this->_adapters);
 		$res = $Client->startQuelle();
 		if (false === $res) {
-			echo "\nThere are still some jobs in processing\n";
+			echo "\nthere are still some jobs in processing\n";
 			return;
 		}
 		
-		echo "\nQuelle started!\n";
+		echo "\nquelle started!\n";
 	}
 	
 	/**
@@ -43,12 +43,12 @@ class Crawler_JobsController extends Zend_Controller_Action
 			$res = $Jobs->processNextJob();
 			
 			if (false === $res) {
-				echo "\nAll jobs are completed\n";
-				return;
+				echo "\nall jobs are completed\n";
+				break;
 			}
 		}
 		
-		echo "\nJob(s) processed!\n";
+		echo "\n$i job(s) processed!\n";
 	}
 
 }

@@ -113,34 +113,11 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	
 		// Zone 1 – North American Numbering Plan Area
 		'1', // United States of America & Canada, U.S. Virgin Islands, Northern Mariana Islands, Guam
-			 // American Samoa, Puerto Rico,
-//		'1340', //
-//		'1670', //
-//		'1671', //
-//		'1684', //
-//		'1939', //
-//		'1787', //
-//		'1264', // Anguilla
-//		'1268', // Antigua and Barbuda
-//		'1242', // Bahamas
-//		'1246', // Barbados
-//		'1441', // Bermuda
-//		'1284', // British Virgin Islands
-//		'1345', // Cayman Islands
-//		'1767', // Dominica
-//		'1809', // Dominican Republic
-//		'1829', // Dominican Republic
-//		'1849', // Dominican Republic
-//		'1473', // Grenada
-//		'1876', // Jamaica
-//		'1664', // Montserrat
-//		'1869', // Saint Kitts and Nevis
-//		'1758', // Saint Lucia
-//		'1784', // Saint Vincent and the Grenadines
-//		'1868', // Trinidad and Tobago
-//		'1649', // Turks and Caicos Islands
-//		'1721', // Sint Maarten
-		
+			 // American Samoa, Puerto Rico, Anguilla, Antigua and Barbuda, Bahamas, Barbados, Bermuda,
+			 // British Virgin Islands, Cayman Islands, Dominica, Dominican Republic, Grenada, Jamaica,
+			 // Montserrat, Saint Kitts and Nevis, Saint Lucia, Saint Vincent and the Grenadines,
+			 // Trinidad and Tobago, Turks and Caicos Islands, Sint Maarten
+
 		// Zone 2 – Mostly Africa
 		'20', // Egypt
 		'212', // Morocco
@@ -582,52 +559,78 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 		// strip all non-numeric characters
 		$number = preg_replace('/[^0-9]/', '', $number);
 		
+		// late return in case provided phone number doesn't contains any digits
+		// or the size of the number is too short
+		if (empty($number) || (strlen($number) <= 4)) {
+			return null;
+		}
+		
+		// late return for local landline phones like "525-58-69", "24-58-69"
+		if (strlen($number) <= 7) {
+			return $number;
+		}
+				
 		// in case the phone number starts from the "0" or "00" we can strip that zeros
 		// and then replace it to international area sign "+"
 		if ('00' === substr($number, 0, 2)) {
 			$number = substr($number, 2);
 		}
 		
-//		if ('0' === substr($number, 0, 1)) {
-//			$number = substr($number, 1);
-//		}
+		// QUICKFIX: Filter the popular in ext-soviet union countries old way of defining
+		// phone numbers 8-044-8888888
+		// the "8" should be omited (at least in Ukraine) sice 14 October 2009,
+		// see: http://ukrtelecom.ua/reference/intercall
+		// FIXME: these numbers are outdated and are not acceptable right now
+		//		  but we still ned to support old databases with numbers in this format
+		if (('80' === substr($number, 0, 2)) && ('800' !== substr($number, 0, 3))) {
+			$number = substr($number, 1);
+		}
 		
-		$number = '1636313567';
-		
-		// parse phone number
+		// parse phone number, 99.999% it consists from last 7 digits
 		$phoneNumber = substr($number, -7);
-		// $networkCode = substr($number, -9, 2);
-		// $areaCode = substr($number, -12, 4);
-
-		var_dump($phoneNumber);
-		var_dump($networkCode);
-		var_dump($areaCode);
 		
-		// lets recognize the area code
-		if (preg_match('/^(' . implode('|', $this->_phoneAreaCodes) . ')/', $number)) {
-
-			foreach ($this->_phoneAreaCodes as $code) {
-				if (preg_match('/^(' . $code . ')/', $areaCode)) {
-					$areaCode = $code;
-					break;
-				}
-			}
+		// according to european phone numbers systems if the first number is "0"
+		// then we have a phone number in the country internal format
+		// lets assign the default country phone code
+		// and recognize the network/teritory code
+		if ('0' === substr($number, 0, 1)) {
 			
-			$networkCode =
-			
-		} else {
-			// in case the area code incorrect or it is ommited
 			if (null == $defaultAreaCode) {
 				$areaCode = $this->_phoneAreaCode;
 			} else {
 				$areaCode = $defaultAreaCode;
 			}
-		}
+			
+			// standart phone unmber consists of 7 digits "888-88-88"
+			// we need to cut off that from the full number starting from 8-th character
+			// to determine the network code, the size of network code can wary
+			// from 2 till 3 symbols and depends on country
+			// also we need to omit the "0" at the begining of the number
+			$networkCode = substr($number, 1, strlen($number) - 8);
 
-		var_dump($areaCode);
+			// add international area sign "+" here to have a phone number in international format
+			return '+' . $areaCode . $networkCode . $phoneNumber;
+		}
 		
-		// add international area sign "+" here to have a phone number in international format
-		return '+' . $areaCode . $networkCode . $phoneNumber;
+		// in case the number was provided in the international format then we need to
+		// make sure the country code is an existent country code
+		if (preg_match('/^(' . implode('|', $this->_phoneAreaCodes) . ')/', $number, $code)) {
+
+			$areaCode = $code[0];
+
+			// standart phone unmber consists of 7 digits "888-88-88"
+			// we need to cut off that from the full number starting from 8-th character
+			// to determine the network code, the size of network code can wary
+			// from 2 till 3 symbols and depends on country
+			// also we need to omit the area code at the begining of the number
+			$networkCode = substr($number, strlen($areaCode), strlen($number) - (7 + strlen($areaCode)));
+			
+			// add international area sign "+" here to have a phone number in international format
+			return '+' . $areaCode . $networkCode . $phoneNumber;
+		}
+		
+		// we were not able to recognize this phone number
+		return null;
 	}
 
 	/**

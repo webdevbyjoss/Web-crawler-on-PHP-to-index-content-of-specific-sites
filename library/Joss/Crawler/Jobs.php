@@ -38,19 +38,18 @@ class Joss_Crawler_Jobs
 	{
 		$DbJobs = new Joss_Crawler_Db_Jobs ();
 		
-		if (! $DbJobs->isFinished ()) {
-			
-			/**
-			 * TODO: write appropriate message to the output and to the log
-			 */
+		if (! $DbJobs->isFinished()) {
 			return false;
 		}
 		
 		foreach ( $this->_adapters as $adapterClass ) {
 			$Adapter = new $adapterClass();
-			$DbJobs->createJob($Adapter->getInitialUrl());
+			$urls = $Adapter->getInitialUrl();
+			foreach ($urls as $url) {
+				$DbJobs->createJob($url);
+			}
 		}
-	
+
 	}
 	
 	public function processNextJob()
@@ -81,18 +80,32 @@ class Joss_Crawler_Jobs
 		
 		// 4. grap the URLs with interesting  data and create new jobs for that pages
 		$links = $Adapter->getDataLinks();
-		foreach ($links as $key => $link) {
-			$DbJobs->createJob($link['url']);
+		if (!empty($links)) {
+			foreach ($links as $key => $link) {
+				$DbJobs->createJob($link['url']);
+			}
 		}
 		
-		$Items = new Joss_Crawler_Db_Items();
+		// $Items = new Joss_Crawler_Db_Items();
+		$Synonyms = new Joss_Crawler_Db_Synonyms();
 		// 5. grap the data from the page
 		$data = $Adapter->getData();
+		
+		foreach ($data[0]['services'] as $term => $url) {
+			$info = array(
+				  'title' => $url
+				, 'lang_id' => $term
+			);
+			$Synonyms->insert($info);
+		}
+
+		/*
 		if (null !== $data) {
 			foreach ($data as $advert) {
 				$Items->add($advert);
 			}
 		}
+		*/
 		
 		// FIXME: this is temporrary code that helps to run crawling without actual processing of content
 		$DbJobs->finishJob($job['crawl_jobs_id']);

@@ -4,7 +4,7 @@
  */
 class Crawler_JobsController extends Zend_Controller_Action
 {
-	const JOBS_PER_TIME = 100;
+	const JOBS_PER_TIME = 1;
 	
 	// define available adapters
 	protected $_adapters = array(

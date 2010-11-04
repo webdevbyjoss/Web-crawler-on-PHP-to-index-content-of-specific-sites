@@ -16,11 +16,11 @@ class Crawler_TestController extends Zend_Controller_Action
 	{
 		// $currentUrl = 'http://emarket.te.ua/construction/remont-kvartir_3741711.html';
 		// $currentUrl = 'http://emarket.te.ua/construction/remont-kvartir_2071097.html';
-		//$currentUrl = 'http://emarket.te.ua/construction/dveri-vhidni-mizhkimnatni_5247451.html'; // no service tags
-		// $currentUrl = 'http://emarket.km.ua/construction/prodam-evro-poddonyi_4200193.html';
-		
-		
-		
+		// $currentUrl = 'http://emarket.te.ua/construction/dveri-vhidni-mizhkimnatni_5247451.html'; // no service tags
+		// $currentUrl = 'http://emarket.ks.ua/construction/metallokonstruktsii-i-metalloizdeliya-kovka_3952853.html';
+		// $currentUrl = 'http://emarket.ks.ua/construction/metalloizdeliya_4137577.html';
+		$currentUrl = 'http://emarket.vn.ua/construction/venetsianskie-shtukaturki_5201053.html';
+
 		$pageContent = file_get_contents($currentUrl);
 		// $pageContent = iconv('CP1251', 'UTF-8', $pageContent);
 		

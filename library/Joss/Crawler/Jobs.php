@@ -86,26 +86,16 @@ class Joss_Crawler_Jobs
 			}
 		}
 		
-		// $Items = new Joss_Crawler_Db_Items();
-		$Synonyms = new Joss_Crawler_Db_Synonyms();
 		// 5. grap the data from the page
+		
+		$Items = new Joss_Crawler_Db_Items();
 		$data = $Adapter->getData();
 		
-		foreach ($data[0]['services'] as $term => $url) {
-			$info = array(
-				  'title' => $url
-				, 'lang_id' => $term
-			);
-			$Synonyms->insert($info);
-		}
-
-		/*
 		if (null !== $data) {
 			foreach ($data as $advert) {
 				$Items->add($advert);
 			}
 		}
-		*/
 		
 		// FIXME: this is temporrary code that helps to run crawling without actual processing of content
 		$DbJobs->finishJob($job['crawl_jobs_id']);

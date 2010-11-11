@@ -11,6 +11,14 @@ body, caption, th, td, input, textarea, select, option, legend, fieldset {
     font-family:Tahoma,Verdana,Arial,Helvetica,"Bitstream Vera Sans",sans-serif;
 }
 
+label {
+	cursor: pointer;
+	padding: 5px;
+}
+
+label:hover {
+	background-color: #ffff99;
+}
 
 /* HEADER */
 
@@ -39,3 +47,50 @@ body, caption, th, td, input, textarea, select, option, legend, fieldset {
 	color: gray;
 	font-size: 0.8em;
 }
+
+.errors {
+	color: red;
+}
+
+.hint {
+	padding: 10px;
+	background: yellow;
+}
+
+.paginationControl {
+	width: 90%;
+	text-align: center;
+	padding: 15px;
+}
+
+.current-page {
+	font-size: 1.7em;
+	font-weight: bold;
+}
+
+.pager-navigation {
+	 padding: 30px;
+}
+
+.data-grid {
+	border-top: 1px solid silver;
+	border-left: 1px solid silver;	
+}
+
+.data-grid tr.table-header td {
+	background-color: #ccffe5;
+}
+
+.data-grid tr:hover td {
+	background-color: #cce5ff;
+}
+
+.data-grid td {
+	border-bottom: 1px solid silver;
+	border-right: 1px solid silver;
+}
+
+.data-grid tr.last_accessed td.actions {
+	background-color: #ffffcc;
+}
+

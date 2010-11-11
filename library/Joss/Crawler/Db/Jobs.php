@@ -75,7 +75,7 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 	public function createJob($url)
 	{
 		// create new job only if there are no unprocessed jobs available in database
-		if ($this->_isJob($url)) {
+		if ($this->isJob($url)) {
 			return null;
 		}
 		
@@ -187,7 +187,7 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 		
 		return $job;
 	}
-
+	
 	/**
 	 * Temporrary function to finish job manually
 	 *
@@ -202,6 +202,31 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 		$where = $this->getAdapter()->quoteInto('crawl_jobs_id = ?', $jobId);
 		$this->update($data, $where);
 	}
+
+	/**
+	 * Returns the last job by URL
+	 *
+	 * @param string $url
+	 * @return array
+	 */
+	public function getLastJobByUrl($url)
+	{
+		$sql = 'SELECT crawl_jobs_id, url, raw_body
+		FROM ' . $this->_name . '
+		WHERE status >= ' . self::LINK_FINISHED . '
+		AND url = "' . $url . '"
+		ORDER BY crawl_jobs_id DESC
+		LIMIT 1';
+		
+		$job = $this->getAdapter()->fetchRow($sql);
+		
+		// check if there were no any jobs available
+		if (empty($job)) {
+			return null;
+		}
+		
+		return $job;
+	}
 	
 	/**
 	 * Checks if there are any unprocessed jobs in database from under the specified URL
@@ -209,7 +234,7 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 	 * @param string $url
 	 * @return boolean
 	 */
-	protected function _isJob($url)
+	public function isJob($url)
 	{
 		// get next available job from the database
 		$sql = 'SELECT crawl_jobs_id

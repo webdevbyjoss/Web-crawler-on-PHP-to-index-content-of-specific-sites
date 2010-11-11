@@ -1,10 +1,8 @@
 <?php
 /**
- * Database table gateway to manage services synonyms crawled from the web and stored in database
+ * Table Data Gateway to web crawler synonyms recognisions errors
  *
- * @name		Joss_Crawler_Db_Synonyms
  * @version		0.0.1
- * @package		joss-crawler
  * @see			http://webdevbyjoss.blogspot.com/
  * @author		Joseph Chereshnovsky <joseph.chereshnovsky@gmail.com>
  * @copyright	2010
@@ -12,21 +10,75 @@
  */
 class Joss_Crawler_Db_SynonymsErrors extends Zend_Db_Table_Abstract
 {
-	/**
-	 * The name of the database table
-	 *
-	 * FIXME: I'm not sure wether this must be on model level or library level
-	 *        its just I don't want this library to be depended on any specific application
-	 *
-	 * @var string
-	 */
+	const STATUS_UNPROCESSED = 0;
+	
+	const STATUS_PROCESSED = 1;
+	
+	const STATUS_NEED_REVIEW = 2;
+	
 	protected $_name = 'crawl_data_synonyms_errors';
 	
 	/**
-	 * Define the name of primary key column
+	 * Get the list of item for each status
 	 *
-	 * @var string
+	 * @return array
 	 */
-	protected $_primary = 'id';
-
+	public function getAmounts()
+	{
+		$sql = 'SELECT processed, COUNT(processed) FROM ' . $this->_name . ' GROUP BY processed';
+		return $this->getAdapter()->fetchPairs($sql);
+	}
+	
+	/**
+	 * Returns the pagination adapter
+	 * according to the required filter
+	 *
+	 * @param int $status
+	 * @return Zend_Paginator_Adapter_DbSelect
+	 */
+	public function getPagerByStatus($status)
+	{
+		$select = $this->select();
+		$select->where('processed = ?', $status);
+		$select->order('title');
+		
+		return new Zend_Paginator_Adapter_DbSelect($select);
+	}
+	
+	/**
+	 * Set status of problem
+	 *
+	 * @param int $id
+	 * @param int $status
+	 * @param string $usetNotes user notes that explains last status change
+	 * @return null
+	 */
+	public function setStatus($id, $status, $usetNotes = null)
+	{
+		$data = array(
+			'processed' => $status
+		);
+		
+		if (null !== $usetNotes) {
+			$data['admin_notes'] =  $usetNotes;
+		}
+		
+		$where = $this->getAdapter()->quoteInto('id = ?', $id);
+		$this->update($data, $where);
+		
+		$info = $this->find($id)->current();
+		$where = $this->getAdapter()->quoteInto('title = ?', $info['title']);
+		$this->update($data, $where);
+	}
+	
+	/**
+	 * Return the problem details by ID
+	 *
+	 * @param int $id
+	 * @return Zend_Db_Table_Row
+	 */
+	public function getDetailsById($id)
+	{
+		return $this->find($id)->current();
+	}
 }

@@ -87,15 +87,27 @@ class Joss_Crawler_Db_Items extends Zend_Db_Table_Abstract
 		$Item->adapter_id = $adapterId;
 		$Item->adapter_specific_id = $advert['id'];
 		$primaryKey = $Item->save();
-		
+
+		// lets track the situation when phone numbers were in datbase
+		// but right now the are goen for some reason
+		if (empty($advert['info']['contacts'])) {
+			$Synonyms = new Joss_Crawler_Db_SynonymsErrors();
+			$data = array(
+				  'title' => $advert['url']
+				, 'lang_id' => 'CHANGED CONTACTS TO EMPTY: ' . $phonesField
+			);
+			$Synonyms->insert($data);
+		}
+
 		// process item contacts
 		// update contacts information for each phone number
 		// or mark old phone numbers as outdated
-		// TODO: this peace of code should be refactored in the future
+		// TODO: this code should be refactored in the future
+		//       as it has a lot of dublicated parts
 		$Contacts = new Joss_Crawler_Db_ItemContacts();
 		$ItemContacts = $Contacts->getContactsByItemId($primaryKey);
-		
-		if (!empty($ItemContacts)) {
+
+		if (count($ItemContacts) > 0) {
 
 			$phoneNumbers = array();
 			foreach ($ItemContacts as $contact) {
@@ -103,14 +115,17 @@ class Joss_Crawler_Db_Items extends Zend_Db_Table_Abstract
 			}
 			
 			$nonOutdated = array();
-			foreach ($advert['info']['contacts'] as $contact) {
-				
-				if (!in_array($contact['phone'], $phoneNumbers)) {
-					$Contacts->createContact($primaryKey, $contact['contact_name'], $contact['phone']);
-				} else {
-					$nonOutdated[] = $phoneNumbers;
+
+			if (!empty($advert['info']['contacts'])) {
+				foreach ($advert['info']['contacts'] as $contact) {
+					
+					if (!in_array($contact['phone'], $phoneNumbers)) {
+						$Contacts->createContact($primaryKey, $contact['contact_name'], $contact['phone']);
+					} else {
+						$nonOutdated[] = $phoneNumbers;
+					}
+		
 				}
-	
 			}
 			
 			foreach ($ItemContacts as $contact) {
@@ -121,11 +136,13 @@ class Joss_Crawler_Db_Items extends Zend_Db_Table_Abstract
 			}
 				
 		} else {
-			
-			foreach ($advert['info']['contacts'] as $contact) {
-				$Contacts->createContact($primaryKey, $contact['contact_name'], $contact['phone']);
+
+			if (!empty($advert['info']['contacts'])) {
+				foreach ($advert['info']['contacts'] as $contact) {
+					$Contacts->createContact($primaryKey, $contact['contact_name'], $contact['phone']);
+				}
 			}
-			
+
 		}
 		
 		
@@ -215,7 +232,7 @@ class Joss_Crawler_Db_Items extends Zend_Db_Table_Abstract
 		if (!empty($advert['regions']['cities'])) {
 			foreach ($advert['regions']['cities'] as $city) {
 				if (!in_array($city, $existentCountries)) {
-					$ItemRegions->addCity($primaryKey, $city, $advert['regions']['tags']);
+					$ItemRegions->addCity($primaryKey, $city, implode(', ', $advert['regions']['tags']));
 				}
 			}
 		}
@@ -223,7 +240,7 @@ class Joss_Crawler_Db_Items extends Zend_Db_Table_Abstract
 		if (!empty($advert['regions']['regions'])) {
 			foreach ($advert['regions']['regions'] as $district) {
 				if (!in_array($district, $existentCountries)) {
-					$ItemRegions->addRegion($primaryKey, $district, $advert['regions']['tags']);
+					$ItemRegions->addRegion($primaryKey, $district, implode(', ', $advert['regions']['tags']));
 				}
 			}
 		}
@@ -231,7 +248,7 @@ class Joss_Crawler_Db_Items extends Zend_Db_Table_Abstract
 		if (!empty($advert['regions']['countries'])) {
 			foreach ($advert['regions']['countries'] as $country) {
 				if (!in_array($country, $existentCountries)) {
-					$ItemRegions->addCountry($primaryKey, $country, $advert['regions']['tags']);
+					$ItemRegions->addCountry($primaryKey, $country, implode(', ', $advert['regions']['tags']));
 				}
 			}
 		}
@@ -268,7 +285,7 @@ class Joss_Crawler_Db_Items extends Zend_Db_Table_Abstract
 			
 			$ItemServices->removeAll($removeServices);
 			
-			foreach ($newServices as $service) {
+			foreach (array_unique($newServices) as $service) {
 				if (!in_array($service, $availableServices)) {
 					$ItemServices->addService($primaryKey, $service, $newServicesTags[$service]);
 				}

@@ -44,11 +44,13 @@ $frontendOptions = array(
    'debug_header' => false, // for debugging
    'regexps' => array(
        // cache the whole IndexController
+		/*
        '^/$' => array('cache' => true,
        'make_id_with_get_variables' => true,
        'cache_with_get_variables' => true,
        'make_id_with_cookie_variables' => true,
        'cache_with_cookie_variables' => true),
+       */
 
         '^/searchdata/index/services$' => array('cache' => true,
        'make_id_with_get_variables' => true,

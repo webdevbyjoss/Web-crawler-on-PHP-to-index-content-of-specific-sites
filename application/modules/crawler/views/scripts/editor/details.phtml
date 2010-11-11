@@ -1,0 +1,199 @@
+<div class="details-navigation">
+	<a href="/crawler/editor/">&lt;&lt; back to grig</a>
+	|
+	<a href="/crawler/editor/processed/id/<?php echo $this->id ?>/status/<?php echo Joss_Crawler_Db_SynonymsErrors::STATUS_PROCESSED; ?>">
+	Mark as Processed</a>
+	|
+	<a href="/crawler/editor/details/id/<?php echo $this->id ?>">re-recognize data</a>
+	|
+	<a href="/crawler/editor/update-data/id/<?php echo $this->id ?>">Update database record</a>
+</div>
+
+<br />
+<div>
+	<b>URL:</b> <?php echo $this->url ?>
+</div>
+
+<div>
+	<b>Data:</b> <?php echo $this->problem ?>
+</div>
+
+<?php if (!empty($this->notes)): ?>
+<div style="width:800px;border: 1px solid red;padding:5px;">
+<?php echo nl2br($this->notes) ?>
+</div>
+<?php endif;?>
+
+<br />
+
+
+<?php if (empty($this->data)): ?>
+No data for this page in database!
+
+<?php if ($this->in_process): ?>
+<p>URL is in queue for processing <br /> or already processed</p>
+<?php else: ?>
+<p><a href="/crawler/editor/schedule/id/<?php echo $this->id ?>">Schedule data processing</a></p>
+<?php endif; ?>
+
+
+
+<?php else:
+
+foreach ($this->data as $info):
+
+?>
+<table cellpadding="5" width="99%" class="data-grid">
+<tr>
+	<td><b>ID</b></td>
+	<td>
+		<?php if (empty($info['id'])): ?>
+			<div class="hint">No ID recognized!</div>
+		<?php else: ?>
+			<?php echo $info['id'] ?>
+		<?php endif;?>
+	</td>
+</tr>
+<tr>
+	<td><b>Title</b></td>
+	<td>
+		<?php if (empty($info['info']['title'])): ?>
+			<div class="hint">No title recognized!</div>
+		<?php else: ?>
+			<?php echo $info['info']['title'] ?>
+		<?php endif;?>
+	</td>
+<tr>
+<tr>
+	<td><b>Description</b></td>
+	<td>
+		<?php if (empty($info['info']['description'])): ?>
+			<div class="hint">No description recognized!</div>
+		<?php else: ?>
+			<?php echo $info['info']['description'] ?>
+		<?php endif;?>
+	</td>
+<tr>
+<tr>
+	<td><b>Contacts</b></td>
+	<td>
+		<?php if (empty($info['info']['contacts'])): ?>
+			<div class="hint">No contacts recognized!</div>
+		<?php else: ?>
+		<ul>
+			<?php foreach ($info['info']['contacts'] as $contact): ?>
+				<li><?php echo $contact['phone'] ?>, <?php echo $contact['contact_name'] ?></li>
+			<?php endforeach;?>
+		</ul>
+		<?php endif; ?>
+	</td>
+</tr>
+<tr>
+	<td><b>Regions</b></td>
+	<td>
+		<?php if (empty($info['regions'])): ?>
+			<div class="hint">No regions recognized!</div>
+		<?php else: ?>
+		
+			Tags:<br />
+			<ul>
+				<?php foreach ($info['regions']['tags'] as $tag): ?>
+					<li><?php echo $tag ?></li>
+				<?php endforeach;?>
+			</ul>
+			Cities <br />
+			<?php if (!empty($info['regions']['cities'])) var_dump($info['regions']['cities']) ?><br />
+			Regions<br />
+			<?php if (!empty($info['regions']['regions'])) var_dump($info['regions']['regions']) ?><br />
+			Countries<br />
+			<?php if (!empty($info['regions']['countries'])) var_dump($info['regions']['countries']) ?><br />
+			
+		<?php endif; ?>
+	</td>
+</tr>
+<tr>
+	<td><b>Services</b></td>
+	<td>
+		<?php if (empty($info['services'])): ?>
+			<div class="hint">No services recognized!</div>
+		<?php else: ?>
+			<?php foreach ($info['services'] as $service): ?>
+				<?php echo $service['tags'] ?>
+				<div style="height: 70px; overflow:auto;width:500px;border: 1px solid grey;padding:5px;">
+				<?php foreach ($this->servicesList as $sl):?>
+				<?php if ($sl['service_id'] == $service['id']): ?>
+					<input type="checkbox" disabled="disabled" checked="checked"  /><?php echo $sl['name'] ?><br />
+				<?php endif; ?>
+				<?php endforeach; ?>
+				</div>
+			<?php endforeach;?>
+		<?php endif; ?>
+	</td>
+</tr>
+</table>
+<?php
+endforeach;
+
+endif;
+
+// var_dump($this->data);
+?>
+<br />
+<?php if (!empty($this->servicesList)): ?>
+
+	<h2>Add synonyms</h2>
+	
+	<form action="/crawler/editor/add-synonym/" method="post">
+	<input name="id" type="hidden" value="<?php echo $this->id ?>" />
+	<input name="synonym" type="text" value="" size="120" /><br />
+	<small>You can provide a coma separated list like "item1, item2,item3"</small><br />
+	<br />
+	
+	<select name="type_id">
+		<option value="1">Full-Text</option>
+		<option value="0">Taxonomy</option>
+	</select>
+	
+	<select name="lang_id">
+		<option value="uk">Українська (uk)</option>
+		<option value="ru">Русский (ru)</option>
+	</select>
+	
+	<br />
+	<br />
+	
+	<div style="height: 200px; overflow:auto;width:800px;border: 1px solid grey;padding:5px;">
+		<?php foreach ($this->servicesList as $sl):?>
+			<input id="serivce_<?php echo $sl['service_id'] ?>" name="services[<?php echo $sl['service_id'] ?>]" type="checkbox" />
+			<label for="serivce_<?php echo $sl['service_id'] ?>"> <?php echo $sl['name'] ?></label><br />
+		<?php endforeach; ?>
+	</div>
+	
+	<br />
+	<input type="submit" value="Add" />
+	</form>
+
+<?php endif; ?>
+
+<br />
+<br />
+
+<?php if ($this->status <> Joss_Crawler_Db_SynonymsErrors::STATUS_NEED_REVIEW): ?>
+
+<h3>Report problem for developers to review</h3>
+
+<form action="/crawler/editor/developer-report/" method="post">
+<input name="id" type="hidden" value="<?php echo $this->id ?>" />
+Pelase try to describe the problem in details:<br />
+<textarea rows="10" cols="50" name="user_notes"></textarea>
+<br />
+<input type="submit" value="Mark for review" />
+</form>
+
+<?php endif; ?>
+
+<br />
+<br />
+<br />
+<br />
+

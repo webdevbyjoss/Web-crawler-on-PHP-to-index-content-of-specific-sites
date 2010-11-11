@@ -357,6 +357,23 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 	);
 
 	/**
+	 * Holds a list of valid russian phone numbers area codes
+	 */
+	private $_RussianAreaCodes = array(
+		'8351',
+		'8495',
+		'8499',
+		'8910',
+		'8920',
+		'8925',
+		'8937',
+		'8951',
+
+		'351', // FIXME: we have a conflict with Portugal here!!!!
+		'495', //  FIXME: we have a conflict with Germany here!!!!
+	);
+	
+	/**
 	 * We need to build the list of all links we have for this site
 	 * that will be used for crawling
 	 */
@@ -610,6 +627,12 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 
 			// add international area sign "+" here to have a phone number in international format
 			return '+' . $areaCode . $networkCode . $phoneNumber;
+		}
+
+		// Ok. in Russia they have their own rules to specify the phone number. Lets recognize Russian number
+		// and return it before processing international numbers and mobile phones
+		if (preg_match('/^(' . implode('|', $this->_RussianAreaCodes) . ')/', $number, $code)) {
+			return  $number;
 		}
 		
 		// in case the number was provided in the international format then we need to

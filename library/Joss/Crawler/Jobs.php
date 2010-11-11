@@ -17,16 +17,25 @@ class Joss_Crawler_Jobs
 	 *
 	 * @var array
 	 */
-	protected $_adapters = null;
+	protected $_adapters = array(
+		'Joss_Crawler_Adapter_Emarketua'
+	);
 	
 	/**
-	 * Assign the list of supported crawler adapters
+	 * The instance of Joss_Crawler_Db_Jobs for internal use
 	 *
-	 * @param array $adapters
+	 * @var Joss_Crawler_Db_Jobs
 	 */
-	public function __construct($adapters)
+	protected $_dbJobs = null;
+	
+	/**
+	 * Lets initialize the table gateway
+	 *
+	 * TODO: change this to dependency injection
+	 */
+	public function __construct()
 	{
-		$this->_adapters = $adapters;
+		$this->_dbJobs = new Joss_Crawler_Db_Jobs();
 	}
 	
 	/**
@@ -36,9 +45,7 @@ class Joss_Crawler_Jobs
 	 */
 	public function startQuelle()
 	{
-		$DbJobs = new Joss_Crawler_Db_Jobs ();
-		
-		if (! $DbJobs->isFinished()) {
+		if (!$this->_dbJobs->isFinished()) {
 			return false;
 		}
 		
@@ -46,17 +53,18 @@ class Joss_Crawler_Jobs
 			$Adapter = new $adapterClass();
 			$urls = $Adapter->getInitialUrl();
 			foreach ($urls as $url) {
-				$DbJobs->createJob($url);
+				$this->_dbJobs->createJob($url);
 			}
 		}
-
 	}
 	
+	/**
+	 * Process each next job from the queue
+	 */
 	public function processNextJob()
 	{
-		// 1. get next job from database
-		$DbJobs = new Joss_Crawler_Db_Jobs();
-		$job = $DbJobs->getJobForProcessing();
+		// get next job from database
+		$job = $this->_dbJobs->getJobForProcessing();
 
 		if (null == $job) {
 			/**
@@ -65,29 +73,35 @@ class Joss_Crawler_Jobs
 			return false;
 		}
 		
-		// 2. recognize the adapter
-		// TODO: adapter recognision can be done in more elegance maner
-		foreach ($this->_adapters as $adapterClass) {
-			$Adapter = new $adapterClass();
-			if ($Adapter->matchDataLink($job['url'])) {
-				break;
-			}
+		$this->processData($job['url'], $job['raw_body']);
+		$this->_dbJobs->finishJob($job['crawl_jobs_id']);
+		return true;
+	}
+
+	/**
+	 * Recognizes data and stores it into database
+	 *
+	 * @param string $url
+	 * @param string $raw_body
+	 * @return null
+	 */
+	public function processData($url, $raw_body)
+	{
+		// recognize the adapter & extract content
+		$Adapter = $this->getLoadedAdapter($url, $raw_body);
+		if (null === $Adapter) {
+			return false;
 		}
 
-		// 3. extract content
-		$job['raw_body'] = base64_decode($job['raw_body']);
-		$Adapter->loadPage($job['url'], $job['raw_body']);
-		
-		// 4. grap the URLs with interesting  data and create new jobs for that pages
+		// grap the URLs with interesting  data and create new jobs for that pages
 		$links = $Adapter->getDataLinks();
 		if (!empty($links)) {
 			foreach ($links as $key => $link) {
-				$DbJobs->createJob($link['url']);
+				$this->_dbJobs->createJob($link['url']);
 			}
 		}
 		
-		// 5. grap the data from the page
-		
+		// grap the data from the page
 		$Items = new Joss_Crawler_Db_Items();
 		$data = $Adapter->getData();
 		
@@ -96,10 +110,59 @@ class Joss_Crawler_Jobs
 				$Items->add($advert);
 			}
 		}
+	}
+	
+	/**
+	 * Returns the last job by URL
+	 *
+	 * @param string $url
+	 * @return Joss_Crawler_Adapter_Abstract
+	 */
+	public function getLastJobByUrl($url)
+	{
+		// get next job from database
+		$DbJobs = new Joss_Crawler_Db_Jobs();
+		return $DbJobs->getLastJobByUrl($url);
+	}
+
+	/**
+	 * Creates the adapter and loads page content inside
+	 *
+	 * @param string $url
+	 * @param string $rawBody
+	 * @return Joss_Crawler_Adapter_Abstract
+	 */
+	public function getLoadedAdapter($url, $rawBody)
+	{
+		// recognize the adapter
+		$Adapter = $this->getAdapterByUrl($url);
+		if (null === $Adapter) {
+			return null;
+		}
 		
-		// FIXME: this is temporrary code that helps to run crawling without actual processing of content
-		$DbJobs->finishJob($job['crawl_jobs_id']);
-		return true;
+		// load page content
+		$rawBody = base64_decode($rawBody);
+		$Adapter->loadPage($url, $rawBody);
+		
+		return $Adapter;
+	}
+	
+	/**
+	 * It recognizes the adapter by provided URL
+	 * and returns apropriate adapter instance
+	 *
+	 * @param string $url
+	 * @return Joss_Crawler_Adapter_Abstract
+	 */
+	public function getAdapterByUrl($url)
+	{
+		foreach ($this->_adapters as $adapterClass) {
+			$Adapter = new $adapterClass();
+			if ($Adapter->matchDataLink($url)) {
+				return $Adapter;
+			}
+			unset($Adapter);
+		}
 	}
 
 }

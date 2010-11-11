@@ -4,12 +4,7 @@
  */
 class Crawler_JobsController extends Zend_Controller_Action
 {
-	const JOBS_PER_TIME = 1;
-	
-	// define available adapters
-	protected $_adapters = array(
-		'Joss_Crawler_Adapter_Emarketua'
-	);
+	const JOBS_PER_TIME = 30;
 	
 	public function init()
 	{
@@ -21,7 +16,7 @@ class Crawler_JobsController extends Zend_Controller_Action
 	
 	public function indexAction()
 	{
-		$Client = new Joss_Crawler_Jobs($this->_adapters);
+		$Client = new Joss_Crawler_Jobs();
 		$res = $Client->startQuelle();
 		if (false === $res) {
 			echo "\nthere are still some jobs in processing\n";
@@ -36,7 +31,13 @@ class Crawler_JobsController extends Zend_Controller_Action
 	 */
 	public function processAction()
 	{
-		$Jobs = new Joss_Crawler_Jobs($this->_adapters);
+		// lets measre the time of script execution
+		$mtime = microtime();
+		$mtime = explode(" ",$mtime);
+		$mtime = $mtime[1] + $mtime[0];
+		$starttime = $mtime;
+		
+		$Jobs = new Joss_Crawler_Jobs();
 		
 		for ($i = 0; $i < self::JOBS_PER_TIME; $i++) {
 			
@@ -49,6 +50,15 @@ class Crawler_JobsController extends Zend_Controller_Action
 		}
 		
 		echo "\n$i job(s) processed!\n";
+		
+		// calculate total execution time
+		$mtime = microtime();
+		$mtime = explode(" ",$mtime);
+		$mtime = $mtime[1] + $mtime[0];
+		$endtime = $mtime;
+		$totaltime = ($endtime - $starttime);
+		
+		echo "total time: " . $totaltime . " seconds\n";
 	}
 
 }

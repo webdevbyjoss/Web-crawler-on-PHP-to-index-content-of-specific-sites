@@ -1,7 +1,7 @@
 <?php echo $this->doctype() ?>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta charset="utf-8"/>
   <?php echo $this->headTitle('Наш Мастер')->setSeparator(' :: ') ?>
   <?php echo $this->headLink()->appendStylesheet('/css/layout.css')
                               ->appendStylesheet('/css/search-form.css') ?>
@@ -10,6 +10,17 @@
 <body>
 
 <div id="page"><div id="page-inner">
+
+	<div style="float: left;">
+		<a href="/">Search</a>
+		<?php if ($this->isAdmin()):?>
+			<a href="/crawler/editor">Knowlage Base Editor</a>
+		<?php endif;?>
+	</div>
+
+	<div style="float: right;">
+		<?php echo $this->profileLink() ?>
+	</div>
 
     <div id="header">
         <?php /* ?>

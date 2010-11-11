@@ -1,0 +1,59 @@
+<p>
+	List of jobs:
+	<?php if ($this->status == Joss_Crawler_Db_SynonymsErrors::STATUS_UNPROCESSED): ?>
+		<b>Unprocessed (<?php echo isset($this->amounts[Joss_Crawler_Db_SynonymsErrors::STATUS_UNPROCESSED]) ? $this->amounts[Joss_Crawler_Db_SynonymsErrors::STATUS_UNPROCESSED] : 0 ?>)</b>
+	<?php else: ?>
+		<a href="/crawler/editor/status/set/<?php echo Joss_Crawler_Db_SynonymsErrors::STATUS_UNPROCESSED ?>">Unprocessed (<?php echo isset($this->amounts[Joss_Crawler_Db_SynonymsErrors::STATUS_UNPROCESSED]) ? $this->amounts[Joss_Crawler_Db_SynonymsErrors::STATUS_UNPROCESSED] : 0 ?>)</a>
+	<?php endif; ?>
+	
+	<?php if ($this->status == Joss_Crawler_Db_SynonymsErrors::STATUS_PROCESSED): ?>
+		<b>Processed (<?php echo isset($this->amounts[Joss_Crawler_Db_SynonymsErrors::STATUS_PROCESSED]) ? $this->amounts[Joss_Crawler_Db_SynonymsErrors::STATUS_PROCESSED] : 0 ?>)</b>
+	<?php else: ?>
+		<a href="/crawler/editor/status/set/<?php echo Joss_Crawler_Db_SynonymsErrors::STATUS_PROCESSED ?>">Processed (<?php echo isset($this->amounts[Joss_Crawler_Db_SynonymsErrors::STATUS_PROCESSED]) ? $this->amounts[Joss_Crawler_Db_SynonymsErrors::STATUS_PROCESSED] : 0 ?>)</a>
+	<?php endif; ?>
+	
+	<?php if ($this->status == Joss_Crawler_Db_SynonymsErrors::STATUS_NEED_REVIEW): ?>
+		<b>Need developer review (<?php echo isset($this->amounts[Joss_Crawler_Db_SynonymsErrors::STATUS_NEED_REVIEW]) ? $this->amounts[Joss_Crawler_Db_SynonymsErrors::STATUS_NEED_REVIEW] : 0 ?>)</b>
+	<?php else: ?>
+		<a href="/crawler/editor/status/set/<?php echo Joss_Crawler_Db_SynonymsErrors::STATUS_NEED_REVIEW ?>">Need developer review (<?php echo isset($this->amounts[Joss_Crawler_Db_SynonymsErrors::STATUS_NEED_REVIEW]) ? $this->amounts[Joss_Crawler_Db_SynonymsErrors::STATUS_NEED_REVIEW] : 0 ?>)</a>
+	<?php endif; ?>
+</p>
+
+
+<?php if (count($this->data)): ?>
+
+
+<?php echo $this->paginationControl($this->data, 'All', 'pagination_control.phtml'); ?>
+
+<table cellpadding="5" width="99%" class="data-grid">
+<tr class="table-header">
+	<td>ID</td>
+	<td>URL</td>
+	<td>Tags</td>
+	<td>Actions</td>
+</tr>
+<?php foreach ($this->data as $item): ?>
+<tr <?php if (!empty($this->last_details_id) && ($item['id'] == $this->last_details_id)): ?> class="last_accessed" <?php endif; ?> >
+	<td><?php echo $item['id'] ?></td>
+	<td><?php if (strlen($item['title']) > 100) { echo substr($item['title'], 0, 100) . '...'; } else { echo $item['title']; } ?></td>
+	<td><?php echo $item['lang_id'] ?></td>
+	<td class="actions">
+		<?php if (Joss_Crawler_Db_SynonymsErrors::STATUS_UNPROCESSED == $item['processed']): ?>
+			<a onclick="return confirm('Are you sure to mark as processed?')" href="/crawler/editor/processed/id/<?php echo $item['id'] ?>/status/<?php echo Joss_Crawler_Db_SynonymsErrors::STATUS_PROCESSED; ?>">
+			Mark as Processed</a> |
+		<?php else: ?>
+			<a onclick="return confirm('Are you sure to mark as not-processed?')" href="/crawler/editor/processed/id/<?php echo $item['id'] ?>/status/<?php echo Joss_Crawler_Db_SynonymsErrors::STATUS_UNPROCESSED; ?>">
+			Mark as not-Processed</a> |
+		<?php endif; ?>
+
+		<a href="/crawler/editor/details/id/<?php echo $item['id'] ?>">Details&nbsp;&gt;&gt;</a>
+	</td>
+</tr>
+<?php endforeach; ?>
+</table>
+
+<?php echo $this->paginationControl($this->data, 'All', 'pagination_control.phtml'); ?>
+
+<?php else: ?>
+<p>no records available</p>
+<?php endif; ?>

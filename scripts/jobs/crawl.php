@@ -63,10 +63,12 @@ for ($i = 0; $i < CALLS_PER_RUN; $i++) {
 	
 	if (empty($job)) {
 		echo "\nERROR: $result\n";
+		die();
 	}
 	
 	if (!empty($job['message'])) {
 		echo "\nERROR: " . $job['message'] . "\n";
+		die();
 	}
 	
 	// process received job

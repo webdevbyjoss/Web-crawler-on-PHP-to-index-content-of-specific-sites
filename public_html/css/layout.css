@@ -2,12 +2,10 @@ body {
     padding: 0;
     margin: 0;
     color:#333333;
-    font-family:Helvetica,Arial,"Lucida Grande",Verdana,sans-serif;
-    font-size:75%;
-    line-height:1.5;
+	font:0.8em Verdana,sans-serif;
 }
 
-body, caption, th, td, input, textarea, select, option, legend, fieldset {
+caption, th, td, input, textarea, select, option, legend, fieldset {
     font-family:Tahoma,Verdana,Arial,Helvetica,"Bitstream Vera Sans",sans-serif;
 }
 
@@ -20,16 +18,29 @@ label:hover {
 	background-color: #ffff99;
 }
 
+h1, h2, h3, h4, h5, h6 {
+	font-family:Helvetica,Arial,"Lucida Grande",Verdana,sans-serif;
+	font-size:2.167em;
+	font-weight: normal;
+	line-height:1.3em;
+	margin-bottom:0.5em;
+	margin-top:0;
+	
+	clear:both;
+}
+
+
 /* HEADER */
 
 #header {
-    text-align:center;
     padding-bottom:20px;
     padding-top:10px;
+    float: left;
+    width: auto;
 }
 
 #logo {
-    display: none;
+    
 }
 
 #logo img {
@@ -46,6 +57,23 @@ label:hover {
 #site-slogan {
 	color: gray;
 	font-size: 0.8em;
+}
+
+#beta-mark {
+	position: relative;
+	top: -65px;
+	left: 260px;
+}
+
+#main {
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+
+
+#footer-locale-selector {
+	text-align: center;
 }
 
 .errors {
@@ -94,3 +122,8 @@ label:hover {
 	background-color: #ffffcc;
 }
 
+
+
+/*
+ * Homepage
+ */

@@ -1,40 +1,75 @@
-<?php echo $this->doctype() ?>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
+<!DOCTYPE html>
+<html dir="ltr" lang="<?php echo $this->getLocale() ?>">
 <head>
   <meta charset="utf-8"/>
-  <?php echo $this->headTitle('Наш Мастер')->setSeparator(' :: ') ?>
+  <meta name="description" content="<?php echo $this->T('meta-description') ?>" />
+  <meta name="keywords" content="<?php echo $this->T('meta-keywords') ?>" />
+  <?php echo $this->headTitle($this->T('site-name'))->setSeparator(' :: ') ?>
   <?php echo $this->headLink()->appendStylesheet('/css/layout.css')
                               ->appendStylesheet('/css/search-form.css') ?>
   <?php echo $this->headScript()->prependFile('/js/jquery-1.4.2.min.js') //TODO: move to CDN ?>
+  <?php if (APPLICATION_ENV == 'production'): ?>
+  <script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-15610072-1']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+  </script>
+  <?php endif; ?>
 </head>
 <body>
-
 <div id="page"><div id="page-inner">
+<?php if ($this->isAdmin()):?>
+<div style="float: left;">
+<a href="/">Search</a>
+<a href="/crawler/editor">Knowlage Base Editor</a>
+</div>
+<div style="float: right;">
+<?php echo $this->profileLink() ?>
+</div>
+<?php endif;?>
 
-	<div style="float: left;">
-		<a href="/">Search</a>
-		<?php if ($this->isAdmin()):?>
-			<a href="/crawler/editor">Knowlage Base Editor</a>
-		<?php endif;?>
-	</div>
+<div id="header">
+<div id="logo">
+<a href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'index',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>" title="<?php echo $this->T('site-name') . ' - ' . $this->T('slogan') ?>">
+<img alt="<?php echo $this->T('logo') . ' ' . $this->T('site-name') ?>" src="<?php echo $this->getImagesUrl() . 'nash-master-logo-' . $this->getLocale() . '.png' ?>" /></a>
+<div id="beta-mark"><img alt="<?php echo $this->T('beta-version'); ?>" src="<?php echo $this->getImagesUrl() . 'beta.png'; ?>" /></div>
+</div>
+</div>
 
-	<div style="float: right;">
-		<?php echo $this->profileLink() ?>
-	</div>
+<div id="main">
+<?php echo $this->layout()->content ?>
+</div>
 
-    <div id="header">
-        <?php /* ?>
-        <div id="logo"><a href="/"><img alt="Логотип Наш Мастер" src="images/logo.png" /></a></div>
-        <?php */ ?>
-        <div id="site-name"><a href="/"><strong>Наш Мастер</strong></a></div>
-        <div id="site-slogan">поиск специалистов по строительству и ремонту</div>
-    </div>
-    
-    <div id="main">
-        <?php echo $this->layout()->content ?>
-    </div>
-
+<div id="footer-locale-selector">
+<?php $langs = $this->getLanguages();
+foreach ($langs as $key => $lang):
+if ($this->getLocale() == $key):?>
+ <?php echo $lang ?>
+<?php else: ?>
+ <a href="<?php
+echo $this->url(
+	array(
+		'lang' => $key,
+		'controller' => $this->getControllerName(),
+		'action' => $this->getActionName(),
+		'module' => $this->getModuleName(),
+	)
+	,'default'); ?>"><?php echo $lang ?></a>
+<?php endif; ?>
+<?php endforeach; ?>
+</div>
 </div></div>
-
 </body>
 </html>

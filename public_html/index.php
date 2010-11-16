@@ -38,19 +38,40 @@ set_include_path(implode(PATH_SEPARATOR, $paths));
 * For example, for optimal performances, "require_once" or
 * "Zend_Loader::loadClass" should be after the cache section.
 */
- 
 $frontendOptions = array(
    'lifetime' => 7200,
    'debug_header' => false, // for debugging
    'regexps' => array(
        // cache the whole IndexController
-		/*
        '^/$' => array('cache' => true,
        'make_id_with_get_variables' => true,
        'cache_with_get_variables' => true,
        'make_id_with_cookie_variables' => true,
        'cache_with_cookie_variables' => true),
-       */
+
+       '^/uk/$' => array('cache' => true,
+       'make_id_with_get_variables' => true,
+       'cache_with_get_variables' => true,
+       'make_id_with_cookie_variables' => true,
+       'cache_with_cookie_variables' => true),
+
+       '^/uk$' => array('cache' => true,
+       'make_id_with_get_variables' => true,
+       'cache_with_get_variables' => true,
+       'make_id_with_cookie_variables' => true,
+       'cache_with_cookie_variables' => true),
+
+       '^/ru/$' => array('cache' => true,
+       'make_id_with_get_variables' => true,
+       'cache_with_get_variables' => true,
+       'make_id_with_cookie_variables' => true,
+       'cache_with_cookie_variables' => true),
+
+       '^/ru$' => array('cache' => true,
+       'make_id_with_get_variables' => true,
+       'cache_with_get_variables' => true,
+       'make_id_with_cookie_variables' => true,
+       'cache_with_cookie_variables' => true),
 
         '^/searchdata/index/services$' => array('cache' => true,
        'make_id_with_get_variables' => true,
@@ -92,7 +113,6 @@ $cache = Zend_Cache::factory('Page',
 $res = $cache->start();
 // if the cache is hit, the result is sent to the browser and the
 // script stop here
-
 
 /*
  * Plugin loader cache

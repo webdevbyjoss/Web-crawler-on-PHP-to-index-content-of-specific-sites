@@ -1,16 +1,2 @@
-<?php $this->headScript()->appendFile('/js/search-form.js'); ?>
-<div class="search-box"><div class="search-box-inner">
-<div class="search-box-control">
-  <div class="search-label search-label-service">Вид услуг</div>
-  <a id="selector-service-container" href="#" class="selector-service" title="клик для выбора вида услуг">клик для выбора вида услуг</a>
-</div>
-<div id="selector-service-bar"></div>
-<div class="search-box-control">
-  <div class="search-label search-label-region">Регион</div>
-  <a id="selector-region-container" href="#" class="selector-region" title="клик для выбора региона">клик для выбора региона</a>
-</div>
-<div id="selector-region-bar"></div>
-<div class="search-box-control">
-  <input class="button-search" type="button" value="поиск" />
-</div>
-</div></div>
+<?php $this->headTitle($this->T('slogan'));
+echo $this->T('alpha-welcome-text'); ?>

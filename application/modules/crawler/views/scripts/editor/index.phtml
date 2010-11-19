@@ -19,9 +19,7 @@
 	<?php endif; ?>
 </p>
 
-
 <?php if (count($this->data)): ?>
-
 
 <?php echo $this->paginationControl($this->data, 'All', 'pagination_control.phtml'); ?>
 
@@ -35,7 +33,7 @@
 <?php foreach ($this->data as $item): ?>
 <tr <?php if (!empty($this->last_details_id) && ($item['id'] == $this->last_details_id)): ?> class="last_accessed" <?php endif; ?> >
 	<td><?php echo $item['id'] ?></td>
-	<td><?php if (strlen($item['title']) > 100) { echo substr($item['title'], 0, 100) . '...'; } else { echo $item['title']; } ?></td>
+	<td><?php if (strlen($item['title']) > 70) { echo substr($item['title'], 0, 70) . '...'; } else { echo $item['title']; } ?></td>
 	<td><?php echo $item['lang_id'] ?></td>
 	<td class="actions">
 		<?php if (Joss_Crawler_Db_SynonymsErrors::STATUS_UNPROCESSED == $item['processed']): ?>

@@ -8,7 +8,7 @@
   <?php echo $this->headLink()->appendStylesheet('/css/layout.css')
                               ->appendStylesheet('/css/search-form.css') ?>
   <?php echo $this->headScript()->prependFile('/js/jquery-1.4.2.min.js') //TODO: move to CDN ?>
-  <?php if (APPLICATION_ENV == 'production'): ?>
+  <?php if (APPLICATION_ENV == 'production' && !$this->isAdmin()): ?>
   <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-15610072-1']);
@@ -24,15 +24,16 @@
 <body>
 <div id="page"><div id="page-inner">
 <?php if ($this->isAdmin()):?>
-<div style="float: left;">
-<a href="/">Search</a>
-<a href="/crawler/editor">Knowlage Base Editor</a>
+<div style="width:99%;float:left;padding-bottom:30px;">
+	<div style="float:left;">
+	<a href="/">Search</a>
+	<a href="/crawler/editor">Knowlage Base Editor</a>
+	</div>
+	<div style="float: right;">
+	<?php echo $this->profileLink() ?>
+	</div>
 </div>
-<div style="float: right;">
-<?php echo $this->profileLink() ?>
-</div>
-<?php endif;?>
-
+<?php else: ?>
 <div id="header">
 <div id="logo">
 <a href="<?php echo $this->url(
@@ -47,6 +48,7 @@
 <div id="beta-mark"><img alt="<?php echo $this->T('beta-version'); ?>" src="<?php echo $this->getImagesUrl() . 'beta.png'; ?>" /></div>
 </div>
 </div>
+<?php endif;?>
 
 <div id="main">
 <?php echo $this->layout()->content ?>

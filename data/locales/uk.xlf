@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:iws="http://www.idiominc.com/ws/asset">
+<file original="index.html" source-language="ru" target-language="uk" tool="cli">
+<body>
+	<trans-unit id="site-name">
+		<source xml:lang="ru">Наш Мастер</source>
+		<target xml:lang="uk">Наш Майстер</target>
+	</trans-unit>
+	<trans-unit id="meta-description">
+		<source xml:lang="ru">поиск специалистов по ремонту и строительству</source>
+		<target xml:lang="uk">пошук спеціалістів з ремонту та будівництва</target>
+	</trans-unit>
+	<trans-unit id="meta-keywords">
+		<source xml:lang="ru">ремонт и строительство, поиск специалисток, ремонтные бригады, ремонт квартир</source>
+		<target xml:lang="uk">ремонт та будівництво, пошук спеціалістів, ремонтні бригади, ремонт квартир</target>
+	</trans-unit>
+	<trans-unit id="slogan">
+		<source xml:lang="ru">поиск специалистов по строительству и ремонту</source>
+		<target xml:lang="uk">пошук спеціалістів з будівництва та ремонту</target>
+	</trans-unit>
+	<trans-unit id="logo">
+		<source xml:lang="ru">Логотип</source>
+		<target xml:lang="uk">Логотип</target>
+	</trans-unit>
+	<trans-unit id="beta-version">
+		<source xml:lang="ru">Продукт на стадии тестирования</source>
+		<target xml:lang="uk">Продукт на етапі тестування</target>
+	</trans-unit>
+	<trans-unit id="alpha-welcome-text">
+		<source xml:lang="ru">&lt;h1&gt;Наш Маcтер – инструмент для поиска специалистов по строительству и ремонту&lt;/h1&gt;&lt;p&gt;Добро пожаловать на сайт поисковой службы "Наш Мастер” для поиска специалистов по строительству и ремонту. В вашем распоряжении будет самая эффективная система поиска с возможностью отбора профессионалов по регионам и видам деятельности.&lt;/p&gt;
+&lt;p&gt;Мы скоро открываемся!&lt;/p&gt;</source>
+		<target xml:lang="uk">&lt;h1&gt;Наш Майстер – інструмент для пошуку спеціалістів з будівництва та ремонту&lt;/h1&gt;&lt;p&gt;Ласкаво просимо на сайт пошукової служби “Наш Майстер" для пошуку спеціалістів з будівництва та ремонту. Ми хочемо надати найефективнішу систему пошуку з можливістю відбору професіоналів за регіонами та видами діяльності.&lt;/p&gt;
+&lt;p&gt;Ми скоро відкриваємося!&lt;/p&gt;</target>
+	</trans-unit>
+	<trans-unit id="error-page-header">
+		<source xml:lang="ru">Произошла ошибка</source>
+		<target xml:lang="uk">Виникла помилка</target>
+	</trans-unit>
+	<trans-unit id="error">
+		<source xml:lang="ru">Ошибка</source>
+		<target xml:lang="uk">Помилка</target>
+	</trans-unit>
+	<trans-unit id="page-not-found">
+		<source xml:lang="ru">cтраница не найдена</source>
+		<target xml:lang="uk">cторінку не знайдено</target>
+	</trans-unit>
+	<trans-unit id="application-internal-error">
+		<source xml:lang="ru">внутренняя ошибка приложения</source>
+		<target xml:lang="uk">внутрішня помилка застосунку</target>
+	</trans-unit>
+	<trans-unit id="page-has-been-moved">
+		<source xml:lang="ru">Возможно адрес страницы изменился или ссылка по которой вы кликнули неправильная.</source>
+		<target xml:lang="uk">Можливо сторінка змінила адресу або посилання яким ви скористалися є не вірним.</target>
+	</trans-unit>
+	<trans-unit id="try-visit-the-following-pages">
+		<source xml:lang="ru">Попробуйте перейти на следующие страницы</source>
+		<target xml:lang="uk">Спробуйте відвідати наступні сторінки</target>
+	</trans-unit>
+	<trans-unit id="home-page">
+		<source xml:lang="ru">Гравная страница</source>
+		<target xml:lang="uk">Головна сторінка</target>
+	</trans-unit>
+	<trans-unit id="login-page">
+		<source xml:lang="ru">Страница входа</source>
+		<target xml:lang="uk">Сторінка входу</target>
+	</trans-unit>	
+</body>
+</file>
+</xliff>

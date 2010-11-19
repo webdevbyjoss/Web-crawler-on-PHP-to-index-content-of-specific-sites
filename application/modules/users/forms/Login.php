@@ -7,7 +7,7 @@ class Users_Form_Login extends Zend_Form
         $username = $this->addElement('text', 'username', array(
             'filters'    => array('StringTrim', 'StringToLower'),
             'validators' => array(
-                'Alpha',
+                'Alnum',
                 array('StringLength', false, array(3, 20)),
             ),
             'required'   => true,
@@ -17,7 +17,6 @@ class Users_Form_Login extends Zend_Form
         $password = $this->addElement('password', 'password', array(
             'filters'    => array('StringTrim'),
             'validators' => array(
-                'Alnum',
                 array('StringLength', false, array(4, 20)),
             ),
             'required'   => true,

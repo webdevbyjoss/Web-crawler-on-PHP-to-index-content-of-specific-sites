@@ -1,17 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN";
-    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd>
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <title>Zend Framework Default Application</title>
-</head>
-<body>
-  <h1>An error occurred</h1>
-  <h2><?php echo $this->message ?></h2>
- 
-  <?php if (APPLICATION_ENV == 'development'): ?>
-  <pre><?php echo $this->stack_trace ?></pre>
-  <?php endif ?>
- 
-</body>
-</html>
+<?php
+$this->headTitle()->prepend($this->T('error'));
+?>
+<h1><?php echo $this->T('error-page-header') ?></h1>
+
+<?php if (404 == $this->responseCode): ?>
+<h2>404 - <?php echo $this->T('page-not-found') ?></h2>
+<p><?php echo $this->T('page-has-been-moved')?></p>
+<p><?php echo $this->T('try-visit-the-following-pages') ?>:
+<ul>
+	<li><a href="/"><?php echo $this->T('home-page') ?> "<?php echo $this->T('site-name') ?>"</a></li>
+	<?php /* ?><li><a href=""><?php echo $this->T('login-page') ?>Вхід в систему</a></li> <?php */ ?>
+</ul>
+</p>
+<?php elseif(500 == $this->responseCode): ?>
+<h2>500 - <?php echo $this->T('application-internal-error') ?></h2>
+<?php else: ?>
+<h2><?php echo $this->message ?></h2>
+<?php endif; ?>
+
+<?php if (APPLICATION_ENV == 'development'): ?>
+<pre><?php echo $this->stack_trace ?></pre>
+<?php endif ?>

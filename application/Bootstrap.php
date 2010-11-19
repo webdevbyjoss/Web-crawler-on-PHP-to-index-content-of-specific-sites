@@ -70,22 +70,26 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
     {
     	$this->bootstrap('Locale');
     	$locale = $this->getResource('Locale');
+    	
+    	// do not cache translation in development env
+		if (APPLICATION_ENV !== 'development') {
+			
+			$frontendOptions = array(
+			   'lifetime' => 7200, // cache lifetime of 2 hours
+			   'automatic_serialization' => true
+			);
+			
+			$backendOptions = array(
+			    'cache_dir' => APPLICATION_CACHE
+			);
+	    
+			$cache = Zend_Cache::factory('Core',
+										 'File',
+	   									 $frontendOptions,
+										 $backendOptions);
 
-		$frontendOptions = array(
-		   'lifetime' => 7200, // cache lifetime of 2 hours
-		   'automatic_serialization' => true
-		);
-		
-		$backendOptions = array(
-		    'cache_dir' => APPLICATION_CACHE
-		);
-    
-		$cache = Zend_Cache::factory('Core',
-									 'File',
-   									 $frontendOptions,
-									 $backendOptions);
-
-		Zend_Translate::setCache($cache);
+			Zend_Translate::setCache($cache);
+		}
 		
 		$translate = new Zend_Translate(
 			array(

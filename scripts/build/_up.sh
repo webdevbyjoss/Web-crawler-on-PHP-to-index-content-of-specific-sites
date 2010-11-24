@@ -11,8 +11,8 @@ rsync -avz $APP_DIR/data/* nash:/home/nashmast/data/
 
 # code libraries
 rsync -avz $APP_DIR/library/Custom/* nash:/home/nashmast/library/Custom/
-rsync -avz $APP_DIR/library/Custom/* nash:/home/nashmast/library/Joss/
-rsync -avz $APP_DIR/library/Custom/* nash:/home/nashmast/library/Nashmaster/
+rsync -avz $APP_DIR/library/Joss/* nash:/home/nashmast/library/Joss/
+rsync -avz $APP_DIR/library/Nashmaster/* nash:/home/nashmast/library/Nashmaster/
 rsync -uv $APP_DIR/library/simple_html_dom.php nash:/home/nashmast/library/simple_html_dom.php
 rsync -avz /usr/share/php/libzend-framework-php/Zend/* nash:/home/nashmast/library/Zend/
 rsync -avz /usr/share/php/libzend-framework-php/ZendX/* nash:/home/nashmast/library/ZendX/

@@ -125,4 +125,33 @@ class Nashmaster_View extends Zend_View
         return vsprintf($message, $options);
     }
 
+    /**
+     * Outputs language options with the ability to select desired one
+     */
+    public function languageSelector()
+    {
+    	$langs = $this->getLanguages();
+    	
+    	$output = '';
+    	foreach ($langs as $key => $lang) {
+    		
+    		if ($this->getLocale() == $key) {
+    			$output .= ' ' . $lang . ' ';
+    		} else {
+    			$output .= ' <a href="' . $this->url(
+					array(
+						'lang' => $key,
+						'controller' => $this->getControllerName(),
+						'action' => $this->getActionName(),
+						'module' => $this->getModuleName(),
+					)
+					,'default')
+				. '">' . $lang . '</a> ';
+    		}
+
+    	}
+
+    	return $this->T('interface-languages-available') . ': '. $output;
+    }
+
 }

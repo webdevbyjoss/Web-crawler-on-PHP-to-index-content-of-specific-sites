@@ -7,9 +7,9 @@
   <?php echo $this->headTitle($this->T('site-name'))->setSeparator(' :: ') ?>
   <?php echo $this->headLink()->appendStylesheet('/css/layout.css')
                               ->appendStylesheet('/css/search-form.css') ?>
-  <?php echo $this->headScript()->prependFile('/js/jquery-1.4.2.min.js') //TODO: move to CDN ?>
+  <?php echo $this->headScript()->prependFile('/js/jquery-1.4.2.min.js') //TODO: move to CDN for 'production' ?>
   <?php if (APPLICATION_ENV == 'production' && !$this->isAdmin()): ?>
-  <script type="text/javascript">
+  <script>
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-15610072-1']);
   _gaq.push(['_trackPageview']);
@@ -22,7 +22,9 @@
   <?php endif; ?>
 </head>
 <body>
+
 <div id="page"><div id="page-inner">
+
 <?php if ($this->isAdmin()):?>
 <div style="width:99%;float:left;padding-bottom:30px;">
 	<div style="float:left;">
@@ -54,24 +56,12 @@
 <?php echo $this->layout()->content ?>
 </div>
 
-<div id="footer-locale-selector">
-<?php $langs = $this->getLanguages();
-foreach ($langs as $key => $lang):
-if ($this->getLocale() == $key):?>
- <?php echo $lang ?>
-<?php else: ?>
- <a href="<?php
-echo $this->url(
-	array(
-		'lang' => $key,
-		'controller' => $this->getControllerName(),
-		'action' => $this->getActionName(),
-		'module' => $this->getModuleName(),
-	)
-	,'default'); ?>"><?php echo $lang ?></a>
-<?php endif; ?>
-<?php endforeach; ?>
+<div id="footer">
+	<div id="footer-language-selector"><?php echo $this->languageSelector() ?></div>
+	<div id="copyright">&copy;2010-2011 nash-master.com</div>
 </div>
+
 </div></div>
+
 </body>
 </html>

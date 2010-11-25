@@ -37,3 +37,6 @@ include_once 'Zend/Validate/Alnum.php';
 include_once 'Zend/Validate/StringLength.php';
 include_once 'Zend/Validate/NotEmpty.php';
 include_once 'Zend/Controller/Action/Helper/Redirector.php';
+include_once 'Zend/View/Helper/PaginationControl.php';
+include_once 'Zend/Paginator/ScrollingStyle/All.php';
+include_once 'Zend/View/Helper/Partial.php';

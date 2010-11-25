@@ -63,7 +63,11 @@
 	<trans-unit id="login-page">
 		<source xml:lang="ru">Страница входа</source>
 		<target xml:lang="uk">Сторінка входу</target>
-	</trans-unit>	
+	</trans-unit>
+	<trans-unit id="interface-languages-available">
+		<source xml:lang="ru">языки интерфейса</source>
+		<target xml:lang="uk">мови інтерфейсу</target>
+	</trans-unit>
 </body>
 </file>
 </xliff>

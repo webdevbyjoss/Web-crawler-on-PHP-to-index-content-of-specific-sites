@@ -2,9 +2,9 @@
 /**
  * Starter
  *
- * - start application
- * - benchmark perfomance
- * - controlls full-page cache
+ * - bootstrapa and run application
+ * - measure perfomance
+ * - controlls full-page caching
  *
  * @name		Nashmaster_Starter
  * @version		1.0
@@ -16,12 +16,42 @@
  */
 class Nashmaster_Starter
 {
+	/**
+	 * Application path that will be used to initialize Zend_Application
+	 *
+	 * @var string
+	 */
 	protected $_appPath = '';
 	
+	/**
+	 * Application environment string
+	 *
+	 * @var string
+	 */
 	protected $_appEnv = '';
-	
+
+	/**
+	 * This will track the script execution start
+	 *
+	 * @var string
+	 */
 	protected $_startTime = null;
 	
+	/**
+	 * The instance of Zend_Auth
+	 * that will be used to check whether
+	 * current user is authenticated
+	 *
+	 * @var Zend_Auth
+	 */
+	protected $_auth = null;
+	
+	/**
+	 * Init
+	 *
+	 * @param string $appPath
+	 * @param string $appEnv
+	 */
 	public function __construct($appPath, $appEnv)
 	{
 		// lets measure start microtime
@@ -29,6 +59,9 @@ class Nashmaster_Starter
 		
 		$this->_appPath = $appPath;
 		$this->_appEnv = $appEnv;
+		
+		require_once 'Zend/Auth.php';
+		$this->_auth = Zend_Auth::getInstance();
 	}
 	
 	/**
@@ -58,7 +91,7 @@ class Nashmaster_Starter
 		    $configFile
 		);
 		
-		//Start
+		// Bootstrap and run application
 		$application->bootstrap();
 		$application->run();
 	}
@@ -72,6 +105,14 @@ class Nashmaster_Starter
 	 */
 	public function pageCache($appCacheDir, $debug = false)
 	{
+		// late return right now in case user is loged into the system
+		// TODO: we should create a mechanism to have a list of cached pages even for
+		// 		 loged in users, possibly we should use the abilities of
+		// 		 "Page" front end options available
+		if ($this->_auth->hasIdentity()) {
+			return null;
+		}
+		
 		$frontendOptions = array(
 		   'lifetime' => 432000,
 		   'debug_header' => $debug, // for debugging
@@ -81,7 +122,7 @@ class Nashmaster_Starter
 			),
 		   'regexps' => array(
 		       // cache each matched page for maximum perfomance
-		       // as we don't have static content right now there
+		       // as we have only static content right now there
 		       '^/$'		=> array('cache' => true),
 		       '^/uk/$'		=> array('cache' => true),
 		       '^/uk$'		=> array('cache' => true),
@@ -104,7 +145,7 @@ class Nashmaster_Starter
 		                             $backendOptions);
 		
 		// lets cahce by  request URI
-		$cacheId = preg_replace("/[^a-zA-Z0-9]/", "", $_SERVER['REQUEST_URI']);
+		$cacheId = 'full_page_cache_' . preg_replace("/[^a-zA-Z0-9_]/", "", $_SERVER['REQUEST_URI']);
 		$res = $cache->start($cacheId);
 		// if the cache is hit, the result is sent to the browser and the
 		// script stop here
@@ -130,8 +171,21 @@ class Nashmaster_Starter
 	}
 	
 	/**
+	 * This will track the page execution time
+	 * TODO: report this value to build a statistics
+	 *
+	 * @return null
+	 */
+	public function trackTime()
+	{
+		$totaltime = $this->getExecutionTime(true);
+		echo "\n<!-- " . $totaltime . " ms -->";
+	}
+	
+	/**
 	 * Returns microtime
 	 *
+	 * @access protected
 	 * @return string microtime
 	 */
 	protected function _getTime()

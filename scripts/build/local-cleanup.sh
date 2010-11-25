@@ -7,4 +7,4 @@ rm -f $APP_DIR/data/session/*
 #rm -f $APP_DIR/data/cache/*
 
 # remove tmp cache
-rm -rf $APP_DIR/tmp/*
+rm -rf $APP_DIR/tmp/zend*

@@ -2,7 +2,7 @@
 APP_DIR=`readlink -f ./../../`
 
 # cleanup session and cache data before deployment
-./cleanup.sh
+./local-cleanup.sh
 
 # application deployment
 rsync -avz $APP_DIR/application/* nash:/home/nashmast/application/
@@ -19,3 +19,6 @@ rsync -avz /usr/share/php/libzend-framework-php/ZendX/* nash:/home/nashmast/libr
 
 # scripts 
 rsync -uv $APP_DIR/scripts/zf-cli.php nash:/home/nashmast/scripts/zf-cli.php
+
+# force cache rebuild on production after update
+./remove-cache-on-production.sh

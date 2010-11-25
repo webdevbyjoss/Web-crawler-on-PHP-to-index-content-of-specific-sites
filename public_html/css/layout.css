@@ -72,8 +72,12 @@ h1, h2, h3, h4, h5, h6 {
 
 
 
-#footer-locale-selector {
+#footer{
 	text-align: center;
+}
+
+#footer-language-selector, #copyright {
+	padding:5px;
 }
 
 .errors {

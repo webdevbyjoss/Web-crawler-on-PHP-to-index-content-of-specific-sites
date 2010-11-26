@@ -136,7 +136,7 @@ class Nashmaster_View extends Zend_View
     	foreach ($langs as $key => $lang) {
     		
     		if ($this->getLocale() == $key) {
-    			$output .= ' ' . $lang . ' ';
+    			$output .= ' <b>' . $lang . '</b> ';
     		} else {
     			$output .= ' <a href="' . $this->url(
 					array(

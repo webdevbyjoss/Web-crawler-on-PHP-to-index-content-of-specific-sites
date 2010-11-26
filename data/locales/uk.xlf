@@ -68,6 +68,10 @@
 		<source xml:lang="ru">языки интерфейса</source>
 		<target xml:lang="uk">мови інтерфейсу</target>
 	</trans-unit>
+	<trans-unit id="send-us-your-feedback">
+		<source xml:lang="ru">оставьте нам свой отзыв</source>
+		<target xml:lang="uk">надішліть нам свій відгук</target>
+	</trans-unit>
 </body>
 </file>
 </xliff>

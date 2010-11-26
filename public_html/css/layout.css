@@ -3,6 +3,8 @@ body {
     margin: 0;
     color:#333333;
 	font:0.8em Verdana,sans-serif;
+	
+	min-width: 400px;
 }
 
 caption, th, td, input, textarea, select, option, legend, fieldset {
@@ -29,18 +31,22 @@ h1, h2, h3, h4, h5, h6 {
 	clear:both;
 }
 
-
 /* HEADER */
+#header, #main, #footer {
+
+}
 
 #header {
-    padding-bottom:20px;
     padding-top:10px;
-    float: left;
-    width: auto;
+	padding-left: 10px;
+	padding-right: 10px;
+	height: 70px;
 }
 
 #logo {
-    
+	float:left;
+	width: 310px;
+	margin-right:-320px;
 }
 
 #logo img {
@@ -48,31 +54,51 @@ h1, h2, h3, h4, h5, h6 {
 	float: left;
 }
 
-#site-name a {
-	font-size: 2em;
-	color: black;
-	text-decoration:none;
+/*
+ * Header search form 
+ */
+#header-search-form-block {
+	padding-left: 20px;
 }
 
-#site-slogan {
-	color: gray;
+#header-search-form {
+	width: auto;
+	margin-left: 320px; 
+}
+
+#header-search-form-block span {
 	font-size: 0.8em;
+	color: gray;
 }
 
-#beta-mark {
-	position: relative;
-	top: -65px;
-	left: 260px;
+#header-search-form-element {
+	border: 1px solid silver;
+	width: 90%;
+	
+	padding: 5px;
+	padding-bottom: 7px;
+	font-size: 1.4em;
+	color: black;
 }
+
+#header-region-selector {
+
+}
+
+/**
+ * Page content
+ */
 
 #main {
 	padding-left: 10px;
 	padding-right: 10px;
 }
 
+#page-content {
+	padding-top: 20px;
+}
 
-
-#footer{
+#footer {
 	text-align: center;
 }
 
@@ -125,9 +151,3 @@ h1, h2, h3, h4, h5, h6 {
 .data-grid tr.last_accessed td.actions {
 	background-color: #ffffcc;
 }
-
-
-
-/*
- * Homepage
- */

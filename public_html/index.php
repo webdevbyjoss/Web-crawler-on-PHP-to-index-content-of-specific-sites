@@ -19,8 +19,10 @@ if ('development' == APPLICATION_ENV) {
 	ini_set('display_errors', 1);
 	error_reporting(E_ALL);
 	define('DEBUG_ENABLE', true);
+	define('DISABLE_FULL_PAGE_CACHE', true);
 } else {
 	define('DEBUG_ENABLE', false);
+	define('DISABLE_FULL_PAGE_CACHE', false);
 }
 
 /*
@@ -45,7 +47,7 @@ require_once 'Nashmaster/Starter.php';
 $Starter = new Nashmaster_Starter(APPLICATION_PATH, APPLICATION_ENV);
 
 // You should avoid putting too many lines before the cache section.
-$Starter->pageCache(APPLICATION_CACHE, DEBUG_ENABLE);
+DISABLE_FULL_PAGE_CACHE ? null : $Starter->pageCache(APPLICATION_CACHE, DEBUG_ENABLE);
 // if the cache is hit, the result is sent to the browser and the
 // script stop here
 

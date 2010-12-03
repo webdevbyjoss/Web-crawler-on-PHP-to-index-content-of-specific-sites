@@ -60,5 +60,4 @@ class Crawler_JobsController extends Zend_Controller_Action
 		
 		echo "total time: " . $totaltime . " seconds\n";
 	}
-
 }

@@ -52,7 +52,7 @@ class Nashmaster_View extends Zend_View
     	
     	$languagesTitles = array();
 	    foreach($langs as $language => $content) {
-	    	$languagesTitles[$language] = Zend_Locale::getTranslation($language, 'language');
+	    	$languagesTitles[$language] = Zend_Locale::getTranslation($language, 'language', $language);
 	    }
 
     	return $languagesTitles;

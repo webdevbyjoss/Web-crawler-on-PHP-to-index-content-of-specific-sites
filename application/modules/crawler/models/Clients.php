@@ -15,8 +15,9 @@ class Crawler_Model_Clients extends Zend_Db_Table_Abstract
 	/**
 	 * Return client record from database
 	 *
-	 * TODO: it seams like this aprach of extracting clients can be a huge
-	 *       perfomance bottleneck even if it provides the maximum level of security
+	 * TODO: it seams like this aproach of extracting clients can be a huge
+	 *       perfomance bottleneck in sace we will have a lot of clients
+	 *       even if it provides the maximum level of security
 	 *       so possibly in the future we will revice this to make it faster
 	 *
 	 * @param string $hash md5() hash from client api key + salt

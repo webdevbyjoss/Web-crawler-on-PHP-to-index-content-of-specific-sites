@@ -47,8 +47,8 @@ class Nashmaster_View extends Zend_View
     public function getLanguages()
     {
     	$langs = $this->_translate->getList();
-    	// $list = Zend_Locale::getTranslationList('language', null);
-       $locale = $this->_translate->getLocale();
+
+        $locale = $this->_translate->getLocale();
     	
     	$languagesTitles = array();
 	    foreach($langs as $language => $content) {
@@ -136,7 +136,7 @@ class Nashmaster_View extends Zend_View
     	foreach ($langs as $key => $lang) {
     		
     		if ($this->getLocale() == $key) {
-    			$output .= ' <b>' . $lang . '</b> ';
+    			$output .= ' <span class="active-language">' . $lang . '</span> ';
     		} else {
     			$output .= ' <a href="' . $this->url(
 					array(
@@ -151,7 +151,7 @@ class Nashmaster_View extends Zend_View
 
     	}
 
-    	return $this->T('interface-languages-available') . ': '. $output;
+    	return $output;
     }
 
 }

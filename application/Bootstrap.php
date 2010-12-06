@@ -123,4 +123,14 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		
 		return $locale;
 	}
+	
+	protected function _initEncoding()
+	{
+		/**
+		 * Set he initial data
+		 * FIXME: this should be moved somewhere else
+		 */
+		mb_internal_encoding("UTF-8");
+		mb_regex_encoding("UTF-8");
+	}
 }

@@ -4,12 +4,16 @@
 // should be removed starting from PHP version >= 5.3.0
 defined('__DIR__') || define('__DIR__', dirname(__FILE__));
 
-// initialize the application path, library and autoloading
-defined('APPLICATION_PATH') ||
-	define('APPLICATION_PATH', realpath(__DIR__ . '/../application'));
+/*
+ * Define the absolute/relative paths to the library path, the app library path,
+ * app path and the database configuration path
+ */
+define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application') );
+define('APPLICATION_CACHE', realpath(APPLICATION_PATH . '/../tmp'));
+define('APPLICATION_LIBRARY_PATH', realpath(APPLICATION_PATH . '/../library'));
 
 $paths = explode(PATH_SEPARATOR, get_include_path());
-$paths[] = realpath(__DIR__.'/../library');
+$paths[] = APPLICATION_LIBRARY_PATH;
 set_include_path(implode(PATH_SEPARATOR, $paths));
 unset($paths);
 

@@ -81,9 +81,11 @@ h1, h2, h3, h4, h5, h6 {
 	color: black;
 }
 
-#header-region-selector {
-
+#header-selector {
+	
 }
+
+
 
 /**
  * Page content
@@ -104,6 +106,11 @@ h1, h2, h3, h4, h5, h6 {
 
 #footer-language-selector, #copyright {
 	padding:5px;
+}
+
+#copyright {
+	font-size: 0.8em;
+	/*color: silver;*/
 }
 
 .errors {

@@ -38,6 +38,7 @@ class Nashmaster_SearchForm
 	 * - search_keywords		- search keywords that are in search form right now
 	 * - last_search_keywords	- last saved search keywords, in case search_keywords changed
 	 * 							  we should re-calculate inline values
+	 * - remote_ip				- IP address of the client that will be used to detect its location
 	 *
 	 * - inline_regions (inline)  - regions that are mentioned in search_keywords
 	 * - inline_services (inline) - services that are mentioned in search_keywords
@@ -56,12 +57,17 @@ class Nashmaster_SearchForm
 	 */
 	public function initValues($options)
 	{
+		// 1. Init search keywords values and
+		// recalculate inline data
 		if (!empty($options['search_keywords'])) {
 			$this->setKeywords($options['search_keywords']);
 		}
 		
-		
-		
+		// 2. Init base region value
+		// and try to recognize visitor's location
+		if (empty($this->_session->base_region)) {
+			$this->_session->base_region = $this->detectLocationByIp($options['remote_ip']);
+		}
 	}
 	
 	/**
@@ -76,24 +82,28 @@ class Nashmaster_SearchForm
 			return null;
 		}
 		
-		$keywords = $this->prepareKeywords($keywords);
+		$keywordList = $this->prepareKeywords($keywords);
 		
-		$regionsMatch = $this->getRegionsByKeywords($keywords);
+		$regionsMatch = $this->getRegionsByKeywords($keywordList);
 		$this->_session->inline_regions = $regionsMatch['ids'];
-		
+
 		// we can eliminate overhead here
 		// by excluding keywords that are already recognized as regions
-		$keywords = array_diff($keywords, $regionsMatch['hit_keywords']);
+		$keywordList = array_diff($keywordList, $regionsMatch['hit_keywords']);
 
-		$servicesMatch = $this->getServicesByKeywords($keywords);
+		$servicesMatch = $this->getServicesByKeywords($keywordList);
 		$this->_session->inline_services = $servicesMatch['ids'];
 		
 		// save value for future use
-		// $this->_session->last_search_keywords = $keywords;
+		$this->_session->last_search_keywords = $keywords;
 	}
 
 	/**
 	 * Strip punctuation marks and all words that are shorter that 3 characters
+	 *
+	 * TODO: we 100% should apply the speaming algorythm here
+	 *       for example some simple variation of Porter's steaming
+	 *       to receive move accurate search results
 	 *
 	 * @param string $keywords
 	 * @return string array of words in keywords string
@@ -130,6 +140,16 @@ class Nashmaster_SearchForm
 	}
 
 	/**
+	 * Get session adapter
+	 *
+	 * @return Zend_Session_Namespace
+	 */
+	public function getAdapter()
+	{
+		return $this->_session;
+	}
+	
+	/**
 	 * Recognize whether user mentioned some region in keywords
 	 *
 	 * returns the following structure:
@@ -148,14 +168,16 @@ class Nashmaster_SearchForm
 		$ids = array();
 		$hit_keywords = array();
 		foreach ($keywords as $keyword) {
-
+			
+			// TODO: we should add the posibility to recognize not only cities
+			//       but also the regions and areas in the future
 			$matchList = $Cities->getCitiesByTag($keyword);
 			if (null === $matchList) {
 				continue;
 			}
-			
+		
 			foreach($matchList as $city) {
-				$ids[] = $city->city_id;
+				$ids[$city->city_id] = $city->city_id;
 				$hit_keywords[] = $keyword;
 			}
 			
@@ -163,11 +185,74 @@ class Nashmaster_SearchForm
 		
 		$res = array();
 		$res['hit_keywords'] = $hit_keywords;
-		$res['ids'] =  implode(',', $ids);
+		$res['ids'] = implode(',', $ids);
 		return $res;
 	}
 
 	public function getServicesByKeywords($keywords)
+	{
+		// TODO: possibly we should implement this hard dependency
+		//       via dependancy injection
+		$Services = new Joss_Crawler_Db_Synonyms();
+		
+		$ids = array();
+		$hit_keywords = array();
+		
+		// the service recognizion algorithm will be very simple for now
+		// 1. get all matches for each single keyword
+		// 2. then count the amount of matches of the same type of service
+		// 3. filter the incorrect matches using simple noise filtering algoright
+		// 4. PROFIT!!
+		
+		$servicesPowerList = array();
+		foreach ($keywords as $keyword) {
+			
+			// TODO: we can use Full Text search feature of MyISAM engine and MATCH() function
+			//       to calculate the relevancy to make our search more acurrate
+			//       and add typo protection
+			$matchServices = $Services->searchServicesByTag($keyword);
+			
+			if (null === $matchServices) {
+				continue;
+			}
+
+			foreach($matchServices as $serviceId => $serviceRate) {
+				if (empty($servicesPowerList[$serviceId])) {
+					$servicesPowerList[$serviceId] = $serviceRate;
+				} else {
+					$servicesPowerList[$serviceId] += $serviceRate;
+				}
+			}
+			
+			$hit_keywords[] = $keyword;
+		}
+
+		$servicesPower = 0;
+		foreach($servicesPowerList as $serviceId => $serviceRate) {
+			$servicesPower += $serviceRate;
+		}
+		
+		// calculate trashhold amount
+		// for now we croping the items that donate less than 20% to the total power
+		$trashHold = $servicesPower / 100 * 20;
+		
+		$resultServices = array();
+		foreach($servicesPowerList as $serviceId => $serviceRate) {
+			if ($serviceRate >= $trashHold) {
+				$resultServices[] = $serviceId;
+			}
+		}
+		
+		$res = array();
+		$res['hit_keywords'] = $hit_keywords;
+		$res['ids'] = implode(',', $resultServices);
+		return $res;
+	}
+	
+	/**
+	 * Detects visitor location using the IP-to-City database.
+	 */
+	public function detectLocation()
 	{
 		
 	}

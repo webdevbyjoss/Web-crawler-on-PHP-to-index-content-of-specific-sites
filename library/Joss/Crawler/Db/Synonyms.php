@@ -144,5 +144,44 @@ class Joss_Crawler_Db_Synonyms extends Zend_Db_Table_Abstract
 		
 		return $item;
 	}
+	
+	/**
+	 * Searches for the synonyms that looks like a simmilar
+	 *
+	 * @param unknown_type $tag
+	 */
+	public function searchServicesByTag($tag)
+	{
+		$select = $this->select();
+		$select->where('title LIKE "%' . $tag . '%"');
+		
+		$synonymsList = $this->fetchAll($select);
+		
+		if (0 == count($synonymsList)) {
+			return NULL;
+		}
+		
+		foreach ($synonymsList as $syn) {
+			$ids[] = $syn->id;
+		}
+		
+		$SynonymServices = new Joss_Crawler_Db_SynonymsServices();
+		$relations = $SynonymServices->getRelationsByIds($ids);
+		
+		$returnIds = array();
+		foreach ($relations as $rel) {
+
+			// TODO: we can also try to add extra measurement points here
+			//       by analyzing the type of synonym (taxonomy / full text search)
+			if (empty($returnIds[$rel->service_id])) {
+				$returnIds[$rel->service_id] = 1;
+			} else {
+				$returnIds[$rel->service_id] += 1;
+			}
+
+		}
+		
+		return $returnIds;
+	}
 
 }

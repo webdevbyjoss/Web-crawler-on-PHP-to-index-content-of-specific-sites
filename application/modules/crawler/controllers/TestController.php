@@ -50,7 +50,9 @@ class Crawler_TestController extends Zend_Controller_Action
 		);
 		
 		$SearchForm = new Nashmaster_SearchForm($options);
-		$data = $SearchForm->setKeywords($options['keywords']);
+		$SearchForm->setKeywords($options['keywords']);
+		
+		$data = $SearchForm->getAdapter();
 	}
 	
 	public function translateAction()
@@ -59,42 +61,61 @@ class Crawler_TestController extends Zend_Controller_Action
 		$ukUrl = 'http://uk.wikipedia.org/wiki/';
 		
 		$Client = new Zend_Http_Client();
+		$Client->setConfig(
+			array(
+				'useragent' => 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)',
+				'timeout' => '30',
+				'keepalive' => true,
+				'encodecookies' => true,
+			)
+		);
 		
 		// 1. Get cities from the database
 		$Cities = new Searchdata_Model_Cities();
-		$citiesRowset = $Cities->getItems();
+		$citiesRowset = $Cities->getItems(array(9909,9943,9964,10002,10061,10094,10111,10133,10165,10201,10227,10259,10318,10354,10373,10407,10437,10455,10480,10504,10535,10559,10583,10607,10633));
 		echo "\nReceived the list of cities: " . count($citiesRowset);
 		
 		foreach ($citiesRowset as $city) {
-			echo "\nRetreiving information for.. " . $city->name;
+
+			if (!empty($city->name_uk)) {
+				continue;
+			}
+			
 			$title = '';
 			$Client->setUri($ruUrl . urlencode($city->name));
-			$response = $Client->request();
+			
+			try {
+				
+				$response = $Client->request();
+				
+			} catch (Zend_Http_Client_Adapter_Exception $e) {
+
+				// we need a pause during 1 second between calls to avoid web-server overload
+				sleep(1);
+				continue;
+			}
+			
 			$htmlData = $response->getBody();
 			$pattern = '@<li class="interwiki-uk"><a href="http://uk\.wikipedia\.org/wiki/(.*)" title="(.*)">Українська</a></li>@u';
 			preg_match($pattern, $htmlData, $matchData);
-			if (!empty($matchData[1])) {
+			
+			if (empty($matchData[1])) {
+				continue;
+			}
 
-				$title = urldecode($matchData[1]);
-				
-				if (false !== strpos($title, '_(')) {
-					
-					$title = preg_replace('/_\(.*\)/u', '', $title);
-					
-					$title =
-				}
-				
-				if (!empty($title)) {
-					$city->name_uk = $title;
-					$city->save();
-				}
-
+			$title = urldecode($matchData[1]);
+			if (false !== strpos($title, '_(')) {
+				$title = preg_replace('/_\(.*\)/u', '', $title);
 			}
 			
-			// SELECT * FROM city WHERE name_uk LIKE '%_(%';
-			
+			if (false !== strpos($title, '_')) {
+				continue;
+			}
 
+			$city->name_uk = $title;
+			$city->save();
 		}
-		
+
 	}
+
 }

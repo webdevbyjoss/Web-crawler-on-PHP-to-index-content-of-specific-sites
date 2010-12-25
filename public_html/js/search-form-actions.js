@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-	
 	/**
 	 * Optimize layout for small screens
 	 */
@@ -15,10 +14,9 @@ $(document).ready(function () {
 		}
 
 	});
-	
+
 	$(window).trigger('resize');
-	
-	
+
 	/**
 	 * prepare search form 
 	 */

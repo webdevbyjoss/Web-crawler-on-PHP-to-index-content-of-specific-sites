@@ -43,6 +43,103 @@ class Crawler_TestController extends Zend_Controller_Action
 		var_dump($servicesDescriptionMap);
 	}
 	
+	public function geoAction()
+	{
+		//$data = Joss_Geolocation_Hostip::getCityByIp('1.6.9.0'); // 80.243.144.3
+		//http://maps.googleapis.com/maps/api/geocode/xml?latlng=49.55,25.5833&sensor=false
+		$geoAPI = 'http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address=';
+		
+		$client = new Zend_Http_Client();
+		
+		// init table gateways
+		$Cities = new Searchdata_Model_Cities();
+		$Regiones = new Searchdata_Model_Regions();
+		$Countries = new Searchdata_Model_Countries();
+		
+		$regionTitle = array();
+		$countryTitle = array();
+		
+		// $citiesRowset = $Cities->getItems();
+		$citiesRowset = $Cities->getItems(array(10607,10633));
+		$i = 0;
+		foreach ($citiesRowset as $city) {
+			
+			if (!empty($city->latitude)) {
+				continue;
+			}
+			
+			// get country
+			if (empty($countryTitle[$city->country_id])) {
+				$c = $Countries->find($city->country_id)->current();
+				$country = ($c->name_uk == 'Україна') ? 'Україна' :  $c->name;
+				$countryTitle[$city->country_id] = $country;
+			} else {
+				$country = $countryTitle[$city->country_id];
+			}
+			
+			// get region
+			if (empty($regionTitle[$city->region_id])) {
+				$r = $Regiones->find($city->region_id)->current();
+				$region = $r->name_uk ? $r->name_uk . ' область' : $r->name;
+				$regionTitle[$city->region_id] = $region;
+			} else {
+				$region = $regionTitle[$city->region_id];
+			}
+			
+			$cityTitle = $city->name_uk ? $city->name_uk : $city->name;
+			
+			// prepare address string
+			$address = $cityTitle . ', ' . $region . ', ' . $country;
+
+			// API call
+			$client->setUri($geoAPI . urlencode($address));
+			try {
+				$responce = $client->request();
+				
+			} catch (Zend_Http_Client_Adapter_Exception $e) {
+				echo "\nERROR:" . $address;
+				continue;
+			}
+			
+			$data = json_decode($responce->getBody());
+			
+			// process data
+			// var_dump($data);
+			if (!in_array($data->status, array('OK', 'ZERO_RESULTS'))) {
+				// we have a problem with something
+				die($data->status);
+			}
+			
+			// get coordinates
+			$cityGdata = array();
+			foreach ($data->results as $location) {
+				if (in_array('locality', $location->types) && in_array('political', $location->types)) {
+					$cityGdata[] = $location->geometry;
+				}
+			}
+
+			// lets ignore other matches for now
+			$matchCity = current($cityGdata);
+			
+			if (empty($matchCity)) {
+				continue;
+			}
+			
+			// save data into database
+			$city->latitude = $matchCity->location->lat;
+			$city->longitude = $matchCity->location->lng;
+			$city->bound_southwest_latitude = $matchCity->bounds->southwest->lat;
+			$city->bound_southwest_longitude = $matchCity->bounds->southwest->lng;
+			$city->bound_northeast_latitude = $matchCity->bounds->northeast->lat;
+			$city->bound_northeast_longitude = $matchCity->bounds->northeast->lng;
+			$city->save();
+			
+			// random timeout for google API
+			sleep(rand(0,3));
+		}
+
+	}
+	
 	public function searchAction()
 	{
 		$options = array(

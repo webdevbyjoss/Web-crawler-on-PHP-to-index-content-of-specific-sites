@@ -197,15 +197,11 @@ class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 
 		// FIXME: this is for debug only to determine the situation when phone number wasn't recognized
 		if (empty($info['info']['contacts'])) {
-			
-			$Synonyms = new Joss_Crawler_Db_SynonymsErrors();
-			$data = array(
-				  'title' => $this->_currentUrl
-				, 'lang_id' => $phonesField
-			);
-			$Synonyms->insert($data);
-
+			$SynonymErrors = new Joss_Crawler_Db_SynonymsErrors();
+			$SynonymErrors->log($this->_currentUrl, $phonesField);
+			unset($SynonymErrors);
 		}
+		
 		
 		$info['regions'] = $this->getRegions();
 		$info['services'] = $this->getServices($info['info']);
@@ -324,17 +320,11 @@ class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 		
 		// FIXME: we need to collec unknown items during development to populate our wocabulary
 		if (!empty($unknown)) {
-			
-			$Synonyms = new Joss_Crawler_Db_SynonymsErrors();
-			
+			$SynonymErrors = new Joss_Crawler_Db_SynonymsErrors();
 			foreach ($unknown as $term => $url) {
-				$info = array(
-					  'title' => $url
-					, 'lang_id' => $term
-				);
-				$Synonyms->insert($info);
+				$SynonymErrors->log($url, $term);
 			}
-			
+			unset($SynonymErrors);
 		}
 		
 		// if service can't be recognized by exact tags match then we can try to recognize this by
@@ -449,12 +439,8 @@ class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 		// during development lets investigate strange URLs
 		// FIXME: bad practice, don't output anything directly
 		if (empty($services)) {
-			$Synonyms = new Joss_Crawler_Db_SynonymsErrors();
-			$info = array(
-				  'title' => $this->_currentUrl
-				, 'lang_id' => 'NO SERVICES'
-			);
-			$Synonyms->insert($info);
+			$SynonymErrors = new Joss_Crawler_Db_SynonymsErrors();
+			$SynonymErrors->log($this->_currentUrl, 'NO SERVICES');
 		}
 
 		return $services;

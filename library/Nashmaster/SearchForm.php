@@ -252,8 +252,9 @@ class Nashmaster_SearchForm
 	/**
 	 * Detects visitor location using the IP-to-City database.
 	 */
-	public function detectLocation()
+	public function detectLocationByIp()
 	{
+		// http://api.hostip.info/?ip=80.243.144.3
 		
 	}
 

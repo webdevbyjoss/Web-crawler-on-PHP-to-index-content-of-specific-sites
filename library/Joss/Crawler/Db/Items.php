@@ -91,12 +91,9 @@ class Joss_Crawler_Db_Items extends Zend_Db_Table_Abstract
 		// lets track the situation when phone numbers were in datbase
 		// but right now the are goen for some reason
 		if (empty($advert['info']['contacts'])) {
-			$Synonyms = new Joss_Crawler_Db_SynonymsErrors();
-			$data = array(
-				  'title' => $advert['url']
-				, 'lang_id' => 'CHANGED CONTACTS TO EMPTY: ' . $phonesField
-			);
-			$Synonyms->insert($data);
+			$SynonymErrors = new Joss_Crawler_Db_SynonymsErrors();
+			$SynonymErrors->log($advert['url'], 'CHANGED CONTACTS TO EMPTY');
+			unset($SynonymErrors);
 		}
 
 		// process item contacts

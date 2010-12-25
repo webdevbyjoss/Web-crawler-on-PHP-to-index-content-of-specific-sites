@@ -102,18 +102,29 @@ class Joss_Crawler_Jobs
 		}
 		
 		// grap the data from the page
-		$Items = new Joss_Crawler_Db_Items();
+		// late return in case no data were recognized on this page
 		$data = $Adapter->getData();
-		
-		if (null !== $data) {
-			foreach ($data as $advert) {
-				$Items->add($advert);
-			}
+		if (null === $data) {
+			return ;
 		}
+		
+		// store grabed inforamtion into crawler database
+		$Items = new Joss_Crawler_Db_Items();
+		
+		foreach ($data as $advert) {
+			$Items->add($advert);
+		}
+
 	}
 	
 	/**
 	 * Returns the last job by URL
+	 *
+	 * in job server we potentically can have couple same URL with the different status
+	 * in case current URL were already processed and rgiht now we need to update information
+	 * we have by downloading the newer content
+	 *
+	 * anyway we should optimize this part to have only one unique URL in jobs database
 	 *
 	 * @param string $url
 	 * @return Joss_Crawler_Adapter_Abstract
@@ -150,6 +161,10 @@ class Joss_Crawler_Jobs
 	/**
 	 * It recognizes the adapter by provided URL
 	 * and returns apropriate adapter instance
+	 *
+	 * TODO: this is not very oprimal, we should cache recognized adapters somwhow to
+	 *       avoid re-recognision of simmilar URLs from the same domain/adapter and make
+	 *       everything fater in overal operation
 	 *
 	 * @param string $url
 	 * @return Joss_Crawler_Adapter_Abstract

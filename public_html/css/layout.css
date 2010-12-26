@@ -32,6 +32,31 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* HEADER */
+#top-menu {
+	padding: 15px;
+	padding-left: 0;
+}
+
+#top-menu a {
+	padding-right: 12px;
+	padding-left: 12px;
+	color: gray;
+	font-size: 1.8em;
+}
+
+#top-menu a:hover {
+	color: silver;
+}
+
+#top-menu-right {
+	float: right;
+}
+
+#top-menu a.active {
+	color: black;
+	text-decoration: none;
+}
+
 #header, #main, #footer {
 
 }
@@ -102,12 +127,9 @@ h1, h2, h3, h4, h5, h6 {
 
 #header-selector-services {
 	background-color: #fff9f2;
-	/*
-	position: relative;
-	top: 5px;
-	*/
 	display: block;
 	width: auto;
+	margin-left: 1%;
 }
 
 #header-selector-services:hover, #header-selector-services:focus {

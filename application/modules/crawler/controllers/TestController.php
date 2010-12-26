@@ -214,5 +214,93 @@ class Crawler_TestController extends Zend_Controller_Action
 		}
 
 	}
+	
+	public function resetidsAction()
+	{
+		$Cities = new Searchdata_Model_Cities();
+		$Regiones = new Searchdata_Model_Regions();
+		$Countries = new Searchdata_Model_Countries();
+		
+		$Cities_old = new Searchdata_Model_Citiesold();
+		$Regiones_old = new Searchdata_Model_Regionsold();
+		$Countries_old = new Searchdata_Model_Countriesold();
+		
+		// trancate tables
+		$db = $Cities->getAdapter();
+		$db->query("TRUNCATE TABLE country");
+		$db->query("TRUNCATE TABLE region");
+		$db->query("TRUNCATE TABLE city");
+		
+		// recursively fill tables with new data
+		$data = array(
+			'name' => 'Украина',
+			'name_uk' => 'Україна',
+			'old_id' => '9908'
+		);
 
+		$countryId = $Countries->insert($data);
+		
+		$resions = $Regiones_old->getItems(9908);
+		foreach ($resions as $reg) {
+			
+			$data = array(
+				'country_id' => $countryId,
+				'name' => $reg->name,
+				'name_uk' => $reg->name_uk,
+				'old_id' => $reg->region_id,
+			);
+			$resionId = $Regiones->insert($data);
+			
+			// process cities of this region
+			$cities = $Cities_old->getItems($reg->region_id);
+			
+			foreach ($cities as $city) {
+				
+				$data = array(
+					'country_id' => $countryId,
+					'region_id' => $resionId,
+					'is_region_center' => $city->is_region_center,
+					'name' => $city->name,
+					'name_uk' => $city->name_uk,
+				  	'longitude' => $city->longitude,
+					'latitude' => $city->latitude,
+					'bound_southwest_longitude' => $city->bound_southwest_longitude,
+					'bound_southwest_latitude' => $city->bound_southwest_latitude,
+					'bound_northeast_longitude' => $city->bound_northeast_longitude,
+					'bound_northeast_latitude' => $city->bound_northeast_latitude,
+					'old_id' => $city->city_id
+				);
+				
+				$Cities->insert($data);
+			}
+			
+		}
+		
+	}
+
+}
+
+
+class Searchdata_Model_Citiesold extends Zend_Db_Table_Abstract {
+	protected $_name = 'city_old';
+    public function getItems($regionId = null) {
+    	if (null === $regionId) {
+    		return $this->fetchAll();
+    	}
+    	
+    	if (!is_array($regionId)) {
+    		return $this->fetchAll(array('region_id = ' . (int) $regionId));
+    	}
+    	
+    	return $this->fetchAll(array('region_id IN (' . implode(',', $regionId) . ')'));
+    }
+}
+class Searchdata_Model_Regionsold extends Zend_Db_Table_Abstract {
+	protected $_name = 'region_old';
+    public function getItems($countryId) {
+        return $this->fetchAll(array('country_id = ' . (int) $countryId));
+    }
+}
+class Searchdata_Model_Countriesold extends Zend_Db_Table_Abstract {
+	protected $_name = 'country_old';
 }

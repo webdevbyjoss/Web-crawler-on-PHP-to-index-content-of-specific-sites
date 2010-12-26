@@ -214,3 +214,15 @@ span.selector-region-bar-selected-remove:hover {
 .selector-service-switch {
 	float: right;
 }
+
+
+
+
+/**
+ * AJAX
+ */
+.is-loading {
+	background-position: 99% center;
+	background-image: url(/images/ajax-loader.gif);
+	background-repeat: no-repeat;
+}

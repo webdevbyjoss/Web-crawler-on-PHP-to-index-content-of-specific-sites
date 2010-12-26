@@ -68,6 +68,8 @@ class Nashmaster_SearchForm
 		if (empty($this->_session->base_region)) {
 			$this->_session->base_region = $this->detectLocationByIp($options['remote_ip']);
 		}
+		
+		
 	}
 	
 	/**
@@ -252,9 +254,9 @@ class Nashmaster_SearchForm
 	/**
 	 * Detects visitor location using the IP-to-City database.
 	 */
-	public function detectLocationByIp()
+	public function detectLocationByIp($ip)
 	{
-		// http://api.hostip.info/?ip=80.243.144.3
+		$IpToCity = new Joss_Geolocation();
 		
 	}
 

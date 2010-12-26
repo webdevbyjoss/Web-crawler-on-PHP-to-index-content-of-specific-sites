@@ -11,6 +11,7 @@
   <?php if (APPLICATION_ENV == 'production'): ?>
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+  <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
   <?php if (!$this->isAdmin()):?>
   <script>
   var _gaq = _gaq || [];
@@ -26,16 +27,34 @@
   
   <?php else:
   	$this->headScript()
-  	->prependFile('/js/jquery-1.4.2.min.js'); //TODO: move to CDN for 'production'
+  	->appendFile('/js/jquery-1.4.2.min.js')
+	->appendFile('/js/jquery.tmpl.min.js')
+  	;
   endif; ?>
 
   <?php echo $this->headScript()
-  	->appendFile('/js/search-form-actions.js'); ?>
+  	->appendFile('/js/jquery.typing-0.2.0.min.js')
+  	->appendFile('/js/search-form-actions.js');
+  	?>
 
 </head>
 <body>
 
 <div id="page"><div id="page-inner">
+
+
+<div id="top-menu">
+	<div id="top-menu-right">
+		<a href="#">вхід</a>
+	</div>
+	
+	<div id="top-menu-left">
+		<a class="active" href="#">пошук</a>
+		<a href="#">каталог</a>
+		<a href="#">статті</a>
+	</div>
+</div>
+
 
 <?php if ($this->isAdmin()):?>
 <div style="width:99%;float:left;padding-bottom:30px;">
@@ -48,6 +67,7 @@
 	</div>
 </div>
 <?php else: ?>
+
 <div id="header">
 <div id="logo">
 <a href="<?php echo $this->url(
@@ -66,8 +86,8 @@
 		<span><?php echo $this->T('what-type-of-service-question') ?></span><br />
 		<input tabindex="1" id="header-search-form-element" type="text" />
 		<div id="header-selector">
-			<a tabindex="3" id="header-selector-regions" href="#">Тернопіль</a>
-			<a tabindex="2" id="header-selector-services" href="#">Укладка кафельної плитки</a>
+			<a tabindex="3" id="header-selector-regions" href="#">&nbsp;</a>
+			<a tabindex="2" id="header-selector-services" href="#">&nbsp;</a>
 		</div>
 	</div>
 </div>

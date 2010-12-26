@@ -34,4 +34,15 @@ class Joss_Geolocation
 	    return (self::EARTH_RADIUS_AVG * acos($d));
 	}
 
+	/**
+	 * Returns city ID by IP address
+	 *
+	 * @param string $ip
+	 * @return int the ID of the city
+	 */
+	public function getCityByIp($ip)
+	{
+		
+	}
+
 }

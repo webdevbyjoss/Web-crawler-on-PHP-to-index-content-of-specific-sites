@@ -153,5 +153,18 @@ class Nashmaster_View extends Zend_View
 
     	return $output;
     }
+    
+    public function renderRegions()
+    {
+    	$regions = $this->searchForm->getRegions();
+    	
+    	$regionsHTML = '';
+    	foreach ($regions as $reg) {
+    		// TODO: we should add locale check here
+    		$regionsHTML .= ((empty($regionsHTML)? '' : ',' ) . '<span id="city-' . $reg['id'] . '">' . $reg['name_uk'] . '</span>');
+    	}
+    	
+    	return $regionsHTML;
+    }
 
 }

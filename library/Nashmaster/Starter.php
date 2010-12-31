@@ -179,7 +179,7 @@ class Nashmaster_Starter
 	public function trackTime()
 	{
 		$totaltime = $this->getExecutionTime(true);
-		echo "\n<!-- " . $totaltime . " ms -->";
+		// echo "\n<!-- " . $totaltime . " ms -->";
 	}
 	
 	/**

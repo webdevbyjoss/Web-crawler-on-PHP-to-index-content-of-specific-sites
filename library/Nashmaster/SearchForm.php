@@ -20,7 +20,7 @@ class Nashmaster_SearchForm
 	 * @param Zend_Session_Namespace $session
 	 * @return void
 	 */
-	public function __construct($options, Zend_Session_Namespace $session = null)
+	public function __construct($options = null, Zend_Session_Namespace $session = null)
 	{
 		if (null !== $session) {
 			$this->setAdapter($session);
@@ -48,7 +48,7 @@ class Nashmaster_SearchForm
 	 *
 	 * NOTE: appropriate data will be ovverriden with the values of the higher priority
 	 *
-	 * base_region < region < inline_regions
+	 * base_region < regions < inline_regions
 	 * services < inline_services
 	 * last_search_keyword < search_keyword
 	 *
@@ -57,19 +57,20 @@ class Nashmaster_SearchForm
 	 */
 	public function initValues($options)
 	{
-		// 1. Init search keywords values and
-		// recalculate inline data
-		if (!empty($options['search_keywords'])) {
-			$this->setKeywords($options['search_keywords']);
-		}
-		
-		// 2. Init base region value
+		// 1. Init base region value
 		// and try to recognize visitor's location
 		if (empty($this->_session->base_region)) {
 			$this->_session->base_region = $this->detectLocationByIp($options['remote_ip']);
 		}
-		
-		
+
+		// 2. Init search keywords values and
+		// recalculate inline data
+		if (!empty($options['search_keywords'])) {
+			$this->setKeywords($options['search_keywords']);
+		} else {
+			$this->_session->inline_regions = null;
+			$this->_session->inline_services = null;
+		}
 	}
 	
 	/**
@@ -81,20 +82,20 @@ class Nashmaster_SearchForm
 	{
 		// late return in case keywords hasn't been changed
 		if ($this->_session->last_search_keywords == $keywords) {
-			return null;
+		 	return null;
 		}
 		
 		$keywordList = $this->prepareKeywords($keywords);
-		
 		$regionsMatch = $this->getRegionsByKeywords($keywordList);
-		$this->_session->inline_regions = $regionsMatch['ids'];
+		
+		$this->_session->inline_regions = $regionsMatch['cities'];
 
 		// we can eliminate overhead here
 		// by excluding keywords that are already recognized as regions
 		$keywordList = array_diff($keywordList, $regionsMatch['hit_keywords']);
 
 		$servicesMatch = $this->getServicesByKeywords($keywordList);
-		$this->_session->inline_services = $servicesMatch['ids'];
+		$this->_session->inline_services = $servicesMatch['services'];
 		
 		// save value for future use
 		$this->_session->last_search_keywords = $keywords;
@@ -103,7 +104,7 @@ class Nashmaster_SearchForm
 	/**
 	 * Strip punctuation marks and all words that are shorter that 3 characters
 	 *
-	 * TODO: we 100% should apply the speaming algorythm here
+	 * TODO: we 100% should apply the steamer algorythm here
 	 *       for example some simple variation of Porter's steaming
 	 *       to receive move accurate search results
 	 *
@@ -155,7 +156,10 @@ class Nashmaster_SearchForm
 	 * Recognize whether user mentioned some region in keywords
 	 *
 	 * returns the following structure:
-	 * 'ids' => '123,345,567,896'
+	 * 'cities' => array(
+	 * 		ID => array('id' => ID, 'name' => NAME, 'name_uk' => NAME_UK)
+	 * 		ID => array('id' => ID, 'name' => NAME, 'name_uk' => NAME_UK)
+	 * )
 	 * 'hit_keywords' => array('keyword1', 'keyword2', 'keyword3')
 	 *
 	 * @param array $keywords
@@ -164,7 +168,7 @@ class Nashmaster_SearchForm
 	public function getRegionsByKeywords($keywords)
 	{
 		// TODO: possibly we should implement this hard dependency
-		//       via dependance injection
+		//       via dependancy injection
 		$Cities = new Searchdata_Model_Cities();
 		
 		$ids = array();
@@ -179,15 +183,17 @@ class Nashmaster_SearchForm
 			}
 		
 			foreach($matchList as $city) {
-				$ids[$city->city_id] = $city->city_id;
+				$ids[$city->city_id]['id'] = $city->city_id;
+				$ids[$city->city_id]['name'] = $city->name;
+				$ids[$city->city_id]['name_uk'] = $city->name_uk;
 				$hit_keywords[] = $keyword;
 			}
-			
+
 		}
 		
 		$res = array();
 		$res['hit_keywords'] = $hit_keywords;
-		$res['ids'] = implode(',', $ids);
+		$res['cities'] = $ids;
 		return $res;
 	}
 
@@ -205,7 +211,6 @@ class Nashmaster_SearchForm
 		// 2. then count the amount of matches of the same type of service
 		// 3. filter the incorrect matches using simple noise filtering algoright
 		// 4. PROFIT!!
-		
 		$servicesPowerList = array();
 		foreach ($keywords as $keyword) {
 			
@@ -218,20 +223,26 @@ class Nashmaster_SearchForm
 				continue;
 			}
 
-			foreach($matchServices as $serviceId => $serviceRate) {
+			foreach($matchServices as $serviceId => $serviceData) {
+				
 				if (empty($servicesPowerList[$serviceId])) {
-					$servicesPowerList[$serviceId] = $serviceRate;
+					
+					$servicesPowerList[$serviceId] = $serviceData['rate'];
+					
+					$serviceTitle[$serviceId] = $serviceData['name'];
+					$serviceTitleUk[$serviceId] = $serviceData['name_uk'];
+
 				} else {
-					$servicesPowerList[$serviceId] += $serviceRate;
+					$servicesPowerList[$serviceId] += $serviceData['rate'];
 				}
 			}
-			
+
 			$hit_keywords[] = $keyword;
 		}
 
 		$servicesPower = 0;
-		foreach($servicesPowerList as $serviceId => $serviceRate) {
-			$servicesPower += $serviceRate;
+		foreach($servicesPowerList as $serviceId => $serviceInfo) {
+			$servicesPower += $serviceInfo['rate'];
 		}
 		
 		// calculate trashhold amount
@@ -239,25 +250,70 @@ class Nashmaster_SearchForm
 		$trashHold = $servicesPower / 100 * 20;
 		
 		$resultServices = array();
-		foreach($servicesPowerList as $serviceId => $serviceRate) {
-			if ($serviceRate >= $trashHold) {
-				$resultServices[] = $serviceId;
+		foreach($servicesPowerList as $serviceId => $serviceInfo) {
+			if ($serviceInfo['rate'] >= $trashHold) {
+				$resultServices[$serviceId]['id'] = $serviceId;
+				$resultServices[$serviceId]['name'] = $serviceTitle[$serviceId];
+				$resultServices[$serviceId]['name_uk'] = $serviceTitleUk[$serviceId];
 			}
 		}
 		
 		$res = array();
 		$res['hit_keywords'] = $hit_keywords;
-		$res['ids'] = implode(',', $resultServices);
+		$res['services'] = $resultServices;
 		return $res;
 	}
 	
 	/**
 	 * Detects visitor location using the IP-to-City database.
+	 *
+	 * city['id'] = XX
+	 * city['name'] = XX
+	 * city['name_uk'] = XX
+	 *
+	 * TODO: do something in case city was not recognized
+	 *       for example try to recognize region or country
+	 *       and assign visitor to the largest city in the region
+	 *       or to the coutry capital city
 	 */
 	public function detectLocationByIp($ip)
 	{
 		$IpToCity = new Joss_Geolocation();
-		
+		return $IpToCity->getCityByIp($ip);
 	}
 
+	/**
+	 * Get regions according to the priority data:
+ 	 * base_region < regions < inline_regions
+	 */
+	public function getRegions()
+	{
+		if (!empty($this->_session->inline_regions)) {
+			return $this->_session->inline_regions;
+		}
+		
+		if (!empty($this->_session->regions)) {
+			return $this->_session->regions;
+		}
+		
+		return $this->_session->base_region;
+	}
+	
+	/**
+	 * Get services according to the priority level:
+	 * services < inline_services
+	 */
+	public function getServices()
+	{
+		if (!empty($this->_session->inline_services)) {
+			return $this->_session->inline_services;
+		}
+		
+		if (!empty($this->_session->services)) {
+			return $this->_session->services;
+		}
+		
+		return null;
+	}
+	
 }

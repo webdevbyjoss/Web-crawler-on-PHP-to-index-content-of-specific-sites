@@ -148,7 +148,12 @@ class Joss_Crawler_Db_Synonyms extends Zend_Db_Table_Abstract
 	/**
 	 * Searches for the synonyms that looks like a simmilar
 	 *
-	 * @param unknown_type $tag
+	 * output will contain the array with IDs and relevancy points
+	 *
+	 *
+	 *
+	 * @param string $tag
+	 * @return array ids with the relevancy points
 	 */
 	public function searchServicesByTag($tag)
 	{
@@ -173,15 +178,27 @@ class Joss_Crawler_Db_Synonyms extends Zend_Db_Table_Abstract
 
 			// TODO: we can also try to add extra measurement points here
 			//       by analyzing the type of synonym (taxonomy / full text search)
-			if (empty($returnIds[$rel->service_id])) {
-				$returnIds[$rel->service_id] = 1;
+			if (empty($returnIds[$rel->service_id]['rate'])) {
+				$returnIds[$rel->service_id]['rate'] = 1;
 			} else {
-				$returnIds[$rel->service_id] += 1;
+				$returnIds[$rel->service_id]['rate'] += 1;
 			}
 
 		}
 		
-		return $returnIds;
+		// get services data
+		// $returnIds[$rel->service_id]['name'] = $title[$rel->service_id];
+		// $returnIds[$rel->service_id]['name_uk'] = $title[$rel->service_id];
+		$Services = new Searchdata_Model_Services();
+		$returnFullIds = array();
+		foreach($returnIds as $id => $rate) {
+			$service = $Services->getById($id);
+			$returnFullIds[$id]['rate'] = $rate;
+			$returnFullIds[$id]['name'] = $service->name;
+			$returnFullIds[$id]['name_uk'] = $service->name_uk;
+		}
+		
+		return $returnFullIds;
 	}
 
 }

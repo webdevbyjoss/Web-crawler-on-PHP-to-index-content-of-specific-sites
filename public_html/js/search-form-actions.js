@@ -29,11 +29,16 @@ var SearchFormIsLoading = false;
 // avoid typing "stop" event in case "Esc" was pressed
 var lastKeyCode = 0;
 
-// search form tempaltes
-var searchFormPostersTemplate = 
-	  '<a tabindex="3" id="header-selector-regions" href="#">${Regions}</a>'
-	+ '<a tabindex="2" id="header-selector-services" href="#">${Services}</a>';
+// this will allow us to store the local cache
+// TODO: its better to save data using persistent storage like "jquery-offline"
+var Storage = Array();
 
+// search form tempaltes
+var templateSearchFormBlocks = 
+	  '<a tabindex="3" id="header-selector-regions" href="#">{{html Regions}}&nbsp;</a>'
+	+ '<a tabindex="2" id="header-selector-services" href="#">{{html Services}}&nbsp;</a>';
+
+// init search form
 $(document).ready(function () {
 
 	/**
@@ -76,6 +81,7 @@ $(document).ready(function () {
 	    		|| lastKeyCode == KEY_CODE_SHIFT
 	    		|| lastKeyCode == KEY_CODE_CTRL
 	    		|| lastKeyCode == KEY_CODE_INSERT
+	    		|| lastKeyCode == KEY_CODE_DELETE
 	    		|| lastKeyCode == KEY_CODE_HOME
 	    		|| lastKeyCode == KEY_CODE_END
 	    		|| lastKeyCode == KEY_CODE_PAGEUP
@@ -127,33 +133,89 @@ $(document).ready(function () {
 
 });
 
-
+// loads pre-fetch data
 function loadPreSearchData($elem) {
 
 	if (true == SearchFormIsLoading) {
 		return;
 	}
 	
+	var keywords = $elem.attr('value');
+	
 	// we don't need to load anything in case the form field is empty
-	if (("" == $elem.attr('value'))) {
+	if ("" == keywords) {
 		return;
 	}
 
-	if ($elem.attr('value').length < MIN_SEARCH_LENGHT) {
+	if (keywords.length < MIN_SEARCH_LENGHT) {
 		return;
 	}
 	
 	// start loading 
+	stopLoadingPreSearchData($elem);
+	
+	// in case some data for this particular request was already loaded some time ago
+	// we can get that data fromt the local cache
+	if (data = Storage[keywords]) {
+		updateForm(data);
+		return;
+	}
+	
 	$elem.addClass('is-loading');
 	SearchFormIsLoading = true;
 	
+	ajaxCallHandler = $.getJSON('/search/presearch/query/data/' + encodeURIComponent(keywords), null, function(data) {
+		// load data and store it into local cache
+		
+		// FIXME: may be dangerous!!!!! in case keywords were updated in search string
+		Storage[$elem.attr('value')] = data;
+		updateForm(data);
+		stopLoadingPreSearchData($('#header-search-form-element'));
+		
+	});
+	SearchFormAjaxCalls.push(ajaxCallHandler); 
 	
-	// alert($elem.attr('value'));
 }
 
+// stops all AJAX calls and changes form loading indication
 function stopLoadingPreSearchData($elem) {
 	SearchFormIsLoading = false;
 	$elem.removeClass('is-loading');
+
+	for (var i in SearchFormAjaxCalls) {
+		SearchFormAjaxCalls[i].abort();
+	}
+}
+
+// updates search form with the data received from the pre-search process
+function updateForm(data) {
 	
+	var regionsHTML = "";
+	if (data.regions) {
+		$.each(data.regions, function(i, val) {
+			if ("" == regionsHTML) {
+				regionsHTML = '<span id="city-' + i + '">' + val + '</span>';
+			} else {
+				regionsHTML += ', <span id="city-' + i + '">' + val + '</span>';
+			}
+		});
+	}
 	
+	var servicesHTML = "";
+	if (data.services) {
+		$.each(data.services, function(i, val) {
+			if ("" == servicesHTML) {
+				servicesHTML = '<span id="service-' + i + '">' + val + '</span>';
+			} else {
+				servicesHTML += ', <span id="service-' + i + '">' + val + '</span>';
+			}
+		});
+	}
+
+	$('#header-selector').html("");
+	var templateData = $.tmpl(templateSearchFormBlocks, 
+		{ Regions : regionsHTML, Services: servicesHTML}
+	).appendTo('#header-selector');
+	
+	// and now we can call for search results
 }

@@ -72,7 +72,7 @@ class Joss_Crawler_Jobs
 			 */
 			return false;
 		}
-		
+
 		$this->processData($job['url'], $job['raw_body']);
 		$this->_dbJobs->finishJob($job['crawl_jobs_id']);
 		return true;
@@ -90,11 +90,12 @@ class Joss_Crawler_Jobs
 		// recognize the adapter & extract content
 		$Adapter = $this->getLoadedAdapter($url, $raw_body);
 		if (null === $Adapter) {
-			return false;
+			throw new Exception('Unable to load adapter for: ' . $url);
 		}
 
 		// grap the URLs with interesting  data and create new jobs for that pages
 		$links = $Adapter->getDataLinks();
+
 		if (!empty($links)) {
 			foreach ($links as $key => $link) {
 				$this->_dbJobs->createJob($link['url']);

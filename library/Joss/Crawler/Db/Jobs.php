@@ -184,7 +184,7 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 		
 		$where = $this->getAdapter()->quoteInto('crawl_jobs_id = ?', $job['crawl_jobs_id']);
 		$this->update($data, $where);
-		
+
 		return $job;
 	}
 	

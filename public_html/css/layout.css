@@ -35,6 +35,7 @@ h1, h2, h3, h4, h5, h6 {
 #top-menu {
 	padding: 15px;
 	padding-left: 0;
+	padding-bottom: 30px;
 }
 
 #top-menu a {
@@ -162,11 +163,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #page-content {
-	padding-top: 20px;
+	padding: 30px;
+	padding-top: 50px;
 }
 
 #footer {
 	text-align: center;
+	padding-top: 100px;
 }
 
 #footer-language-selector, #copyright {

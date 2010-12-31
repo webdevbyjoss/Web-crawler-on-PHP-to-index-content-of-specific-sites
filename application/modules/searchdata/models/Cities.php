@@ -41,4 +41,29 @@ class Searchdata_Model_Cities extends Zend_Db_Table_Abstract
     	return $data;
     }
     
+    /**
+     * get city by coords
+     *
+     * long = 25.6
+     * lat = 49.56
+     *
+     * return: Ternopil
+     * @param float $long
+     * @param float $lat
+     * @return Zend_Db_Table_Row_Abstract
+     */
+    public function getCityByCoords($long, $lat)
+    {
+    	$where = array('((bound_southwest_longitude <  ' . (float) $long . ') AND (bound_northeast_longitude > ' . (float) $long .'))
+			AND ((bound_southwest_latitude < ' . (float) $lat . ') AND (bound_northeast_latitude > ' . (float) $lat . '))');
+
+    	$data = $this->fetchAll($where);
+    	
+    	if (0 == count($data)) {
+    		return null;
+    	}
+    	
+    	return $data->current();
+    }
+
 }

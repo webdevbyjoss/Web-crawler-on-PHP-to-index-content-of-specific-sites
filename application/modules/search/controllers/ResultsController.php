@@ -16,12 +16,6 @@ class Search_ResultsController extends Zend_Controller_Action
 		$searchIndex = new Search_Model_Index();
 
 		$itemsIndex = $searchIndex->getData($serviceId, $regionId);
-		
-		// $ItemInfo = new
-		//foreach ($itemsIndex as $item) {
-			
-		//}
-		
 		$this->view->data = $itemsIndex;
 	}
 }

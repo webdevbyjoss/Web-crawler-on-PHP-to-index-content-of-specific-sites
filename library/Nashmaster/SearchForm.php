@@ -14,6 +14,16 @@ class Nashmaster_SearchForm
 	private $_session = null;
 	
 	/**
+	 * Search form data
+	 */
+	private $_base_region = null;
+	private $_inline_regions = null;
+	private $_inline_services = null;
+	private $_last_search_keywords = null;
+	private $_regions = null;
+	private $_services = null;
+	
+	/**
 	 * Lets init start values or/and get saved values from session
 	 *
 	 * @param array $options
@@ -32,6 +42,38 @@ class Nashmaster_SearchForm
 	}
 
 	/**
+	 * Sate data into the session
+	 */
+	public function __destruct()
+	{
+		$this->_session->base_region = $this->_base_region;
+		
+		$this->_session->inline_regions = $this->_inline_regions;
+		$this->_session->inline_services = $this->_inline_services;
+		
+		$this->_session->last_search_keywords = $this->_last_search_keywords;
+		
+		$this->_session->regions = $this->_regions;
+		$this->_session->services = $this->_services;
+	}
+	
+	/**
+	 * Loads form elements from session
+	 */
+	public function loadDataFromSession()
+	{
+		$this->_base_region = $this->_session->base_region;
+		
+		$this->_inline_regions = $this->_session->inline_regions;
+		$this->_inline_services = $this->_session->inline_services;
+		
+		$this->_last_search_keywords = $this->_session->last_search_keywords;
+		
+		$this->_regions = $this->_session->regions;
+		$this->_services = $this->_session->services;
+	}
+	
+	/**
 	 * Lets initiate search form options
 	 *
 	 * as for now search form holds the following options:
@@ -42,7 +84,7 @@ class Nashmaster_SearchForm
 	 *
 	 * - inline_regions (inline)  - regions that are mentioned in search_keywords
 	 * - inline_services (inline) - services that are mentioned in search_keywords
-	 * - region (specified)		  - regions that are specified in "select regions" form
+	 * - regions (specified)		  - regions that are specified in "select regions" form
 	 * - services (specified)	  - services that are specified in "select services" form
 	 * - base_region (autimatically recognized) - automatically recognized value
 	 *
@@ -59,8 +101,8 @@ class Nashmaster_SearchForm
 	{
 		// 1. Init base region value
 		// and try to recognize visitor's location
-		if (empty($this->_session->base_region)) {
-			$this->_session->base_region = $this->detectLocationByIp($options['remote_ip']);
+		if (empty($this->_base_region)) {
+			$this->_base_region = $this->detectLocationByIp($options['remote_ip']);
 		}
 
 		// 2. Init search keywords values and
@@ -68,8 +110,8 @@ class Nashmaster_SearchForm
 		if (!empty($options['search_keywords'])) {
 			$this->setKeywords($options['search_keywords']);
 		} else {
-			$this->_session->inline_regions = null;
-			$this->_session->inline_services = null;
+			$this->_inline_regions = null;
+			$this->_inline_services = null;
 		}
 	}
 	
@@ -81,24 +123,24 @@ class Nashmaster_SearchForm
 	public function setKeywords($keywords)
 	{
 		// late return in case keywords hasn't been changed
-		if ($this->_session->last_search_keywords == $keywords) {
+		if ($this->_last_search_keywords == $keywords) {
 		 	return null;
 		}
 		
 		$keywordList = $this->prepareKeywords($keywords);
 		$regionsMatch = $this->getRegionsByKeywords($keywordList);
 		
-		$this->_session->inline_regions = $regionsMatch['cities'];
+		$this->_inline_regions = $regionsMatch['cities'];
 
 		// we can eliminate overhead here
 		// by excluding keywords that are already recognized as regions
 		$keywordList = array_diff($keywordList, $regionsMatch['hit_keywords']);
 
 		$servicesMatch = $this->getServicesByKeywords($keywordList);
-		$this->_session->inline_services = $servicesMatch['services'];
+		$this->_inline_services = $servicesMatch['services'];
 		
 		// save value for future use
-		$this->_session->last_search_keywords = $keywords;
+		$this->_last_search_keywords = $keywords;
 	}
 
 	/**
@@ -288,15 +330,15 @@ class Nashmaster_SearchForm
 	 */
 	public function getRegions()
 	{
-		if (!empty($this->_session->inline_regions)) {
-			return $this->_session->inline_regions;
+		if (!empty($this->_inline_regions)) {
+			return $this->_inline_regions;
 		}
 		
-		if (!empty($this->_session->regions)) {
-			return $this->_session->regions;
+		if (!empty($this->_regions)) {
+			return $this->_regions;
 		}
 		
-		return $this->_session->base_region;
+		return $this->_base_region;
 	}
 	
 	/**
@@ -305,12 +347,12 @@ class Nashmaster_SearchForm
 	 */
 	public function getServices()
 	{
-		if (!empty($this->_session->inline_services)) {
-			return $this->_session->inline_services;
+		if (!empty($this->_inline_services)) {
+			return $this->_inline_services;
 		}
 		
-		if (!empty($this->_session->services)) {
-			return $this->_session->services;
+		if (!empty($this->_services)) {
+			return $this->_services;
 		}
 		
 		return null;

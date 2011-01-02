@@ -156,13 +156,10 @@ function loadPreSearchData($elem) {
 	
 	// in case some data for this particular request was already loaded some time ago
 	// we can get that data fromt the local cache
-	/*
-	  
-	 if (data = Storage[keywords]) {
+	if (data = Storage[keywords]) {
 		updateForm(data);
 		return;
 	}
-	*/
 	
 	$elem.addClass('is-loading');
 	SearchFormIsLoading = true;

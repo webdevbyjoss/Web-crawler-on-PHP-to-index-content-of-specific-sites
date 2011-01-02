@@ -240,7 +240,7 @@ span.selector-region-bar-selected-remove:hover {
 }
 
 .search-results-item .title {
-	font-size: 1.2em;
+	font-size: 1.1em;
 	text-transform: capitalize;
 	
 }
@@ -250,11 +250,11 @@ span.selector-region-bar-selected-remove:hover {
 }
 
 .search-results-item .description {
-	width: 650px;
+	/*width: 650px;*/
 }
 
 .search-results-item .url {
-	font-size: 0.9em;
+	font-size: 0.8em;
 	padding-top: 5px;
-	color: green;
+	color: #0E774A;
 }

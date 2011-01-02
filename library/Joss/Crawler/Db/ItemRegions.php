@@ -53,7 +53,7 @@ class Joss_Crawler_Db_ItemRegions extends Zend_Db_Table_Abstract
 		foreach ($allItems as $v) {
 			 $data[$v['item_type']][] = $v;
 		}
-		
+
 		return $data;
 	}
 	

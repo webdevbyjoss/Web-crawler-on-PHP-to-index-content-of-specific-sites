@@ -156,10 +156,13 @@ function loadPreSearchData($elem) {
 	
 	// in case some data for this particular request was already loaded some time ago
 	// we can get that data fromt the local cache
-	if (data = Storage[keywords]) {
+	/*
+	  
+	 if (data = Storage[keywords]) {
 		updateForm(data);
 		return;
 	}
+	*/
 	
 	$elem.addClass('is-loading');
 	SearchFormIsLoading = true;
@@ -190,6 +193,10 @@ function stopLoadingPreSearchData($elem) {
 // updates search form with the data received from the pre-search process
 function updateForm(data) {
 	
+	// temporrary solution
+	var regionId = 0;
+	var serviceId = 0;
+	
 	var regionsHTML = "";
 	if (data.regions) {
 		$.each(data.regions, function(i, val) {
@@ -198,6 +205,7 @@ function updateForm(data) {
 			} else {
 				regionsHTML += ', <span id="city-' + i + '">' + val + '</span>';
 			}
+			regionId = i;
 		});
 	}
 	
@@ -209,6 +217,7 @@ function updateForm(data) {
 			} else {
 				servicesHTML += ', <span id="service-' + i + '">' + val + '</span>';
 			}
+			serviceId = i;
 		});
 	}
 
@@ -218,4 +227,9 @@ function updateForm(data) {
 	).appendTo('#header-selector');
 	
 	// and now we can call for search results
+	loadSearchResults(serviceId, regionId);
+}
+
+function loadSearchResults(serviceId, regionId) {
+	$('#main').load('/search/results/get/service/' + serviceId + '/region/' + regionId);
 }

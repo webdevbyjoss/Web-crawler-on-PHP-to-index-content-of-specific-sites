@@ -28,6 +28,17 @@ class Joss_Crawler_Db_Items extends Zend_Db_Table_Abstract
 	 * @var string
 	 */
 	protected $_primary = 'id';
+
+	/**
+	 * Returns the full list of items
+	 *
+	 * @return Zend_Db_Table_Rowset_Abstract
+	 */
+	public function getItems()
+	{
+		return $this->fetchAll();
+	}
+	 
 	
 	/**
 	 * Creates or updates advertisement record in database
@@ -302,5 +313,4 @@ class Joss_Crawler_Db_Items extends Zend_Db_Table_Abstract
 		
 		return $this->fetchRow($select);
 	}
-
 }

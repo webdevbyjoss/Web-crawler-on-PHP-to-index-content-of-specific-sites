@@ -42,7 +42,7 @@ define ('USE_SSL', false);
 // client configuration
 define ('USER_AGENT', 'PHP Distributed Web Crawler/1.0');
 define ('USER_AGENT_CLIENT', 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)');
-define ('CALLS_PER_RUN', 20);
+define ('CALLS_PER_RUN', 40);
 
 // lets measre the time of script execution
 $mtime = microtime();

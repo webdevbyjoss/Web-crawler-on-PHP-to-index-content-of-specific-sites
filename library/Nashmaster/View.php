@@ -155,14 +155,14 @@ class Nashmaster_View extends Zend_View
     	return $output;
     }
     
-<<<<<<< HEAD
-    /*
-     * output form for users feedback 
-     */
+   /**
+    * output form for users feedback
+    */
     public function feedbackForm()
     {
     	return new Users_Form_Feedback();
-=======
+    }
+    
     public function renderRegions()
     {
     	if (empty($this->searchForm)) {
@@ -178,7 +178,7 @@ class Nashmaster_View extends Zend_View
     	}
     	
     	return $regionsHTML;
->>>>>>> 3186009ec0f732f270bcab25b0070ef0e63a4904
+
     }
 
 }

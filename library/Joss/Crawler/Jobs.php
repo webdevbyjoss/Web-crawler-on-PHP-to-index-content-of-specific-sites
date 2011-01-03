@@ -93,7 +93,7 @@ class Joss_Crawler_Jobs
 			return false;
 		}
 
-		// grap the URLs with interesting  data and create new jobs for that pages
+		//grap the URLs with interesting  data and create new jobs for that pages
 		$links = $Adapter->getDataLinks();
 		if (!empty($links)) {
 			foreach ($links as $key => $link) {

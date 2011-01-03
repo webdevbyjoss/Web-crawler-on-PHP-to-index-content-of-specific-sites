@@ -30,8 +30,9 @@
 <?php if ($this->isAdmin()):?>
 <div style="width:99%;float:left;padding-bottom:30px;">
 	<div style="float:left;">
-	<a href="/">Search</a>
-	<a href="/crawler/editor">Knowlage Base Editor</a>
+		<a href="/">Search</a>
+		<a href="/crawler/editor">Knowlage Base Editor</a>
+		<a href="/users/feedback/list/">Feedbacks</a>
 	</div>
 	<div style="float: right;">
 	<?php echo $this->profileLink(); ?>
@@ -68,7 +69,8 @@
 </div></div>
 
 <div id="footer">
-	<div id="footer-feedback"><a href="#"><?php echo $this->T('send-us-your-feedback') ?></a></div>
+	<div id="footer-feedback"><a id="feedbackLink" href="#"><?php echo $this->T('send-us-your-feedback') ?></a></div>
+	<?php echo $this->feedbackForm(); ?>
 	<div id="footer-language-selector"><?php echo $this->languageSelector() ?></div>
 	<div id="copyright">&copy; 2011 nash-master.com</div>
 </div>

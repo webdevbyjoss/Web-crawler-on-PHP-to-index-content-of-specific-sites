@@ -81,6 +81,18 @@
 		<source xml:lang="ru">какой вид работ вас интересует?</source>
 		<target xml:lang="uk">який вид робіт вас цікавить?</target>
 	</trans-unit>
+	<trans-unit id="Your-opinion-is-important-for-us">
+		<source xml:lang="ru">Ваше мнение важно для нас</source>
+		<target xml:lang="uk">Ваша думка важлива для нас</target>
+	</trans-unit>
+	<trans-unit id="Value is required and can't be empty">
+		<source xml:lang="ru">Значение етого поля не может быть пустым</source>
+		<target xml:lang="uk">Значення цього поля не може бути пустим</target>
+	</trans-unit>
+		<trans-unit id="Thanks for your feedback">
+		<source xml:lang="ru">Спасибо за ваше мнение. Ми обязательно разсмотрем его</source>
+		<target xml:lang="uk">Дякуємо вам за вашу думку. Ми її обовязково розглянемо</target>
+	</trans-unit>
 </body>
 </file>
 </xliff>

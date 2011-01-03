@@ -1,0 +1,89 @@
+<?php //<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.6/jquery-ui.min.js"></script> ?>
+
+<script src="/js/jquery-ui-1.8.7.custom.js"></script>
+<script type="text/javascript" src="/js/jquery.form.js"></script> 
+
+<link rel="stylesheet" href="/css/jquery-ui-1.8.6.custom.css" type="text/css" media="all" />
+<script type="text/javascript">
+	$(function() {
+		//spped of appearence/disappearance of feedbackform
+		feedback_form_effect_speed = 700; 
+		
+		$("#feedbackLink").click(function(e) {
+			// window.IsFeedbackFormVisible - flag, which signal whether or not feedback form visible
+			if (typeof window.IsFeedbackFormVisible == 'undefined' || !window.IsFeedbackFormVisible) {
+				$("#feedback-success-message").empty();
+				$("#feedback-form").clearForm();
+				$("#feedback-form #subject :nth-child(1)").attr("selected", "selected");
+				$("#feedback-form").show();
+				$("#feedback-form-container").show('blind', {}, feedback_form_effect_speed);
+				window.IsFeedbackFormVisible = true;
+			}
+			else {
+				//hide feedback by clicking on show feedback link 
+				feedback_hide();
+			}
+			e.preventDefault();
+			return false;
+		});
+
+		var feedback_hide = function() {
+			$("#feedback-form-container").wrap("<div id=\"feedback-form-container-wrapper\" class=\"ui-effects-wrapper\"></div>");
+			$("#feedback-form-container").hide('blind', {}, feedback_form_effect_speed);
+			$("#feedback-form-container").wrap("<div id=\"feedback-form-container-wrapper\" class=\"ui-effects-wrapper\"></div>");
+			window.IsFeedbackFormVisible = false;
+		}
+
+		$("#feedback-form-close-button").click(function(e) {
+			//some realy singular method for show effect:
+			//create wrapper for it, make effect and delete wrapper.
+			//for what such wrapper there, I can't understand
+			//restore wrapper for feedback-form-container, which have been deleted by jquery-ui
+			//for fix this I have been wrote my own createWrapper functional
+			feedback_hide();
+			e.preventDefault();
+			return false;
+		})
+
+		$("#feedback-form").ajaxForm({
+			"success": function(data) {
+				if (!data.success) {
+					//display errors
+					for (control in data.errors) {
+						for (er in data.errors[control]) {
+							$("#feedback-"+control+"-error").text(data.errors[control][er]);
+							$("#"+control+"-element").css("margin-bottom", "0px");
+						}
+					}
+				}
+				else {
+					//clear errors 
+					$(".feedback-element-error").empty();
+					$("#feedback-form").hide();
+					$("#feedback-success-message").text(data.message);
+				}
+			},
+			"dataType": 'json'
+		})
+	})
+</script>
+
+<div id="feedback-form-container-wrapper" class="ui-effects-wrapper">
+	<div id="feedback-form-container" class="ui-widget-content ui-corner-all">
+		<h3 class="ui-widget-header ui-corner-all"><?php echo $this->T("Your-opinion-is-important-for-us"); ?>
+			<div id="feedback-form-close-button"></div>
+		</h3>
+	    <p id="feedback-form-body">
+	    	<div id="feedback-success-message"></div>
+	    	<form method="<?php echo $this->element->getMethod(); ?>" action="<?php echo $this->element->getAction(); ?>" id="feedback-form">
+	    		<?php echo $this->element->getElement('subject'); ?>
+	    		<div class="feedback-element-error" id="feedback-subject-error"></div>
+	    		<?php echo $this->element->getElement('email'); ?>
+	    		<div class="feedback-element-error" id="feedback-email-error"></div>
+	    		<?php echo $this->element->getElement('feedback_message'); ?>
+	    		<div class="feedback-element-error" id="feedback-feedback_message-error"></div>
+	    		<?php echo $this->element->getElement('feedback_submit'); ?>
+	    	</form>
+		</p>
+	</div>
+</div>

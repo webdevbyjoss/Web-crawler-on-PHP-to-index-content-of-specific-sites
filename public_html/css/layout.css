@@ -251,3 +251,72 @@ h1, h2, h3, h4, h5, h6 {
 .data-grid tr.last_accessed td.actions {
 	background-color: #ffffcc;
 }
+
+#feedback-form-container {
+	display: none;
+	padding: 0.2em;
+	width: 250px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#feedback-form-container h3 {
+	font-size: 10pt;
+	text-align: left;
+	padding-left: 3px;
+	height: 21px;
+}
+
+#feedback-form-container-wrapper {
+	margin-left:auto;
+	margin-right:auto;
+	width: 250px;
+}
+
+#feedback-form-close-button {
+	float: right;
+	margin-right: 1px;
+	background-image: url('images/ui-icons_454545_256x240.png');
+	width: 21px;
+	height: 21px;
+	background-position: -93px -125px;
+	cursor: pointer;
+}
+
+#feedback-form-container #subject-label,
+#feedback-form-container #email-label,
+#feedback-form-container #feedback_message-label {
+	float: left;
+	font-size: 8pt;
+}
+
+#feedback-form-container #email-element, 
+#feedback-form-container #subject-element,
+#feedback-form-container #feedback_message-element {
+	text-align: left;
+	margin-left: 60px;
+}
+
+#feedback-form-container #feedback_submit-label {
+	float: left;
+	margin-left: 45px;
+	margin-top: 3px;
+}
+
+#feedback_submit-element {
+	margin-left: 45px;
+}
+
+#feedback_message, #email, #subject, #feedback_submit {
+	font-size: 8pt;
+}
+
+#feedback_submit-label {
+	dialpay: none
+}
+
+.feedback-element-error {
+	color: red;
+	font-size: 7pt;
+	margin-bottom: 5px;
+}

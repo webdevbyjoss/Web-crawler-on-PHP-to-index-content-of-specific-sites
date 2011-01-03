@@ -98,7 +98,8 @@
 </div></div>
 
 <div id="footer">
-	<div id="footer-feedback"><a tabindex="4" href="#"><?php echo $this->T('send-us-your-feedback') ?></a></div>
+	<div id="footer-feedback"><a id="feedbackLink" tabindex="4" href="#"><?php echo $this->T('send-us-your-feedback') ?></a></div>
+	<?php echo $this->feedbackForm(); ?>
 	<div id="footer-language-selector"><?php echo $this->languageSelector() ?></div>
 	<div id="copyright">&copy; 2011 nash-master.com</div>
 </div>

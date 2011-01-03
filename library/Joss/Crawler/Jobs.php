@@ -93,7 +93,7 @@ class Joss_Crawler_Jobs
 			throw new Exception('Unable to load adapter for: ' . $url);
 		}
 
-		// grap the URLs with interesting  data and create new jobs for that pages
+		//grap the URLs with interesting  data and create new jobs for that pages
 		$links = $Adapter->getDataLinks();
 
 		if (!empty($links)) {

@@ -178,6 +178,12 @@ class Nashmaster_Starter
 	 */
 	public function trackTime()
 	{
+		//disable total time calculation if response in JSON format
+		//such  behavior for prevent parseError in browser 
+		foreach (Zend_Controller_Front::getInstance()->getResponse()->getHeaders() as $header) {
+			if ($header["name"] == "Content-Type" && $header["value"] == "application/json")
+				return;
+		}
 		$totaltime = $this->getExecutionTime(true);
 		// echo "\n<!-- " . $totaltime . " ms -->";
 	}

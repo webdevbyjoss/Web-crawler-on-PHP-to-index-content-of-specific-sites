@@ -93,6 +93,7 @@ class Nashmaster_View extends Zend_View
     	 * Process the arguments
     	 */
         $options = func_get_args();
+        
         array_shift($options);
  
         $count  = count($options);
@@ -152,6 +153,32 @@ class Nashmaster_View extends Zend_View
     	}
 
     	return $output;
+    }
+    
+<<<<<<< HEAD
+    /*
+     * output form for users feedback 
+     */
+    public function feedbackForm()
+    {
+    	return new Users_Form_Feedback();
+=======
+    public function renderRegions()
+    {
+    	if (empty($this->searchForm)) {
+    		return '';
+    	}
+    	
+    	$regions = $this->searchForm->getRegions();
+    	
+    	$regionsHTML = '';
+    	foreach ($regions as $reg) {
+    		// TODO: we should add locale check here
+    		$regionsHTML .= ((empty($regionsHTML)? '' : ',' ) . '<span id="city-' . $reg['id'] . '">' . $reg['name_uk'] . '</span>');
+    	}
+    	
+    	return $regionsHTML;
+>>>>>>> 3186009ec0f732f270bcab25b0070ef0e63a4904
     }
 
 }

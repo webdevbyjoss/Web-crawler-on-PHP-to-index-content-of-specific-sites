@@ -7,10 +7,12 @@
   <?php echo $this->headTitle($this->T('site-name'))->setSeparator(' :: ') ?>
   <?php echo $this->headLink()->appendStylesheet('/css/layout.css')
                               ->appendStylesheet('/css/search-form.css') ?>
-  <?php echo $this->headScript()
-  	->prependFile('/js/jquery-1.4.2.min.js') //TODO: move to CDN for 'production'
-  	->appendFile('/js/search-form-actions.js'); ?>
-  <?php if (APPLICATION_ENV == 'production' && !$this->isAdmin()): ?>
+
+  <?php if (APPLICATION_ENV == 'production'): ?>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+  <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+  <?php if (!$this->isAdmin()):?>
   <script>
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-15610072-1']);
@@ -22,23 +24,49 @@
   })();
   </script>
   <?php endif; ?>
+  
+  <?php else:
+  	$this->headScript()
+  	->appendFile('/js/jquery-1.4.2.min.js')
+	->appendFile('/js/jquery.tmpl.min.js')
+  	;
+  endif; ?>
+
+  <?php echo $this->headScript()
+  	->appendFile('/js/jquery.typing-0.2.0.min.js')
+  	->appendFile('/js/search-form-actions.js');
+  	?>
+
 </head>
 <body>
 
 <div id="page"><div id="page-inner">
 
+
+<div id="top-menu">
+	<div id="top-menu-right">
+		<a href="#">вхід</a>
+	</div>
+	
+	<div id="top-menu-left">
+		<a class="active" href="#">пошук</a>
+		<a href="#">каталог</a>
+		<a href="#">статті</a>
+	</div>
+</div>
+
+
 <?php if ($this->isAdmin()):?>
 <div style="width:99%;float:left;padding-bottom:30px;">
 	<div style="float:left;">
-		<a href="/">Search</a>
-		<a href="/crawler/editor">Knowlage Base Editor</a>
-		<a href="/users/feedback/list/">Feedbacks</a>
+	<a href="/crawler/editor">Knowlage Base Editor</a>
 	</div>
 	<div style="float: right;">
 	<?php echo $this->profileLink(); ?>
 	</div>
 </div>
 <?php else: ?>
+
 <div id="header">
 <div id="logo">
 <a href="<?php echo $this->url(
@@ -52,12 +80,13 @@
 <img alt="<?php echo $this->T('logo') . ' ' . $this->T('site-name') ?>" src="<?php echo $this->getImagesUrl() . 'nash-master-logo-' . $this->getLocale() . '.png' ?>" /></a>
 <div id="beta-mark"><img alt="<?php echo $this->T('beta-version'); ?>" src="<?php echo $this->getImagesUrl() . 'beta.png'; ?>" /></div>
 </div>
-<div id="header-search-form">
+<div id="header-search-form" class="header-search-form-wide">
 	<div id="header-search-form-block">
 		<span><?php echo $this->T('what-type-of-service-question') ?></span><br />
-		<input tabindex="0" id="header-search-form-element" type="text" />
+		<input tabindex="1" id="header-search-form-element" type="text" />
 		<div id="header-selector">
-			вид робіт: <a id="header-selector-services" href="#">Укладка кафельної плитки</a> регіон: <a href="#">Тернопіль</a>
+			<a tabindex="3" id="header-selector-regions" href="#"><?php echo $this->renderRegions(); ?>&nbsp;</a>
+			<a tabindex="2" id="header-selector-services" href="#">&nbsp;</a>
 		</div>
 	</div>
 </div>
@@ -69,8 +98,7 @@
 </div></div>
 
 <div id="footer">
-	<div id="footer-feedback"><a id="feedbackLink" href="#"><?php echo $this->T('send-us-your-feedback') ?></a></div>
-	<?php echo $this->feedbackForm(); ?>
+	<div id="footer-feedback"><a tabindex="4" href="#"><?php echo $this->T('send-us-your-feedback') ?></a></div>
 	<div id="footer-language-selector"><?php echo $this->languageSelector() ?></div>
 	<div id="copyright">&copy; 2011 nash-master.com</div>
 </div>

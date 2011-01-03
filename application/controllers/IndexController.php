@@ -10,6 +10,10 @@ class IndexController extends Zend_Controller_Action
  
     public function indexAction()
     {
-        // action body
+    	$options = array();
+    	$options['remote_ip'] = $_SERVER['REMOTE_ADDR'];
+    	
+        $SearchForm = new Nashmaster_SearchForm($options);
+        $this->view->searchForm = $SearchForm;
     }
 }

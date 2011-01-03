@@ -19,6 +19,27 @@ class Joss_Crawler_Db_SynonymsErrors extends Zend_Db_Table_Abstract
 	protected $_name = 'crawl_data_synonyms_errors';
 	
 	/**
+	 * Logs error into database
+	 *
+	 * @param strign $data
+	 * @param string $tags
+	 */
+	public function log($data, $tags)
+	{
+		$data = array(
+		  	'title' => $data,
+			'lang_id' => $tags,
+		);
+		
+		try {
+			$this->insert($data);
+		} catch (Zend_Db_Exception $e) {
+			// echo "DATABASE TABLE UNIQUE INTEX ERROR " . __FILE__;
+		}
+
+	}
+	
+	/**
 	 * Get the list of item for each status
 	 *
 	 * @return array

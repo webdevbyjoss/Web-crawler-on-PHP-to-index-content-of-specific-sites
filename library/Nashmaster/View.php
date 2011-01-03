@@ -93,7 +93,6 @@ class Nashmaster_View extends Zend_View
     	 * Process the arguments
     	 */
         $options = func_get_args();
-        
         array_shift($options);
  
         $count  = count($options);
@@ -153,14 +152,6 @@ class Nashmaster_View extends Zend_View
     	}
 
     	return $output;
-    }
-    
-    /*
-     * output form for users feedback 
-     */
-    public function feedbackForm()
-    {
-    	return new Users_Form_Feedback();
     }
 
 }

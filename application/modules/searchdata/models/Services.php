@@ -13,4 +13,8 @@ class Searchdata_Model_Services extends Zend_Db_Table_Abstract
         return $this->fetchAll(array('parent_id = ' . (int) $id ));
     }
     
+    public function getById($id)
+    {
+    	return $this->find($id)->current();
+    }
 }

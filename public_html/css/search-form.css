@@ -214,3 +214,47 @@ span.selector-region-bar-selected-remove:hover {
 .selector-service-switch {
 	float: right;
 }
+
+
+
+
+/**
+ * AJAX
+ */
+.is-loading {
+	background-position: 99% center;
+	background-image: url(/images/ajax-loader.gif);
+	background-repeat: no-repeat;
+}
+
+/**
+ *  Rearch results
+ */
+.search-results {
+	font-size: 1em;
+	padding: 15px;
+}
+
+.search-results-item {
+	padding-top: 15px;
+}
+
+.search-results-item .title {
+	font-size: 1.1em;
+	text-transform: capitalize;
+	
+}
+
+.search-results-item .title a {
+	color: #2200C1;
+}
+
+.search-results-item .description {
+	/*width: 650px;*/
+}
+
+.search-results-item .url {
+	font-size: 0.8em;
+	padding-top: 5px;
+	color: #0E774A;
+}

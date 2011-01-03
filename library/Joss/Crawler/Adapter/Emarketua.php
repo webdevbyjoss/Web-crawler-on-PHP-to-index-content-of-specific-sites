@@ -99,17 +99,18 @@ class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 		
 		// we have categories for each region
 		foreach ($categoryPatterns as $pattern) {
-			$this->_categoryLinks[] = '@http://(' . str_replace('.', '\.', implode('|', $this->_domains)) . ')/construction/' . $pattern . '@';
+			$this->_categoryLinks[] = '@^http://(' . str_replace('.', '\.', implode('|', $this->_domains)) . ')/construction/' . $pattern . '$@';
+			$this->_categoryLinks[] = '@^http://(' . str_replace('.', '\.', implode('|', $this->_domains)) . ')/construction/' . $pattern . '/[0-9]+$@';
 		}
+		$this->_categoryLinks[] = '@^http://(' . str_replace('.', '\.', implode('|', $this->_domains)) . ')/construction$@';
 		
 		// each region has its own sub domail URL
-		$this->_dataLinks[] = '@http://(' . str_replace('.', '\.', implode('|', $this->_domains)) . ')/construction/.*_[0-9]+\.html@';
+		$this->_dataLinks[] = '@^http://(' . str_replace('.', '\.', implode('|', $this->_domains)) . ')/construction/.*_[0-9]+\.html@';
 		
 		// we need initial URL for each category
 		foreach ($this->_domains as $domain) {
 			$this->_initialUrls[] = 'http://' . $domain . '/construction';
 		}
-		
 	}
 	
 	public function extractItems()
@@ -197,15 +198,11 @@ class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 
 		// FIXME: this is for debug only to determine the situation when phone number wasn't recognized
 		if (empty($info['info']['contacts'])) {
-			
-			$Synonyms = new Joss_Crawler_Db_SynonymsErrors();
-			$data = array(
-				  'title' => $this->_currentUrl
-				, 'lang_id' => $phonesField
-			);
-			$Synonyms->insert($data);
-
+			$SynonymErrors = new Joss_Crawler_Db_SynonymsErrors();
+			$SynonymErrors->log($this->_currentUrl, $phonesField);
+			unset($SynonymErrors);
 		}
+		
 		
 		$info['regions'] = $this->getRegions();
 		$info['services'] = $this->getServices($info['info']);
@@ -219,33 +216,33 @@ class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 		
 		// recognize regions
 		$regionsMapping = array(
-			'emarket.kiev.ua'	=> '10184,10165',	// Киев и Киевская область
-			'emarket.kh.ua'		=> '10532,10504',	// Харьков и Харьковская область
-			'emarket.dn.ua'		=> '10029,10002',	// Донецк и Донецкая область
-			'emarket-ua.od.ua'	=> '10398,10373',	// Одесса и Одесская область
-			'emarket.zp.ua'		=> '10119,10111',	// Запорожье и Запорожская область
-			'emarket.crimea.ua'	=> '10252,10227',	// Симферополь и Крым
-			'emarket.dp.ua'		=> '9977,9964',	// Днепропетровская область
-			'emarket.vn.ua'		=> '9916,9909',	// Винница и Винницкая область
-			'emarket.lutsk.ua'	=> '9955,9943',	// Луцк и Волынская область
-			'emarket.zt.ua'		=> '10076,10061',	// Житомир и Житомирская область
-			'emarket.uz.ua'		=> '10108,10094',	// Ужгород и Закарпатская область
-			'emarket.if.ua'		=> '10151,10133',	// Ивано-Франковск и Ивано-Франковская область
-			'emarket.kr.ua'		=> '10214,10201',	// Кировоград и Кировоградская область
-			'emarket.lg.ua'		=> '10299,10259',	// Луганск и Луганская область
-			'emarket.lviv.ua'	=> '10337,10318',	// Львов и Львовская область
-			'emarket.mk.ua'		=> '10367,10354',	// Николаев и Николаевская область
-			'emarket.pl.ua'		=> '10430,10407',	// Полтава и Полтавская область
-			'emarket.rv.ua'		=> '10452,10437',	// Ровно и Ровенская область
-			'emarket.sumy.ua'	=> '10475,10455',	// Сумы и Сумская область
-			'emarket.te.ua'		=> '10501,10480',	// Тернополь и Тернопольская область
-			'emarket.ks.ua'		=> '10556,10535',	// Херсон и Херсонская область
-			'emarket.km.ua'		=> '10579,10559',	// Хмельницкий и Хмельницкая область
-			'emarket.ck.ua'		=> '10603,10583',	// Черкассы и Черкасская область
-			'emarket.cn.ua'		=> '10631,10607',	// Чернигов и Черниговская область
-			'emarket.cv.ua'		=> '10647,10633',	// Черновцы и Черновицкая область
-			'emarket-ua.ru'		=> '4400,,3159',	// Москва и Росия
-			'emarket.ua'		=> ',,9908',	// Все регионы Украины
+			'emarket.vn.ua'		=> '7,1',	// Винница и Винницкая область
+			'emarket.lutsk.ua'	=> '45,2',	// Луцк и Волынская область
+			'emarket.dp.ua'		=> '66,3',	// Днепропетровская область
+			'emarket.dn.ua'		=> '118,4',	// Донецк и Донецкая область
+			'emarket.zt.ua'		=> '164,5',	// Житомир и Житомирская область
+			'emarket.uz.ua'		=> '195,6',	// Ужгород и Закарпатская область
+			'emarket.zp.ua'		=> '205,7',	// Запорожье и Запорожская область
+			'emarket.if.ua'		=> '237,8',	// Ивано-Франковск и Ивано-Франковская область
+			'emarket.kiev.ua'	=> '270,9',	// Киев и Киевская область
+			'emarket.kr.ua'		=> '299,10',	// Кировоград и Кировоградская область
+			'emarket.crimea.ua'	=> '336,11',	// Симферополь и Крым
+			'emarket.lg.ua'		=> '381,12',	// Луганск и Луганская область
+			'emarket.lviv.ua'	=> '435,13',	// Львов и Львовская область
+			'emarket.mk.ua'		=> '464,14',	// Николаев и Николаевская область
+			'emarket-ua.od.ua'	=> '495,15',	// Одесса и Одесская область
+			'emarket.pl.ua'		=> '528,16',	// Полтава и Полтавская область
+			'emarket.rv.ua'		=> '549,17',	// Ровно и Ровенская область
+			'emarket.sumy.ua'	=> '571,18',	// Сумы и Сумская область
+			'emarket.te.ua'		=> '596,19',	// Тернополь и Тернопольская область
+			'emarket.kh.ua'		=> '628,20',	// Харьков и Харьковская область
+			'emarket.ks.ua'		=> '651,21',	// Херсон и Херсонская область
+			'emarket.km.ua'		=> '674,22',	// Хмельницкий и Хмельницкая область
+			'emarket.ck.ua'		=> '697,23',	// Черкассы и Черкасская область
+			'emarket.cn.ua'		=> '724,24',	// Чернигов и Черниговская область
+			'emarket.cv.ua'		=> '739,25',	// Черновцы и Черновицкая область
+			'emarket-ua.ru'		=> '740,,2',	// Москва и Росия
+			'emarket.ua'		=> ',,1',	// Все регионы Украины
 		);
 		
 		foreach ($regionsMapping as $pattern => $ids) {
@@ -324,17 +321,11 @@ class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 		
 		// FIXME: we need to collec unknown items during development to populate our wocabulary
 		if (!empty($unknown)) {
-			
-			$Synonyms = new Joss_Crawler_Db_SynonymsErrors();
-			
+			$SynonymErrors = new Joss_Crawler_Db_SynonymsErrors();
 			foreach ($unknown as $term => $url) {
-				$info = array(
-					  'title' => $url
-					, 'lang_id' => $term
-				);
-				$Synonyms->insert($info);
+				$SynonymErrors->log($url, $term);
 			}
-			
+			unset($SynonymErrors);
 		}
 		
 		// if service can't be recognized by exact tags match then we can try to recognize this by
@@ -449,12 +440,8 @@ class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 		// during development lets investigate strange URLs
 		// FIXME: bad practice, don't output anything directly
 		if (empty($services)) {
-			$Synonyms = new Joss_Crawler_Db_SynonymsErrors();
-			$info = array(
-				  'title' => $this->_currentUrl
-				, 'lang_id' => 'NO SERVICES'
-			);
-			$Synonyms->insert($info);
+			$SynonymErrors = new Joss_Crawler_Db_SynonymsErrors();
+			$SynonymErrors->log($this->_currentUrl, 'NO SERVICES');
 		}
 
 		return $services;

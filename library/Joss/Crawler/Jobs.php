@@ -72,7 +72,7 @@ class Joss_Crawler_Jobs
 			 */
 			return false;
 		}
-		
+
 		$this->processData($job['url'], $job['raw_body']);
 		$this->_dbJobs->finishJob($job['crawl_jobs_id']);
 		return true;
@@ -90,11 +90,12 @@ class Joss_Crawler_Jobs
 		// recognize the adapter & extract content
 		$Adapter = $this->getLoadedAdapter($url, $raw_body);
 		if (null === $Adapter) {
-			return false;
+			throw new Exception('Unable to load adapter for: ' . $url);
 		}
 
 		//grap the URLs with interesting  data and create new jobs for that pages
 		$links = $Adapter->getDataLinks();
+
 		if (!empty($links)) {
 			foreach ($links as $key => $link) {
 				$this->_dbJobs->createJob($link['url']);
@@ -102,18 +103,29 @@ class Joss_Crawler_Jobs
 		}
 		
 		// grap the data from the page
-		$Items = new Joss_Crawler_Db_Items();
+		// late return in case no data were recognized on this page
 		$data = $Adapter->getData();
-		
-		if (null !== $data) {
-			foreach ($data as $advert) {
-				$Items->add($advert);
-			}
+		if (null === $data) {
+			return ;
 		}
+		
+		// store grabed inforamtion into crawler database
+		$Items = new Joss_Crawler_Db_Items();
+		
+		foreach ($data as $advert) {
+			$Items->add($advert);
+		}
+
 	}
 	
 	/**
 	 * Returns the last job by URL
+	 *
+	 * in job server we potentically can have couple same URL with the different status
+	 * in case current URL were already processed and rgiht now we need to update information
+	 * we have by downloading the newer content
+	 *
+	 * anyway we should optimize this part to have only one unique URL in jobs database
 	 *
 	 * @param string $url
 	 * @return Joss_Crawler_Adapter_Abstract
@@ -137,7 +149,7 @@ class Joss_Crawler_Jobs
 		// recognize the adapter
 		$Adapter = $this->getAdapterByUrl($url);
 		if (null === $Adapter) {
-			return null;
+			throw new Exception ('No adapter can be loaded for URL:' . $url);
 		}
 		
 		// load page content
@@ -150,6 +162,10 @@ class Joss_Crawler_Jobs
 	/**
 	 * It recognizes the adapter by provided URL
 	 * and returns apropriate adapter instance
+	 *
+	 * TODO: this is not very oprimal, we should cache recognized adapters somwhow to
+	 *       avoid re-recognision of simmilar URLs from the same domain/adapter and make
+	 *       everything fater in overal operation
 	 *
 	 * @param string $url
 	 * @return Joss_Crawler_Adapter_Abstract

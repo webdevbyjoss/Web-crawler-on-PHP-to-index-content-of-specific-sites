@@ -78,8 +78,8 @@
 		<target xml:lang="uk">надішліть нам свій відгук</target>
 	</trans-unit>
 	<trans-unit id="what-type-of-service-question">
-		<source xml:lang="ru">какой вид работ вас интересует?</source>
-		<target xml:lang="uk">який вид робіт вас цікавить?</target>
+		<source xml:lang="ru">какой вид услуг вас интересует?</source>
+		<target xml:lang="uk">який вид послуг вас цікавить?</target>
 	</trans-unit>
 	<trans-unit id="Your-opinion-is-important-for-us">
 		<source xml:lang="ru">Ваше мнение важно для нас</source>

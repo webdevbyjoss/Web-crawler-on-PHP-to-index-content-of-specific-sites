@@ -185,7 +185,7 @@ class Nashmaster_Starter
 				return;
 		}
 		$totaltime = $this->getExecutionTime(true);
-		echo "\n<!-- " . $totaltime . " ms -->";
+		// echo "\n<!-- " . $totaltime . " ms -->";
 	}
 	
 	/**

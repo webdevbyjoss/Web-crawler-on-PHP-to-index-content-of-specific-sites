@@ -14,69 +14,30 @@ class Crawler_TestController extends Zend_Controller_Action
 	
 	public function searchAction()
 	{
-		$options = array(
-			'keywords' => 'укладка паркету 333, тернопіль іва фі=- тернополь -  фівафіва %:?№%;""'
-		);
+		$options['search_keywords'] = 'вікна';
+		$options['remote_ip'] = '127.0.0.1';
 		
 		$SearchForm = new Nashmaster_SearchForm($options);
-		$SearchForm->setKeywords($options['keywords']);
-		
-		$data = $SearchForm->getAdapter()->getIterator();
-		var_dump($data);
+		var_dump($SearchForm);
 	}
 
-	public function indexAction()
+	public function dataAction()
 	{
-		$Items = new Joss_Crawler_Db_Items();
-		$searchIndex = new Search_Model_Index();
-		$itemsRowset = $Items->getItems();
-
-		$ItemServices = new Joss_Crawler_Db_ItemServices();
-		$ItemRegions = new Joss_Crawler_Db_ItemRegions();
+		$url = 'http://emarket.ua/construction/elevators-escalators';
 		
-		foreach ($itemsRowset as $key => $item) {
-			
-			// get serive
-			$itemsServicesRowset = $ItemServices->getDataById($item->id);
-			
-			// get region
-			$itemsRegionsRowset = $ItemRegions->getDataById($item->id);
-
-			if (empty($itemsRegionsRowset[0])) {
-					continue;
-			}
-			$reg = $itemsRegionsRowset[0];
-			
-			// save into index in case thre is no such a unique combination
-			// of (item_id,service_id,region_id)
-			foreach ($reg as $myreg) {
-				
-				foreach ($itemsServicesRowset as $myser) {
-					
-					// echo "\n============\n";
-					// var_dump($item->id, $myser->service_id, $myreg->region_id);
-					// continue;
-					
-					if ($searchIndex->itemExists($item->id, $myser->service_id, $myreg->region_id)) {
-						continue;
-					}
-					
-					$searchIndex->add(
-						$item->id,
-						$myser->service_id,
-						$myreg->region_id,
-						$item->url,
-						$item->title,
-						$item->description
-					);
-
-				}
-				
-			}
-
-		}
+		$job = new Joss_Crawler_Db_Jobs();
+		$data = $job->getLastJobByUrl($url);
+		
+		// load page content
+		$rawBody = base64_decode($data['raw_body']);
+		
+		$emarketUa = new Joss_Crawler_Adapter_Emarketua();
+		$emarketUa->loadPage($url, $rawBody);
+		
+		$links = $emarketUa->getDataLinks();
+		var_dump($links);
 		
 		
 	}
-
+	
 }

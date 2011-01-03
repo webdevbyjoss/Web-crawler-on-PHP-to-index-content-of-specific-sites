@@ -449,14 +449,17 @@ abstract class Joss_Crawler_Adapter_Abstract implements Joss_Crawler_Adapter_Int
 		// we need this check to grap the URLs only from the category pages
 		// and avoid extracting links from the item details page
 		// possibly this can be changed in the future
-		if ($this->matchDataLink($this->_currentUrl, self::MATCH_DATA_ONLY)) {
-			return null;
-		}
+		// if (!$this->matchDataLink($this->_currentUrl)) { //, self::MATCH_DATA_ONLY
+		// 	return null;
+		// }
 		
 		$links = $this->getUrls();
 		$dataLinks = array();
 		
 		foreach ($links as $index => $link) {
+			
+			$link['url'] = $this->_normalizeUrl($link['url']);
+			
 			if ($this->matchDataLink($link['url'])) {
 				// we need to make all relative URL to be absolute using the domain of current page
 				$link['url'] = $this->_normalizeUrl($link['url']);

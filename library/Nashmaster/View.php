@@ -156,6 +156,10 @@ class Nashmaster_View extends Zend_View
     
     public function renderRegions()
     {
+    	if (empty($this->searchForm)) {
+    		return '';
+    	}
+    	
     	$regions = $this->searchForm->getRegions();
     	
     	$regionsHTML = '';

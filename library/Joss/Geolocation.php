@@ -42,6 +42,10 @@ class Joss_Geolocation
 	 */
 	public function getCityByIp($ip)
 	{
+		if (empty($ip)) {
+			throw new Exception('IP address is not defined');
+		}
+		
 		// 1. try to get data from cahce
 		// or get data from local database
 		$GeoDb = new Joss_Geolocation_Db();

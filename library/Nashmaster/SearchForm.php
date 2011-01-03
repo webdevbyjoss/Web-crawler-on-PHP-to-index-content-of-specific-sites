@@ -38,6 +38,7 @@ class Nashmaster_SearchForm
 			$this->setAdapter(new Zend_Session_Namespace(__CLASS__));
 		}
 		
+		$this->loadDataFromSession();
 		$this->initValues($options);
 	}
 
@@ -47,10 +48,6 @@ class Nashmaster_SearchForm
 	public function __destruct()
 	{
 		$this->_session->base_region = $this->_base_region;
-		
-		$this->_session->inline_regions = $this->_inline_regions;
-		$this->_session->inline_services = $this->_inline_services;
-		
 		$this->_session->last_search_keywords = $this->_last_search_keywords;
 		
 		$this->_session->regions = $this->_regions;
@@ -63,10 +60,6 @@ class Nashmaster_SearchForm
 	public function loadDataFromSession()
 	{
 		$this->_base_region = $this->_session->base_region;
-		
-		$this->_inline_regions = $this->_session->inline_regions;
-		$this->_inline_services = $this->_session->inline_services;
-		
 		$this->_last_search_keywords = $this->_session->last_search_keywords;
 		
 		$this->_regions = $this->_session->regions;

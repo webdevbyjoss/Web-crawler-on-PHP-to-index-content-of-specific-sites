@@ -99,12 +99,13 @@ class Joss_Crawler_Adapter_Emarketua extends Joss_Crawler_Adapter_Abstract
 		
 		// we have categories for each region
 		foreach ($categoryPatterns as $pattern) {
-			$this->_categoryLinks[] = '@http://(' . str_replace('.', '\.', implode('|', $this->_domains)) . ')/construction/' . $pattern . '@';
+			$this->_categoryLinks[] = '@^http://(' . str_replace('.', '\.', implode('|', $this->_domains)) . ')/construction/' . $pattern . '$@';
+			$this->_categoryLinks[] = '@^http://(' . str_replace('.', '\.', implode('|', $this->_domains)) . ')/construction/' . $pattern . '/[0-9]+$@';
 		}
-		$this->_categoryLinks[] = '@http://(' . str_replace('.', '\.', implode('|', $this->_domains)) . ')/construction@';
+		$this->_categoryLinks[] = '@^http://(' . str_replace('.', '\.', implode('|', $this->_domains)) . ')/construction$@';
 		
 		// each region has its own sub domail URL
-		$this->_dataLinks[] = '@http://(' . str_replace('.', '\.', implode('|', $this->_domains)) . ')/construction/.*_[0-9]+\.html@';
+		$this->_dataLinks[] = '@^http://(' . str_replace('.', '\.', implode('|', $this->_domains)) . ')/construction/.*_[0-9]+\.html@';
 		
 		// we need initial URL for each category
 		foreach ($this->_domains as $domain) {

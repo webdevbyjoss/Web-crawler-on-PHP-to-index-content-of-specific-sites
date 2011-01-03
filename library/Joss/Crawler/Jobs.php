@@ -149,7 +149,7 @@ class Joss_Crawler_Jobs
 		// recognize the adapter
 		$Adapter = $this->getAdapterByUrl($url);
 		if (null === $Adapter) {
-			return null;
+			throw new Exception ('No adapter can be loaded for URL:' . $url);
 		}
 		
 		// load page content

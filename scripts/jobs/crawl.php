@@ -84,7 +84,7 @@ for ($i = 0; $i < CALLS_PER_RUN; $i++) {
 	
 	echo "OK: " . $result . "\n";
 	// we need a pause during 1 second between calls to avoid web-server overload
-	sleep(1);
+	sleep(0.5);
 }
 
 // calculate total execution time

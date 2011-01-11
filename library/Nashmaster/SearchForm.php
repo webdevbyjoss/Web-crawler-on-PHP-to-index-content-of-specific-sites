@@ -119,10 +119,11 @@ class Nashmaster_SearchForm
 	public function setKeywords($keywords)
 	{
 		// late return in case keywords hasn't been changed
-		if ($this->_last_search_keywords == $keywords && !empty($this->_last_inline_services)) {
-			$this->_inline_services = $this->_last_inline_services;
-		 	return null;
-		}
+		// FIXME: was not able to make this stable
+		//if ($this->_last_search_keywords == $keywords && !empty($this->_last_inline_services)) {
+		//	$this->_inline_services = $this->_last_inline_services;
+		// 	return null;
+		//}
 		
 		$keywordList = $this->prepareKeywords($keywords);
 		$regionsMatch = $this->getRegionsByKeywords($keywordList);
@@ -153,7 +154,11 @@ class Nashmaster_SearchForm
 	 */
 	public function prepareKeywords($keywords)
 	{
-		$keywords = mb_ereg_replace('[^\w]', ' ', $keywords);
+		$keywords = mb_ereg_replace('[^\w-]', ' ', $keywords);
+		
+		// we need this to process cities like "New York", "New-York"
+		// and treat them as the same city
+		$keywords = str_replace('-', ' ', $keywords);
 		
 		$keywords_array = explode(' ', $keywords);
 		$keywords_array_new = array();
@@ -213,8 +218,44 @@ class Nashmaster_SearchForm
 		
 		$ids = array();
 		$hit_keywords = array();
+		
+		// Lookup two words cities
+		// lets join keywords into pairs
+		// in case we have X keywords - we will have X pair
+		// because we need to lookup each (i,i+1) pair where max i = X-1
+		// this will help us to detect two words cities in the queries like:
+		// "new york electricity specialist" => "new york"
+		for ($i = 0;$i < (count($keywords) - 1); $i++) {
+			// TODO: we should add the posibility to recognize not only cities
+			//       but also the regions and areas in the future
+			// two words lookup will help us to recognize regions as well
+			// NOTE: we using a trick of MySQL "LIKE" inctruction that will
+			// process underscode symbol "_" as single-characted wildcard
+			// so both variants will match "New York" and "New-York"
+			$matchList = $Cities->getCitiesByTag($keywords[$i] . '_' . $keywords[$i + 1]);
+			if (null === $matchList) {
+				continue;
+			}
+
+			foreach($matchList as $city) {
+				$ids[$city->city_id]['id'] = $city->city_id;
+				$ids[$city->city_id]['name'] = $city->name;
+				$ids[$city->city_id]['name_uk'] = $city->name_uk;
+				$hit_keywords[] = $keywords[$i];
+				$hit_keywords[] = $keywords[$i + 1];
+			}
+		}
+		
+		// after the pair lookup was finished
+		// we should exclude the keywords that are already recognized as cities
+		// to avoid redundant lookups and possibly falce single-word city recognision like
+		// "new york electricity specialist" => "york"
+		// so in case we already found the two words city it will not process appropriate
+		// single-word city
+		$keywords = array_diff($keywords, $hit_keywords);
+		
+		// Lookup single-word cities
 		foreach ($keywords as $keyword) {
-			
 			// TODO: we should add the posibility to recognize not only cities
 			//       but also the regions and areas in the future
 			$matchList = $Cities->getCitiesByTag($keyword);
@@ -228,9 +269,8 @@ class Nashmaster_SearchForm
 				$ids[$city->city_id]['name_uk'] = $city->name_uk;
 				$hit_keywords[] = $keyword;
 			}
-
 		}
-		
+
 		$res = array();
 		$res['hit_keywords'] = $hit_keywords;
 		$res['cities'] = $ids;

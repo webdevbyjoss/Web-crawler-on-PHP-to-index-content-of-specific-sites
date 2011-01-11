@@ -77,8 +77,8 @@
 		<target xml:lang="uk">надішліть нам свій відгук</target>
 	</trans-unit>
 	<trans-unit id="what-type-of-service-question">
-		<source xml:lang="ru">какой вид услуг вас интересует?</source>
-		<target xml:lang="uk">який вид послуг вас цікавить?</target>
+		<source xml:lang="ru">в каком городе и какой вид услуг вас интересует?</source>
+		<target xml:lang="uk">в якому місті та який вид послуг вас цікавить?</target>
 	</trans-unit>
 	<trans-unit id="Your-opinion-is-important-for-us">
 		<source xml:lang="ru">Ваше мнение важно для нас</source>
@@ -116,6 +116,23 @@
 		<source xml:lang="ru">У вас нет прав на доступ к даной странице</source>
 		<target xml:lang="uk">у вас немає права на доступ до даної сторінки</target>
 	</trans-unit>
+	<trans-unit id="back">
+		<source xml:lang="ru">назад</source>
+		<target xml:lang="uk">назад</target>
+	</trans-unit>
+	<trans-unit id="forward">
+		<source xml:lang="ru">вперед</source>
+		<target xml:lang="uk">вперед</target>
+	</trans-unit>
+	<trans-unit id="pages">
+		<source xml:lang="ru">Страницы:</source>
+		<target xml:lang="uk">Cторінки:</target>
+	</trans-unit>
+	<trans-unit id="no-search-results">
+		<source xml:lang="ru">По вашему запросу результатов не найдено</source>
+		<target xml:lang="uk">За вашим запитом не знайдено жодного результату</target>
+	</trans-unit>
+	
 	
 	
 </body>

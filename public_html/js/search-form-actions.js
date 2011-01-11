@@ -174,10 +174,12 @@ function loadPreSearchData($elem) {
 	
 	// in case some data for this particular request was already loaded some time ago
 	// we can get that data fromt the local cache
-	if (data = Storage[keywords]) {
-		updateForm(data);
-		return;
-	}
+	// FIXME: this is commented out as I was not able to make this 
+	// operational withour bugs for some cyrillyc letters 
+	//if (data = Storage[keywords]) {
+	//	updateForm(data);
+	//	return;
+	//}
 	
 	$elem.addClass('is-loading');
 	SearchFormIsLoading = true;
@@ -209,8 +211,8 @@ function stopLoadingPreSearchData($elem) {
 function updateForm(data) {
 	
 	// temporrary solution
-	var regionId = 0;
-	var serviceId = 0;
+	var regionId = null;
+	var serviceId = null;
 	
 	var regionsHTML = "";
 	if (data.regions) {
@@ -220,25 +222,38 @@ function updateForm(data) {
 			} else {
 				regionsHTML += ', <span id="city-' + i + '">' + val + '</span>';
 			}
-			regionId = i;
+			
+			if (null == regionId) {
+				regionId = i;
+			} else {
+				regionId = regionId + ',' + i;
+			}
+			
 		});
 	}
 	
 	var servicesHTML = "";
 	if (data.services) {
 		$.each(data.services, function(i, val) {
+			
 			if ("" == servicesHTML) {
 				servicesHTML = '<span id="service-' + i + '">' + val + '</span>';
 			} else {
 				servicesHTML += ', <span id="service-' + i + '">' + val + '</span>';
 			}
-			serviceId = i;
+			
+			if (null == serviceId) {
+				serviceId = i;
+			} else {
+				serviceId = serviceId + ',' + i;
+			}
+			
 		});
 	}
 
 	$('#header-selector').html("");
 	var templateData = $.tmpl(templateSearchFormBlocks, 
-		{ Regions : regionsHTML, Services: servicesHTML}
+		{ Regions : regionsHTML, Services: servicesHTML }
 	).appendTo('#header-selector');
 	
 	// and now we can call for search results
@@ -247,6 +262,23 @@ function updateForm(data) {
 
 // loads data from the backend
 function loadSearchResults(serviceIds, regionIds, page) {
+	
+	if (null == page) {
+		page = 1;
+	}
+	
+	var url = '/' + locale +'/search/results/get/service/' + encodeURIComponent(serviceIds) + '/region/' + encodeURIComponent(regionIds) + '/page/' + page;
+	loadSearchResultsByUrl(url);
+}
+
+// load data from specified URL
+function loadSearchResultsByUrl(url) {
 	$('#main').html('<div id="data-loading"><img src="/images/ajax-data-loader-progress.gif" /></div>');
-	$('#main').load('/' + locale +'/search/results/get/service/' + serviceIds + '/region/' + regionIds + '/page/' + page);
+	$('#main').load(url, function() {
+		// lets bind AJAX calls to new pagenation links that was just loaded
+		$('.searchPaginationControl a').unbind('click').click(function(){
+			loadSearchResultsByUrl($(this).attr('href'));
+			return false;
+		});
+	});
 }

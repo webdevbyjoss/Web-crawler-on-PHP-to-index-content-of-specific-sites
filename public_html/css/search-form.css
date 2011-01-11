@@ -266,3 +266,29 @@ span.selector-region-bar-selected-remove:hover {
 }
 
 /* pagenation */
+.searchPaginationControl {
+	padding-top: 15px;
+	padding-bottom: 5px;
+}
+
+.searchPaginationControl a {
+	padding: 5px;
+	color: black;
+	text-decoration: none;
+	font-size: 1em;
+	color: gray;
+}
+
+.searchPaginationControl a:hover {
+	font-size: 1.4em;
+	color: black;
+}
+
+.searchPaginationControl .current-page {
+	padding: 5px;
+}
+
+.searchPaginationControl .pages-label {
+	font-size: 1.2em;
+	padding-right: 5px;
+}

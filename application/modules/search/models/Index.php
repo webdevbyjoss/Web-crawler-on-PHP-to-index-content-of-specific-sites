@@ -54,19 +54,20 @@ class Search_Model_Index extends Zend_Db_Table_Abstract
 		$indexRecord->save();
 	}
 	
-	public function getData($serviceId, $regionId)
+	/**
+	 * Returns pagination adapter to paginate thrue data
+	 *
+	 * @param array $serviceIds
+	 * @param array $regionIds
+	 * @return Zend_Paginator_Adapter_Interface
+	 */
+	public function getDataPagenation($serviceIds, $regionIds)
 	{
 		$select = $this->select();
-		$select->where('service_id = ?', $serviceId);
-		$select->where('region_id = ?', $regionId);
-		$select->limit(10);
+		$select->where('service_id IN (' . implode(',', $serviceIds) . ')');
+		$select->where('region_id IN (' . implode(',', $regionIds) . ')');
 		
-		$res = $this->fetchAll($select);
-		
-		if (count($res) > 0) {
-			return $res;
-		}
-		
-		return null;
+		return new Zend_Paginator_Adapter_DbSelect($select);
 	}
+	
 }

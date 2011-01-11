@@ -44,14 +44,33 @@
 
 
 <div id="top-menu">
+	<?php /* ?>
 	<div id="top-menu-right">
-		<a href="#">вхід</a>
+		<a href="/login"><?php echo $this->T('login'); ?></a>
 	</div>
-	
+	<?php */ ?>
+		
 	<div id="top-menu-left">
-		<a class="active" href="#">пошук</a>
+		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'index',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>"><?php echo $this->T('search'); ?></a>
+		<?php /* ?>
 		<a href="#">каталог</a>
 		<a href="#">статті</a>
+		<?php */ ?>
+		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'help'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'help',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>"><?php echo $this->T('help'); ?></a>
 	</div>
 </div>
 
@@ -80,6 +99,8 @@
 <img alt="<?php echo $this->T('logo') . ' ' . $this->T('site-name') ?>" src="<?php echo $this->getImagesUrl() . 'nash-master-logo-' . $this->getLocale() . '.png' ?>" /></a>
 <div id="beta-mark"><img alt="<?php echo $this->T('beta-version'); ?>" src="<?php echo $this->getImagesUrl() . 'beta.png'; ?>" /></div>
 </div>
+
+<?php if (!empty($this->searchForm)): ?>
 <div id="header-search-form" class="header-search-form-wide">
 	<div id="header-search-form-block">
 		<span><?php echo $this->T('what-type-of-service-question') ?></span><br />
@@ -90,6 +111,8 @@
 		</div>
 	</div>
 </div>
+<?php endif;?>
+
 </div>
 <?php endif; ?>
 

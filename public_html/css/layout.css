@@ -35,14 +35,14 @@ h1, h2, h3, h4, h5, h6 {
 #top-menu {
 	padding: 15px;
 	padding-left: 0;
-	padding-bottom: 30px;
+	padding-bottom: 15px;
 }
 
 #top-menu a {
 	padding-right: 12px;
 	padding-left: 12px;
 	color: gray;
-	font-size: 1.8em;
+	font-size: 1.4em;
 }
 
 #top-menu a:hover {

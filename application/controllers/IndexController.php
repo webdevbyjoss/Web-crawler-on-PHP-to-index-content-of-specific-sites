@@ -1,6 +1,6 @@
 <?php
 
-class IndexController extends Zend_Controller_Action
+class IndexController extends Nashmaster_Controller_Action
 {
  
     public function init()
@@ -10,10 +10,6 @@ class IndexController extends Zend_Controller_Action
  
     public function indexAction()
     {
-    	$options = array();
-    	$options['remote_ip'] = $_SERVER['REMOTE_ADDR'];
-    	
-        $SearchForm = new Nashmaster_SearchForm($options);
-        $this->view->searchForm = $SearchForm;
+
     }
 }

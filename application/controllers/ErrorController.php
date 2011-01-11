@@ -31,10 +31,20 @@ class ErrorController extends Zend_Controller_Action
 
     public function deniedAction()
     {
+    	// throw new Exception('Access denied. "' . $resource . '" for "' . $userInfo['roles'] );
+    	$role = $this->_getParam('role');
+    	$resource = $this->_getParam('resource');
+    	// TODO: place Ofuz error reporting code here
     	
+    	// 403 error -- access denied
+        $this->getResponse()->setHttpResponseCode(403);
+        $this->view->responseCode = 403;
+        $this->view->role = $role;
+        $this->view->resource = $resource;
+		$this->view->stack_trace = $this->_getFullErrorMessage();
     }
 
-    protected function _getFullErrorMessage($error)
+    protected function _getFullErrorMessage($error = null)
     {
     	if (APPLICATION_ENV != 'development')
     	{
@@ -55,16 +65,18 @@ class ErrorController extends Zend_Controller_Action
             $message .= "Request type: " . $_SERVER['HTTP_X_REQUESTED_WITH'] . "\n";
         }
 
-        $message .= "Server time: " . date("Y-m-d H:i:s") . "\n";
-        $message .= "RequestURI: " . $error->request->getRequestUri() . "\n";
-
         if (!empty($_SERVER['HTTP_REFERER'])) {
             $message .= "Referer: " . $_SERVER['HTTP_REFERER'] . "\n";
         }
-
-        $message .= "Message: " . $error->exception->getMessage() . "\n\n";
-        $message .= "Trace:\n" . $error->exception->getTraceAsString() . "\n\n";
-        $message .= "Request data: " . var_export($error->request->getParams(), true) . "\n\n";
+        
+        $message .= "Server time: " . date("Y-m-d H:i:s") . "\n";
+        
+        if (null !== $error) {
+	        $message .= "RequestURI: " . $error->request->getRequestUri() . "\n";
+	        $message .= "Message: " . $error->exception->getMessage() . "\n\n";
+	        $message .= "Trace:\n" . $error->exception->getTraceAsString() . "\n\n";
+	        $message .= "Request data: " . var_export($error->request->getParams(), true) . "\n\n";
+        }
         
         if (!empty($_SESSION)) {
             $it = $_SESSION;

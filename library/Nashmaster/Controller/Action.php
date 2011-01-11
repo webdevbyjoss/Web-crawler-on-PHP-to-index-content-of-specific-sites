@@ -15,11 +15,26 @@ class Nashmaster_Controller_Action extends Zend_Controller_Action
         
         // Lets check the permissions
         $request = $this->getRequest();
-        $resource = 'mvc:' . $request->module;
+        $resource = 'mvc:' . ($request->module ? $request->module : 'default');
         
         if (!$acl->isAllowed($userInfo['roles'], $resource)) {
-        	throw new Exception('Access denied. ' . $resource . '::' . $userInfo['roles']);
+
+        	$request
+        		->setParam('resource', $resource)
+        		->setParam('role', $userInfo['roles'])
+        		->setModuleName('default')
+	            ->setControllerName('error') // using the errorController seems appropriate
+	            ->setActionName('denied')
+	            ->setDispatched(false);
+	            ;
+	        return;
         }
         
+        // Prepage search form
+        $options = array();
+    	$options['remote_ip'] = $_SERVER['REMOTE_ADDR'];
+    	
+        $SearchForm = new Nashmaster_SearchForm($options);
+        $this->view->searchForm = $SearchForm;
 	}
 }

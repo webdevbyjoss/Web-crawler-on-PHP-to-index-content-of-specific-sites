@@ -18,11 +18,11 @@ class Nashmaster_Acl extends Zend_Acl
 		// set the list of resources
 		$this->add(new Zend_Acl_Resource('mvc:default'));
 		$this->add(new Zend_Acl_Resource('mvc:crawler'));
-		$this->add(new Zend_Acl_Resource('mvc:searchdata'));
+		$this->add(new Zend_Acl_Resource('mvc:search'));
 		
 		// setup permissions
 		$this->allow(self::ROLE_GUEST, 'mvc:default');
-		$this->allow(self::ROLE_GUEST, 'mvc:searchdata');
+		$this->allow(self::ROLE_GUEST, 'mvc:search');
 
 		$this->allow(self::ROLE_ADMIN, 'mvc:crawler');
 		$this->allow(self::ROLE_CRON, 'mvc:crawler');

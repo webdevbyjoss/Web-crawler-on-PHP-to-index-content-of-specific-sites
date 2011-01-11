@@ -46,11 +46,14 @@
 
 
 <div id="top-menu">
-	<?php /* ?>
+	
 	<div id="top-menu-right">
+		<a id="feedbackLink" title="<?php echo $this->T('send-us-your-feedback') ?>" href="#"><?php echo $this->T('feedback') ?></a>
+		<?php /* ?>
 		<a href="/login"><?php echo $this->T('login'); ?></a>
+		<?php */ ?>
 	</div>
-	<?php */ ?>
+	
 		
 	<div id="top-menu-left">
 		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
@@ -123,10 +126,9 @@
 </div></div>
 
 <div id="footer">
-	<div id="footer-feedback"><a id="feedbackLink" tabindex="4" href="#"><?php echo $this->T('send-us-your-feedback') ?></a></div>
 	<?php echo $this->feedbackForm(); ?>
-	<div id="footer-language-selector"><?php echo $this->languageSelector() ?></div>
-	<div id="copyright">&copy; 2011 nash-master.com</div>
+	<div id="copyright">&copy; 2011 nash-master.com, <?php echo $this->languageSelector() ?></div>
+	<div id="footer-language-selector"></div>
 </div>
 
 </div></div>

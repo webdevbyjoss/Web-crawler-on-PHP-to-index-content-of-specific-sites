@@ -76,6 +76,10 @@
 		<source xml:lang="ru">оставьте нам свой отзыв</source>
 		<target xml:lang="uk">надішліть нам свій відгук</target>
 	</trans-unit>
+	<trans-unit id="feedback">
+		<source xml:lang="ru">Отзыв</source>
+		<target xml:lang="uk">Відгук</target>
+	</trans-unit>
 	<trans-unit id="what-type-of-service-question">
 		<source xml:lang="ru">в каком городе и какой вид услуг вас интересует?</source>
 		<target xml:lang="uk">в якому місті та який вид послуг вас цікавить?</target>
@@ -132,9 +136,11 @@
 		<source xml:lang="ru">По вашему запросу результатов не найдено</source>
 		<target xml:lang="uk">За вашим запитом не знайдено жодного результату</target>
 	</trans-unit>
-	
-	
-	
+	<trans-unit id="search-form-usage">
+		<source xml:lang="ru">Использование формы поиска</source>
+		<target xml:lang="uk">Використання форми пошуку</target>
+	</trans-unit>
+
 </body>
 </file>
 </xliff>

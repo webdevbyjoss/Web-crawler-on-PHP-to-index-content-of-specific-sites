@@ -238,7 +238,8 @@ span.selector-region-bar-selected-remove:hover {
  */
 .search-results {
 	font-size: 1em;
-	padding: 15px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .search-results-item {

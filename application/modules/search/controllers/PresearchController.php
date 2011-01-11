@@ -27,7 +27,7 @@ class Search_PresearchController extends Zend_Controller_Action
 		$data = array();
 		if (is_array($regions)) {
 			foreach ($regions as $key => $val) {
-				$data['regions'][$val['id']] = !empty($val['name_uk']) ? $val['name_uk'] : $val['name'];
+				$data['regions'][$val['id']] = ($locale == 'uk') ? $val['name_uk'] : $val['name'];
 			}
 		}
 		

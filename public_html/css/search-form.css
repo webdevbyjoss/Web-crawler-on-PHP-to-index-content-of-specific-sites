@@ -227,6 +227,12 @@ span.selector-region-bar-selected-remove:hover {
 	background-repeat: no-repeat;
 }
 
+#data-loading {
+	text-align: center;
+	padding-top: 100px;
+	padding-bottom: 70px;
+}
+
 /**
  *  Rearch results
  */
@@ -258,3 +264,5 @@ span.selector-region-bar-selected-remove:hover {
 	padding-top: 5px;
 	color: #0E774A;
 }
+
+/* pagenation */

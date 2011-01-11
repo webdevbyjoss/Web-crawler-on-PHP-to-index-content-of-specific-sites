@@ -42,6 +42,24 @@ var templateSearchFormBlocks =
 $(document).ready(function () {
 
 	/**
+	 * We should preload progress bar images
+	 */
+	(function($) {
+		  var cache = [];
+		  // Arguments are image paths relative to the current page.
+		  $.preLoadImages = function() {
+		    var args_len = arguments.length;
+		    for (var i = args_len; i--;) {
+		      var cacheImage = document.createElement('img');
+		      cacheImage.src = arguments[i];
+		      cache.push(cacheImage);
+		    }
+		  }
+		})(jQuery);
+	
+	jQuery.preLoadImages("/images/ajax-data-loader-progress.gif", "/images/ajax-loader.gif");
+	
+	/**
 	 * Optimize layout for small screens
 	 */
 	$(window).resize(function() {
@@ -164,7 +182,7 @@ function loadPreSearchData($elem) {
 	$elem.addClass('is-loading');
 	SearchFormIsLoading = true;
 	
-	ajaxCallHandler = $.getJSON('/search/presearch/query/data/' + encodeURIComponent(keywords), null, function(data) {
+	ajaxCallHandler = $.getJSON('/' + locale +'/search/presearch/query/data/' + encodeURIComponent(keywords), null, function(data) {
 		// load data and store it into local cache
 		
 		// FIXME: may be dangerous!!!!! in case keywords were updated in search string
@@ -227,6 +245,8 @@ function updateForm(data) {
 	loadSearchResults(serviceId, regionId);
 }
 
-function loadSearchResults(serviceId, regionId) {
-	$('#main').load('/search/results/get/service/' + serviceId + '/region/' + regionId);
+// loads data from the backend
+function loadSearchResults(serviceIds, regionIds, page) {
+	$('#main').html('<div id="data-loading"><img src="/images/ajax-data-loader-progress.gif" /></div>');
+	$('#main').load('/' + locale +'/search/results/get/service/' + serviceIds + '/region/' + regionIds + '/page/' + page);
 }

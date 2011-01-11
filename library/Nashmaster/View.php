@@ -173,8 +173,8 @@ class Nashmaster_View extends Zend_View
     	
     	$regionsHTML = '';
     	foreach ($regions as $reg) {
-    		// TODO: we should add locale check here
-    		$regionsHTML .= ((empty($regionsHTML)? '' : ',' ) . '<span id="city-' . $reg['id'] . '">' . $reg['name_uk'] . '</span>');
+    		$name = ($this->getLocale() == 'uk') ? $reg['name_uk'] : $reg['name'];
+    		$regionsHTML .= ((empty($regionsHTML)? '' : ',' ) . '<span id="city-' . $reg['id'] . '">' . $name . '</span>');
     	}
     	
     	return $regionsHTML;

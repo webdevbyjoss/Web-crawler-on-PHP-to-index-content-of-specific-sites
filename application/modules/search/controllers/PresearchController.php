@@ -13,12 +13,15 @@ class Search_PresearchController extends Zend_Controller_Action
 		$options = array();
     	$options['remote_ip'] = $_SERVER['REMOTE_ADDR'];
     	$options['search_keywords'] = $this->getRequest()->data;
+    	
 		$SearchForm = new Nashmaster_SearchForm($options);
 		
 		$regions = $SearchForm->getRegions();
 		$services = $SearchForm->getServices();
 		
-		// process data and transform it into json
+		// we need to have a locale to display services and cities in appropriate language
+		// but right now the cities are displayed in Russian in case Ukrainian name is not available
+		// and services are displayed in the current locale language selected by user
 		$locale = $this->view->getLocale();
 		
 		$data = array();

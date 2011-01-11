@@ -40,7 +40,6 @@ define('APPLICATION_LIBRARY_PATH', realpath(APPLICATION_PATH . '/../library'));
 $paths[] = APPLICATION_LIBRARY_PATH;
 set_include_path(implode(PATH_SEPARATOR, $paths));
 
-
 // lets measure the time of script execution
 // and run the application initialization
 require_once 'Nashmaster/Starter.php';

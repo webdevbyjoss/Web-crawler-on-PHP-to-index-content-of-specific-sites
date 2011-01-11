@@ -19,6 +19,7 @@ class Nashmaster_SearchForm
 	private $_base_region = null;
 	private $_inline_regions = null;
 	private $_inline_services = null;
+	private $_last_inline_services = null;
 	private $_last_search_keywords = null;
 	private $_regions = null;
 	private $_services = null;
@@ -49,6 +50,7 @@ class Nashmaster_SearchForm
 	{
 		$this->_session->base_region = $this->_base_region;
 		$this->_session->last_search_keywords = $this->_last_search_keywords;
+		$this->_session->last_inline_services = $this->_last_inline_services;
 		
 		$this->_session->regions = $this->_regions;
 		$this->_session->services = $this->_services;
@@ -61,6 +63,7 @@ class Nashmaster_SearchForm
 	{
 		$this->_base_region = $this->_session->base_region;
 		$this->_last_search_keywords = $this->_session->last_search_keywords;
+		$this->_last_inline_services = $this->_session->last_inline_services;
 		
 		$this->_regions = $this->_session->regions;
 		$this->_services = $this->_session->services;
@@ -116,7 +119,8 @@ class Nashmaster_SearchForm
 	public function setKeywords($keywords)
 	{
 		// late return in case keywords hasn't been changed
-		if ($this->_last_search_keywords == $keywords) {
+		if ($this->_last_search_keywords == $keywords && !empty($this->_last_inline_services)) {
+			$this->_inline_services = $this->_last_inline_services;
 		 	return null;
 		}
 		
@@ -131,6 +135,7 @@ class Nashmaster_SearchForm
 
 		$servicesMatch = $this->getServicesByKeywords($keywordList);
 		$this->_inline_services = $servicesMatch['services'];
+		$this->_last_inline_services = $servicesMatch['services'];
 		
 		// save value for future use
 		$this->_last_search_keywords = $keywords;
@@ -246,6 +251,7 @@ class Nashmaster_SearchForm
 		// 2. then count the amount of matches of the same type of service
 		// 3. filter the incorrect matches using simple noise filtering algoright
 		// 4. PROFIT!!
+		// TODO: In the future we shoul organize that into different strategies
 		$servicesPowerList = array();
 		foreach ($keywords as $keyword) {
 			

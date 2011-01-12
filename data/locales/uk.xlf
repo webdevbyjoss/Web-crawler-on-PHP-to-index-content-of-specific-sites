@@ -77,8 +77,8 @@
 		<target xml:lang="uk">надішліть нам свій відгук</target>
 	</trans-unit>
 	<trans-unit id="feedback">
-		<source xml:lang="ru">Отзыв</source>
-		<target xml:lang="uk">Відгук</target>
+		<source xml:lang="ru">Оставить отзыв</source>
+		<target xml:lang="uk">Залишити відгук</target>
 	</trans-unit>
 	<trans-unit id="what-type-of-service-question">
 		<source xml:lang="ru">в каком городе и какой вид услуг вас интересует?</source>

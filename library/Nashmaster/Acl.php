@@ -25,6 +25,7 @@ class Nashmaster_Acl extends Zend_Acl
 		$this->allow(self::ROLE_GUEST, 'mvc:search');
 
 		$this->allow(self::ROLE_ADMIN, 'mvc:crawler');
+		$this->allow(self::ROLE_ADMIN, 'mvc:default');
 		$this->allow(self::ROLE_CRON, 'mvc:crawler');
 	}
 }

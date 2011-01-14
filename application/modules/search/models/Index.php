@@ -66,8 +66,18 @@ class Search_Model_Index extends Zend_Db_Table_Abstract
 		$select = $this->select();
 		$select->where('service_id IN (' . implode(',', $serviceIds) . ')');
 		$select->where('region_id IN (' . implode(',', $regionIds) . ')');
+		$select->group('item_id');
 		
 		return new Zend_Paginator_Adapter_DbSelect($select);
 	}
 	
+	/**
+	 * Calculates the cmount of ads in search index
+	 * NOTE Search index contains a lot of records but this method returns only
+	 *      count of records with unique ads IDs
+	 */
+	public function getCount()
+	{
+		
+	}
 }

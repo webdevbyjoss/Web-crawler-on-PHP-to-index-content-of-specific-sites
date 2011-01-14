@@ -102,7 +102,6 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 		$sql = 'SELECT crawl_jobs_id, url
 		FROM ' . $this->_name . '
 		WHERE status = ' . self::LINK_ADDED . '
-		ORDER BY crawl_jobs_id DESC
 		LIMIT 1';
 		
 		$job = $this->getAdapter()->fetchRow($sql);
@@ -167,7 +166,6 @@ class Joss_Crawler_Db_Jobs extends Zend_Db_Table_Abstract
 		$sql = 'SELECT crawl_jobs_id, url, raw_body
 		FROM ' . $this->_name . '
 		WHERE status = ' . self::LINK_FINISHED . '
-		ORDER BY crawl_jobs_id DESC
 		LIMIT 1';
 		
 		$job = $this->getAdapter()->fetchRow($sql);

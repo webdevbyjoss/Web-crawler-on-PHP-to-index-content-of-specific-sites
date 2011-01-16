@@ -64,10 +64,9 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('search'); ?></a>
-		<?php /* ?>
-		<a href="#">каталог</a>
-		<a href="#">статті</a>
-		<?php */ ?>
+		<a href="#">Каталог</a>
+		<a href="#">Статті</a>
+		<a href="#">Посилання</a>
 		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'help'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),

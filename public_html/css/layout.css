@@ -87,7 +87,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .header-search-form-wide {
-	margin-left: 320px;
+	margin-left: 300px;
 	width: auto;
 }
 
@@ -174,7 +174,8 @@ h1, h2, h3, h4, h5, h6 {
 
 #footer {
 	text-align: center;
-	padding-top: 50px;
+	padding-top: 10px;
+	padding-bottom: 20px;
 }
 
 #footer-language-selector, #copyright {
@@ -193,6 +194,11 @@ h1, h2, h3, h4, h5, h6 {
 
 #footer-menu a:hover {
 	color: silver;
+	text-decoration: none;
+}
+
+#footer-menu a.active, #footer-menu a.active:hover {
+	color: black;
 	text-decoration: none;
 }
 

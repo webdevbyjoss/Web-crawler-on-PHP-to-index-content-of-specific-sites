@@ -41,12 +41,8 @@
   </script>
 </head>
 <body>
-
 <div id="page"><div id="page-inner">
-
-
 <div id="top-menu">
-	
 	<div id="top-menu-right">
 		<a id="feedbackLink" title="<?php echo $this->T('send-us-your-feedback') ?>" href="#"><?php echo $this->T('feedback') ?></a>
 		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'help'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
@@ -61,11 +57,8 @@
 		<a href="/login"><?php echo $this->T('login'); ?></a>
 		<?php */ ?>
 	</div>
-	
-	
-		
 	<div id="top-menu-left">
-		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
 		'controller' => 'index',
@@ -73,9 +66,8 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('search'); ?></a>
-
-
-		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'catalog'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	<?php /* ?>
+	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'catalog'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
 		'controller' => 'catalog',
@@ -83,9 +75,8 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('catalog'); ?></a>
-		
-
-		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'articles'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	<?php */ ?>
+	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'articles'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
 		'controller' => 'articles',
@@ -93,10 +84,7 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('articles'); ?></a>
-
-
-
-		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'links'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'links'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
 		'controller' => 'links',
@@ -104,8 +92,6 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('links'); ?></a>
-	
-	
 	</div>
 </div>
 
@@ -138,17 +124,16 @@
 
 <?php if (!empty($this->searchForm)): ?>
 <div id="header-search-form" class="header-search-form-wide">
-	<div id="header-search-form-block">
-		<!--  <span><?php echo $this->T('what-type-of-service-question') ?></span><br />  -->
-		<input tabindex="1" maxlength="200" id="header-search-form-element" type="text" />
-		<div id="header-selector">
-			<a tabindex="3" id="header-selector-regions" href="#"><?php echo $this->renderRegions(); ?>&nbsp;</a>
-			<a tabindex="2" id="header-selector-services" href="#">&nbsp;</a>
-		</div>
-	</div>
+<div id="header-search-form-block">
+<?php /* ?><!--  <span><?php echo $this->T('what-type-of-service-question') ?></span><br />  --><?php */ ?>
+<input tabindex="1" maxlength="200" id="header-search-form-element" type="text" />
+<div id="header-selector">
+<a tabindex="3" id="header-selector-regions" href="#"><?php echo $this->renderRegions(); ?>&nbsp;</a>
+<a tabindex="2" id="header-selector-services" href="#">&nbsp;</a>
+</div>
+</div>
 </div>
 <?php endif;?>
-
 </div>
 <?php endif; ?>
 
@@ -158,8 +143,7 @@
 
 <div id="footer">
 	<div id="footer-menu">
-
-
+	<?php /* ?>
 		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'news'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
@@ -168,8 +152,7 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('news'); ?></a>
-
-
+	<?php */ ?>
 		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'terms-and-conditions'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
@@ -178,8 +161,6 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('terms-and-conditions'); ?></a>
-
-
 		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'for-developers'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
@@ -188,7 +169,6 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('for-developers'); ?></a>
-
 		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'contacts'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
@@ -197,7 +177,6 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('contacts'); ?></a>
-
 		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'contacts'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
@@ -206,12 +185,9 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('about-us'); ?></a>
-		
 	</div>
-
 	<?php echo $this->feedbackForm(); ?>
 	<div id="copyright">&copy; 2011 nash-master.com, <?php echo $this->languageSelector() ?></div>
-	<div id="footer-language-selector"></div>
 </div>
 
 </div></div>

@@ -129,11 +129,11 @@ class Nashmaster_SearchForm
 		$regionsMatch = $this->getRegionsByKeywords($keywordList);
 		
 		$this->_inline_regions = $regionsMatch['cities'];
-
+		
 		// we can eliminate overhead here
 		// by excluding keywords that are already recognized as regions
 		$keywordList = array_diff($keywordList, $regionsMatch['hit_keywords']);
-
+		
 		$servicesMatch = $this->getServicesByKeywords($keywordList);
 		$this->_inline_services = $servicesMatch['services'];
 		$this->_last_inline_services = $servicesMatch['services'];
@@ -225,34 +225,40 @@ class Nashmaster_SearchForm
 		// because we need to lookup each (i,i+1) pair where max i = X-1
 		// this will help us to detect two words cities in the queries like:
 		// "new york electricity specialist" => "new york"
-		for ($i = 0;$i < (count($keywords) - 1); $i++) {
-			// TODO: we should add the posibility to recognize not only cities
-			//       but also the regions and areas in the future
-			// two words lookup will help us to recognize regions as well
-			// NOTE: we using a trick of MySQL "LIKE" inctruction that will
-			// process underscode symbol "_" as single-characted wildcard
-			// so both variants will match "New York" and "New-York"
-			$matchList = $Cities->getCitiesByTag($keywords[$i] . '_' . $keywords[$i + 1]);
-			if (null === $matchList) {
-				continue;
-			}
+		if (count($keywords) > 1) {
 
-			foreach($matchList as $city) {
-				$ids[$city->city_id]['id'] = $city->city_id;
-				$ids[$city->city_id]['name'] = $city->name;
-				$ids[$city->city_id]['name_uk'] = $city->name_uk;
-				$hit_keywords[] = $keywords[$i];
-				$hit_keywords[] = $keywords[$i + 1];
+			for ($i = 0;$i < (count($keywords) - 1); $i++) {
+				// TODO: we should add the posibility to recognize not only cities
+				//       but also the regions and areas in the future
+				// two words lookup will help us to recognize regions as well
+				// NOTE: we using a trick of MySQL "LIKE" inctruction that will
+				// process underscode symbol "_" as single-characted wildcard
+				// so both variants will match "New York" and "New-York"
+				$matchList = $Cities->getCitiesByTag($keywords[$i] . '_' . $keywords[$i + 1]);
+				if (null === $matchList) {
+					continue;
+				}
+	
+				foreach($matchList as $city) {
+					$ids[$city->city_id]['id'] = $city->city_id;
+					$ids[$city->city_id]['name'] = $city->name;
+					$ids[$city->city_id]['name_uk'] = $city->name_uk;
+					$hit_keywords[] = $keywords[$i];
+					$i++;
+					$hit_keywords[] = $keywords[$i];
+				}
 			}
-		}
 		
-		// after the pair lookup was finished
-		// we should exclude the keywords that are already recognized as cities
-		// to avoid redundant lookups and possibly falce single-word city recognision like
-		// "new york electricity specialist" => "york"
-		// so in case we already found the two words city it will not process appropriate
-		// single-word city
-		$keywords = array_diff($keywords, $hit_keywords);
+		
+			// after the pair lookup was finished
+			// we should exclude the keywords that are already recognized as cities
+			// to avoid redundant lookups and possibly falce single-word city recognision like
+			// "new york electricity specialist" => "york"
+			// so in case we already found the two words city it will not process appropriate
+			// single-word city
+			$keywords = array_diff($keywords, $hit_keywords);
+		
+		}
 		
 		// Lookup single-word cities
 		foreach ($keywords as $keyword) {
@@ -285,6 +291,54 @@ class Nashmaster_SearchForm
 		
 		$ids = array();
 		$hit_keywords = array();
+		$servicesPowerList = array();
+		
+		// we need to have a 2 words lookup first
+		// to receive more relevant results for two words matches
+		if (count($keywords) > 1) {
+			
+			// lets build a pairs of keywords
+			// in case we have 3 words "word1 word2 word3"
+			// we will have 2 pairs "word1 word2" and "word2 word3"
+			for ($i = 0;$i < (count($keywords) - 1); $i++) {
+				// NOTE: we are using a trick of MySQL "LIKE" inctruction that will
+				//       process underscode symbol "_" as single-characted wildcard
+				//       so both variants will match "Plastic window" and "Plastic-window"
+				$matchServices = $Services->searchServicesByTag($keywords[$i] . '_' . $keywords[$i + 1]);
+				
+				if (null === $matchServices) {
+					continue;
+				}
+				
+				foreach($matchServices as $serviceId => $serviceData) {
+				
+					if (empty($servicesPowerList[$serviceId])) {
+						
+						$servicesPowerList[$serviceId] = $serviceData['rate'];
+						
+						$serviceTitle[$serviceId] = $serviceData['name'];
+						$serviceTitleUk[$serviceId] = $serviceData['name_uk'];
+	
+					} else {
+						$servicesPowerList[$serviceId] += $serviceData['rate'];
+					}
+				}
+				
+				// lets skip both words
+				$hit_keywords[] = $keywords[$i];
+				$i++;
+				$hit_keywords[] = $keywords[$i];
+			}
+			
+			
+			// after the pair lookup was finished
+			// we should exclude the keywords that are already recognized as services
+			// to avoid redundant lookups and possibly falce single-word service recognision like
+			// "fixing plastic windows" => "fixing windows"
+			// so in case we already found the two words service it will not process appropriate
+			// single-word service
+			$keywords = array_diff($keywords, $hit_keywords);
+		}
 		
 		// the service recognizion algorithm will be very simple for now
 		// 1. get all matches for each single keyword
@@ -292,7 +346,6 @@ class Nashmaster_SearchForm
 		// 3. filter the incorrect matches using simple noise filtering algoright
 		// 4. PROFIT!!
 		// TODO: In the future we shoul organize that into different strategies
-		$servicesPowerList = array();
 		foreach ($keywords as $keyword) {
 			
 			// TODO: we can use Full Text search feature of MyISAM engine and MATCH() function

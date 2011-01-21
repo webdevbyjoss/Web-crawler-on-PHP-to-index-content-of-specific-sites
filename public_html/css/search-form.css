@@ -242,6 +242,7 @@ span.selector-region-bar-selected-remove:hover {
 	padding-right: 5px;
 
 	font-family: Arial, serif;
+	color: black;
 }
 
 .search-results-item {
@@ -266,6 +267,10 @@ span.selector-region-bar-selected-remove:hover {
 	font-size: 0.8em;
 	padding-top: 5px;
 	color: #0E774A;
+}
+
+.highlight { 
+	font-weight:bold;
 }
 
 /* pagenation */

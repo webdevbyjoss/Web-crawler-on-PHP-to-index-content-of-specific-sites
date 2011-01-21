@@ -4,17 +4,17 @@
 	<span class="pages-label"><?php echo $this->T('pages') ?></span>
 
 	<?php if (isset($this->previous)): ?>
-		<a class="pager-navigation" href="<?php echo $this->url(array('page' => $this->previous)); ?>"> &lang; <?php echo $this->T('back') ?></a>
+		<a title="<?php echo $this->previous ?>" class="pager-navigation" href="<?php echo $this->url(array('page' => $this->previous)); ?>"> &lang; <?php echo $this->T('back') ?></a>
 	<?php endif; ?>
 	
 	<?php foreach ($this->pagesInRange as $page): ?>
 		<?php if ($page != $this->current): ?>
-			<a href="<?php echo $this->url(array('page' => $page)); ?>"><?php echo $page; ?></a>&nbsp;
+			<a title="<?php echo $page; ?>" href="<?php echo $this->url(array('page' => $page)); ?>"><?php echo $page; ?></a>&nbsp;
 		<?php else: ?><span class="current-page"><?php echo $page; ?></span><?php endif; ?>
 	<?php endforeach; ?>
 	
 	<?php if (isset($this->next)): ?>
-		<a class="pager-navigation" href="<?php echo $this->url(array('page' => $this->next)); ?>"><?php echo $this->T('forward')?> &rang; </a>
+		<a title="<?php echo $this->next ?>" class="pager-navigation" href="<?php echo $this->url(array('page' => $this->next)); ?>"><?php echo $this->T('forward')?> &rang; </a>
 	<?php endif; ?>
 </div>
 <?php endif; ?>

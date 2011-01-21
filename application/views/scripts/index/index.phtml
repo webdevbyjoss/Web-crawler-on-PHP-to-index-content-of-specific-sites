@@ -1,2 +1,9 @@
-<?php $this->headTitle($this->T('site-window-title'));
+<?php
+// load custom title
+$this->headTitle($this->T('site-window-title'));
+// load search results script
+$this->headScript()->appendFile('/js/load-search-results.js')
+				   ->appendFile('/js/jquery.highlight-3.yui.js');
+
+// display welcome text
 echo $this->T('beta-welcome-text'); ?>

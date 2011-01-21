@@ -2,7 +2,7 @@
 
 class Search_ResultsController extends Zend_Controller_Action
 {
-	const RESULTS_PER_PAGE = 7;
+	const RESULTS_PER_PAGE = 10;
 	
 	public function init()
 	{

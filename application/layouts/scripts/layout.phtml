@@ -49,10 +49,19 @@
 	
 	<div id="top-menu-right">
 		<a id="feedbackLink" title="<?php echo $this->T('send-us-your-feedback') ?>" href="#"><?php echo $this->T('feedback') ?></a>
+		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'help'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'help',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>"><?php echo $this->T('help'); ?></a>
 		<?php /* ?>
 		<a href="/login"><?php echo $this->T('login'); ?></a>
 		<?php */ ?>
 	</div>
+	
 	
 		
 	<div id="top-menu-left">
@@ -64,17 +73,39 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('search'); ?></a>
-		<a href="#">Каталог</a>
-		<a href="#">Статті</a>
-		<a href="#">Посилання</a>
-		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'help'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+
+
+		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'catalog'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
-		'controller' => 'help',
+		'controller' => 'catalog',
 		'action' => 'index',
 		'module' => 'default',
 	)
-	,'default'); ?>"><?php echo $this->T('help'); ?></a>
+	,'default'); ?>"><?php echo $this->T('catalog'); ?></a>
+		
+
+		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'articles'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'articles',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>"><?php echo $this->T('articles'); ?></a>
+
+
+
+		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'links'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'links',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>"><?php echo $this->T('links'); ?></a>
+	
+	
 	</div>
 </div>
 
@@ -126,6 +157,58 @@
 </div></div>
 
 <div id="footer">
+	<div id="footer-menu">
+
+
+		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'news'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'news',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>"><?php echo $this->T('news'); ?></a>
+
+
+		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'terms-and-conditions'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'terms-and-conditions',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>"><?php echo $this->T('terms-and-conditions'); ?></a>
+
+
+		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'for-developers'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'for-developers',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>"><?php echo $this->T('for-developers'); ?></a>
+
+		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'contacts'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'contacts',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>"><?php echo $this->T('contacts'); ?></a>
+
+		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'contacts'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'contacts',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>"><?php echo $this->T('about-us'); ?></a>
+		
+	</div>
+
 	<?php echo $this->feedbackForm(); ?>
 	<div id="copyright">&copy; 2011 nash-master.com, <?php echo $this->languageSelector() ?></div>
 	<div id="footer-language-selector"></div>

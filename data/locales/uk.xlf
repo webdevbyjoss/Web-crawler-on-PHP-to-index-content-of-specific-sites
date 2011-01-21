@@ -140,6 +140,38 @@
 		<source xml:lang="ru">Использование формы поиска</source>
 		<target xml:lang="uk">Використання форми пошуку</target>
 	</trans-unit>
+	<trans-unit id="links">
+		<source xml:lang="ru">Ссылки</source>
+		<target xml:lang="uk">Посилання</target>
+	</trans-unit>
+	<trans-unit id="articles">
+		<source xml:lang="ru">Статьи</source>
+		<target xml:lang="uk">Статті</target>
+	</trans-unit>
+	<trans-unit id="catalog">
+		<source xml:lang="ru">Каталог</source>
+		<target xml:lang="uk">Каталог</target>
+	</trans-unit>
+	<trans-unit id="news">
+		<source xml:lang="ru">новости</source>
+		<target xml:lang="uk">новини</target>
+	</trans-unit>
+	<trans-unit id="terms-and-conditions">
+		<source xml:lang="ru">условия предоставления услуг</source>
+		<target xml:lang="uk">умови надання послуг</target>
+	</trans-unit>
+	<trans-unit id="for-developers">
+		<source xml:lang="ru">разработчикам</source>
+		<target xml:lang="uk">розробникам</target>
+	</trans-unit>
+	<trans-unit id="contacts">
+		<source xml:lang="ru">контакты</source>
+		<target xml:lang="uk">контакти</target>
+	</trans-unit>
+	<trans-unit id="about-us">
+		<source xml:lang="ru">о проекте</source>
+		<target xml:lang="uk">про проект</target>
+	</trans-unit>
 
 </body>
 </file>

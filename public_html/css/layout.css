@@ -166,8 +166,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #page-content {
-	padding: 30px;
-	padding-top: 50px;
+	padding: 15px;
+	padding-top: 20px;
 }
 
 #footer {
@@ -179,30 +179,20 @@ h1, h2, h3, h4, h5, h6 {
 	padding:5px;
 }
 
-#footer-feedback {
-	margin-top: 30px;
-	margin-bottom: 20px;
+#footer-menu {
+	padding-top: 15px;
+	padding-bottom: 20px;
 }
 
-#footer-feedback a {
-	background-color: #f2fff2;
-	padding: 5px;
-	padding-left: 15px;
-	padding-right: 15px;
-	margin: auto;
-}
-
-#footer-feedback a {
+#footer-menu a {
 	color: gray;
+	padding: 5px;
+}
+
+#footer-menu a:hover {
+	color: silver;
 	text-decoration: none;
 }
-
-#footer-feedback a:hover, #footer-feedback a:focus {
-	background-color: #d9ffd9;
-}
-
-
-
 
 #copyright {
 	font-size: 0.8em;

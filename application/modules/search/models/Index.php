@@ -61,13 +61,30 @@ class Search_Model_Index extends Zend_Db_Table_Abstract
 	 * @param array $regionIds
 	 * @return Zend_Paginator_Adapter_Interface
 	 */
-	public function getDataPagenation($serviceIds, $regionIds)
+	public function getDataPagenation($serviceIds, $regionIds, $keywords = null)
 	{
 		$select = $this->select();
+		
+		// add optional relevance params NOTE: affects perfomance
+		if (null !== $keywords) {
+			
+			$select->from(
+			  $this->_name
+				, array(
+				'url',
+				'title',
+				'description',
+				'relevanceScore' => $this->getAdapter()->quoteInto("MATCH (title, description) AGAINST (?)", $keywords)
+				)
+			);
+
+			$select->order('relevanceScore DESC');
+		}
+		
 		$select->where('service_id IN (' . implode(',', $serviceIds) . ')');
 		$select->where('region_id IN (' . implode(',', $regionIds) . ')');
-		$select->group('item_id');
-		
+		$select->order('informational_index DESC');
+
 		return new Zend_Paginator_Adapter_DbSelect($select);
 	}
 	

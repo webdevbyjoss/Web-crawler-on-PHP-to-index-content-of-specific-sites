@@ -54,7 +54,7 @@ $(document).ready(function () {
 	$('#header-search-form-element').focus().typing({
 		
 	    start: function (event, $elem) {
-	    	// stop loading 
+	    	// stop loading
 	    	stopAnalyzeSearchData($elem);
 	    },
 	    
@@ -77,7 +77,6 @@ $(document).ready(function () {
 	    		) {
 	    		return;
 	    	}
-	    	
 	    	analyzeSearchData($elem);
 
 	    },
@@ -131,6 +130,7 @@ function analyzeSearchData($elem)
 	var hashSeach = '#q=' + encodeURIComponent(keywords);
 
 	var urlpath = location.pathname;
+	
 	if (urlpath == '/' || urlpath == '/uk/' || urlpath == '/ru/') {
 
 		// on search page we should process the pagenation
@@ -154,5 +154,6 @@ function stopAnalyzeSearchData($elem) {
 		stopLoadingPreSearchData($elem);
 	}
 	
-	analyzeSearchData($elem);
+	// FIXME: commented this due to bug with control keys (arrays, home,end,page up/down)
+	// analyzeSearchData($elem);
 }

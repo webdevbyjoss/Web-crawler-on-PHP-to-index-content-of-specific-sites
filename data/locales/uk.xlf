@@ -101,8 +101,8 @@
 		<target xml:lang="uk">Пошук спеціалістів з ремонту та будівництва</target>
 	</trans-unit>
 	<trans-unit id="help">
-		<source xml:lang="ru">Справка</source>
-		<target xml:lang="uk">Довідка</target>
+		<source xml:lang="ru">справка</source>
+		<target xml:lang="uk">довідка</target>
 	</trans-unit>
 	<trans-unit id="search">
 		<source xml:lang="ru">Поиск</source>

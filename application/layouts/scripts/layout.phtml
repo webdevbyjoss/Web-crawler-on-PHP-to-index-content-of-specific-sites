@@ -45,14 +45,6 @@
 <div id="top-menu">
 	<div id="top-menu-right">
 		<a id="feedbackLink" title="<?php echo $this->T('send-us-your-feedback') ?>" href="#"><?php echo $this->T('feedback') ?></a>
-		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'help'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
-	array(
-		'lang' => $this->getLocale(),
-		'controller' => 'help',
-		'action' => 'index',
-		'module' => 'default',
-	)
-	,'default'); ?>"><?php echo $this->T('help'); ?></a>
 		<?php /* ?>
 		<a href="/login"><?php echo $this->T('login'); ?></a>
 		<?php */ ?>
@@ -143,6 +135,14 @@
 
 <div id="footer">
 	<div id="footer-menu">
+		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'about-us'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'about-us',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>"><?php echo $this->T('about-us'); ?></a>
 	<?php /* ?>
 		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'news'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
@@ -169,6 +169,7 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('for-developers'); ?></a>
+	<?php /* ?>
 		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'contacts'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
@@ -177,14 +178,15 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('contacts'); ?></a>
-		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'contacts'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	<?php */ ?>
+		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'help'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
-		'controller' => 'contacts',
+		'controller' => 'help',
 		'action' => 'index',
 		'module' => 'default',
 	)
-	,'default'); ?>"><?php echo $this->T('about-us'); ?></a>
+	,'default'); ?>"><?php echo $this->T('help'); ?></a>
 	</div>
 	<?php echo $this->feedbackForm(); ?>
 	<div id="copyright">&copy; 2011 nash-master.com, <?php echo $this->languageSelector() ?></div>

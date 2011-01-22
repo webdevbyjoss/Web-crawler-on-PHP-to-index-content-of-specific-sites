@@ -55,46 +55,36 @@ class Search_Model_Index extends Zend_Db_Table_Abstract
 	}
 	
 	/**
+	 * update index
+	 *
+	 * @param int $id
+	 * @param float $index
+	 * @return void
+	 */
+	public function updateIndex($id, $index)
+	{
+		$data = array(
+			'informational_index' => $index
+		);
+		
+		$this->update($data, 'item_id = ' . $id);
+	}
+	
+	/**
 	 * Returns pagination adapter to paginate thrue data
 	 *
 	 * @param array $serviceIds
 	 * @param array $regionIds
 	 * @return Zend_Paginator_Adapter_Interface
 	 */
-	public function getDataPagenation($serviceIds, $regionIds, $keywords = null)
+	public function getDataPagenation($serviceIds, $regionIds)
 	{
 		$select = $this->select();
-		
-		// add optional relevance params NOTE: affects perfomance
-		if (null !== $keywords) {
-			
-			$select->from(
-			  $this->_name
-				, array(
-				'url',
-				'title',
-				'description',
-				'relevanceScore' => $this->getAdapter()->quoteInto("MATCH (title, description) AGAINST (?)", $keywords)
-				)
-			);
 
-			$select->order('relevanceScore DESC');
-		}
-		
 		$select->where('service_id IN (' . implode(',', $serviceIds) . ')');
 		$select->where('region_id IN (' . implode(',', $regionIds) . ')');
 		$select->order('informational_index DESC');
-
-		return new Zend_Paginator_Adapter_DbSelect($select);
-	}
-	
-	/**
-	 * Calculates the cmount of ads in search index
-	 * NOTE Search index contains a lot of records but this method returns only
-	 *      count of records with unique ads IDs
-	 */
-	public function getCount()
-	{
 		
+		return new Zend_Paginator_Adapter_DbSelect($select);
 	}
 }

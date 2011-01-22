@@ -12,6 +12,8 @@
  */
 class Joss_Crawler_Db_SynonymsServices extends Zend_Db_Table_Abstract
 {
+	const ENTITY_TABLE = 'crawl_data_synonyms';
+	
 	/**
 	 * The name of the database table
 	 *
@@ -47,4 +49,23 @@ class Joss_Crawler_Db_SynonymsServices extends Zend_Db_Table_Abstract
 
 		return $this->fetchAll($select);
 	}
+	
+	/**
+	 * Extracts the list of synonyms by provided service Id
+	 *
+	 * @param int $Id
+	 * @return Zend_Db_Table_Rowset
+	 */
+	public function getSynonymsByServiceId($Id)
+	{
+		$select = $this->select();
+		$select->join(array('s' => self::ENTITY_TABLE), 'synonym_id = s.id', array('title'));
+		$select->where('service_id = ?', $Id);
+		
+		var_dump($select->__toString());
+		die();
+		
+		return $this->fetchAll($select);
+	}
+
 }

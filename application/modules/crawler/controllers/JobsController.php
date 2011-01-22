@@ -76,6 +76,11 @@ class Crawler_JobsController extends Zend_Controller_Action
 		
 		foreach ($itemsRowset as $key => $item) {
 			
+			// do not add to index items with empty title or descriptions
+			if (('' == trim($item->title)) || ('' == trim($item->description))) {
+				continue;
+			}
+			
 			// get serive
 			$itemsServicesRowset = $ItemServices->getDataById($item->id);
 			
@@ -83,7 +88,7 @@ class Crawler_JobsController extends Zend_Controller_Action
 			$itemsRegionsRowset = $ItemRegions->getDataById($item->id);
 
 			if (empty($itemsRegionsRowset[0])) {
-					continue;
+				continue;
 			}
 			$reg = $itemsRegionsRowset[0];
 			
@@ -97,21 +102,69 @@ class Crawler_JobsController extends Zend_Controller_Action
 					// var_dump($item->id, $myser->service_id, $myreg->region_id);
 					// continue;
 					
+					/*
 					if ($searchIndex->itemExists($item->id, $myser->service_id, $myreg->region_id)) {
 						continue;
 					}
-					
-					$searchIndex->add(
-						$item->id,
-						$myser->service_id,
-						$myreg->region_id,
-						$item->url,
-						$item->title,
-						$item->description
-					);
+					*/
+					try {
+
+						$searchIndex->add(
+							$item->id,
+							$myser->service_id,
+							$myreg->region_id,
+							$item->url,
+							$item->title,
+							$item->description
+						);
+
+					} catch (Zend_Db_Exception $e) {
+						
+					}
 				}
 			}
 
+		}
+		
+	}
+	
+	public function buildindexAction()
+	{
+		$Items = new Joss_Crawler_Db_Items();
+		$searchIndex = new Search_Model_Index();
+		$SynonymServices = new Joss_Crawler_Db_SynonymsServices();
+		$ItemServices = new Joss_Crawler_Db_ItemServices();
+		
+		$synonyms = array();
+		$itemsRowset = $Items->getItems();
+		foreach ($itemsRowset as $key => $item) {
+			
+			/**
+			 * Calculates Information Index
+			 * that will determine the priority of search results
+			 */
+			$itemInformationIndex = 1;
+			
+			if (('' == trim($item->title)) || ('' == trim($item->description))) {
+				$itemInformationIndex = 0;
+			}
+			
+			// get serive
+			$itemsServicesRowset = $ItemServices->getDataById($item->id);
+			foreach ($itemsServicesRowset as $myser) {
+				
+				if (empty($synonyms[$myser->service_id])) {
+					$synonyms[$myser->service_id] = $SynonymServices->getSynonymsByServiceId($myser->service_id);
+				}
+				$currentSynonyms = $synonyms[$myser->service_id];
+
+				var_dump(1);
+				die();
+			}
+			
+
+			
+			$searchIndex->updateIndex($item->id, $itemInformationIndex);
 		}
 		
 	}

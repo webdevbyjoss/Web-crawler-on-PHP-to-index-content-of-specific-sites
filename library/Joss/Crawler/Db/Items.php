@@ -38,8 +38,7 @@ class Joss_Crawler_Db_Items extends Zend_Db_Table_Abstract
 	{
 		return $this->fetchAll();
 	}
-	 
-	
+
 	/**
 	 * Creates or updates advertisement record in database
 	 *

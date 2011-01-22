@@ -1,0 +1,16 @@
+# run crawler client
+* * * * *  php /var/www/nash-master/scripts/jobs/crawl.php
+
+# run crawler processing script
+*/5 * * * *  php /var/www/nash-master/scripts/zf-cli.php -a crawler/jobs/process -e development
+
+# star new queue in case all jobs were finished (once a day)
+* 0 * * *   php /var/www/nash-master/scripts/zf-cli.php -a crawler/jobs/index -e development
+
+# build search index
+0 0 * * *   php /var/www/nash-master/scripts/zf-cli.php -a crawler/jobs/build -e development
+
+# build information index for each item in search index
+0 0 * * *   php /var/www/nash-master/scripts/zf-cli.php -a crawler/jobs/build-index -e development
+
+

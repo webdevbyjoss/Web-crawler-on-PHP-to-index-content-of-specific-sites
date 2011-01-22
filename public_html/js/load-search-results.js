@@ -207,7 +207,10 @@ function loadSearchResults(serviceIds, regionIds, page) {
 
 //load data from specified URL
 function loadSearchResultsByUrl(url) {
-	$('#main').html('<div id="data-loading"><img src="/images/ajax-data-loader-progress.gif" /></div>');
+	
+	// $('#main').html('<div id="data-loading"><img src="/images/ajax-data-loader-progress.gif" /></div>');
+	// TODO: possibly in the future we should add a progress bar here
+	$('.search-results').css('opacity','0.5');
 	
 	$('#main').load(url, function() {
 		

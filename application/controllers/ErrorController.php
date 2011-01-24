@@ -22,6 +22,14 @@ class ErrorController extends Zend_Controller_Action
                 $this->getResponse()->setHttpResponseCode(500);
                 $this->view->responseCode = 500;
 		        $this->view->stack_trace = $this->_getFullErrorMessage($errors);
+		        
+		        //post info into error to bugtracker
+		        $ofuzUri = "http://todo.nash-master.com/ofuz_helper.php";
+				$client = new Zend_Http_Client($ofuzUri);
+				$client->setParameterPost(array(
+					"er_message" => $this->_getFullErrorMessage($errors)
+				));
+				$client->request("POST");
                 break;
         }
         

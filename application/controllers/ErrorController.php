@@ -23,14 +23,18 @@ class ErrorController extends Zend_Controller_Action
                 $this->view->responseCode = 500;
 		        $this->view->stack_trace = $this->_getFullErrorMessage($errors);
 		        
-		        //post info into error to bugtracker
-		        $ofuzUri = "http://todo.nash-master.com/ofuz_helper.php";
-				$client = new Zend_Http_Client($ofuzUri);
-				$client->setParameterPost(array(
-					"er_message" => $this->_getFullErrorMessage($errors)
-				));
-				$client->request("POST");
-                break;
+		        //save exception info into database
+		        $dbAdapter = $this->getFrontController()
+		            ->getParam('bootstrap')
+		            ->getResource('multidb')
+		            ->getDb("front_db");
+		        $dbAdapter->insert('errors', array(
+		        	"requestUri" => $errors->request->getRequestUri(),
+		        	"message" => $errors->exception->getMessage(),
+		        	"trace" => $errors->exception->getTraceAsString(),
+		        	"params" => var_export($errors->request->getParams(), true),
+		        	"raw" => $this->_getFullErrorMessage($errors)
+		        ));
         }
         
         $this->view->exception = $errors->exception;

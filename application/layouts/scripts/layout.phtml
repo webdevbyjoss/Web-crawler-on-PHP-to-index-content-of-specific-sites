@@ -34,7 +34,9 @@
 
   <?php echo $this->headScript()
   	->appendFile('/js/search-form-actions.js')
-  	->appendFile('/js/jquery.typing-0.2.0.min.js');
+  	->appendFile('/js/jquery.typing-0.2.0.min.js')
+  	->appendFile('/js/jquery.form.js')
+  	;
   	?>
   <script>
   var locale = "<?php echo $this->getLocale() ?>";
@@ -192,11 +194,11 @@
 	)
 	,'default'); ?>"><?php echo $this->T('help'); ?></a>
 	</div>
-	<?php echo $this->feedbackForm(); ?>
 	<div id="copyright">&copy; 2011 nash-master.com, <?php echo $this->languageSelector() ?></div>
 </div>
 
-</div></div>
+<?php echo $this->feedbackForm(); ?>
 
+</div></div>
 </body>
 </html>

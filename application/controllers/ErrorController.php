@@ -22,7 +22,19 @@ class ErrorController extends Zend_Controller_Action
                 $this->getResponse()->setHttpResponseCode(500);
                 $this->view->responseCode = 500;
 		        $this->view->stack_trace = $this->_getFullErrorMessage($errors);
-                break;
+		        
+		        //save exception info into database
+		        $dbAdapter = $this->getFrontController()
+		            ->getParam('bootstrap')
+		            ->getResource('multidb')
+		            ->getDb("front_db");
+		        $dbAdapter->insert('errors', array(
+		        	"requestUri" => $errors->request->getRequestUri(),
+		        	"message" => $errors->exception->getMessage(),
+		        	"trace" => $errors->exception->getTraceAsString(),
+		        	"params" => var_export($errors->request->getParams(), true),
+		        	"raw" => $this->_getFullErrorMessage($errors)
+		        ));
         }
         
         $this->view->exception = $errors->exception;

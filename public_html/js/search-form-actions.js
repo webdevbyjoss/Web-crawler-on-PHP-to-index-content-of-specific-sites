@@ -98,6 +98,91 @@ $(document).ready(function () {
 			
 		}
 	);
+	
+	$('#feedbackLink').click(function(){
+		$('#feedback-form').removeClass('feedback-invisible');
+		return false;
+	});
+
+	$('#feedback-button-hide').click(function(){
+		FeedbackFormclearErrors();
+		FeedbackFormclearResult();
+		$('#feedback-form').addClass('feedback-invisible');
+		return false;
+	});
+	
+	function FeedbackFormclearErrors()
+	{
+		$("#feedback-form-errors").empty();
+		$("form[name=feedback-form-data] input[name=email]").css({"border": "1px solid silver"});
+		$("form[name=feedback-form-data] input[name=telephone]").css({"border": "1px solid silver"});
+		$("form[name=feedback-form-data] #feedback-form-text").css({"border": "1px solid silver"});
+	}
+	
+	function FeedbackFormclearResult()
+	{
+		$("#feedback-send-result").empty();
+	}
+	
+	$('#feedback-button-submit').click(function(){
+		//clean errors messages
+		FeedbackFormclearErrors();
+		FeedbackFormclearResult();
+		
+		//check input data
+		var email = $("form[name=feedback-form-data] input[name=email]").val();
+		var telephone = $("form[name=feedback-form-data] input[name=telephone]").val();
+		var message = $("form[name=feedback-form-data] #feedback-form-text").val();
+		if ((email || telephone) && message) {
+			//everything ok, send form data to server
+			$("form[name=feedback-form-data]").ajaxSubmit({
+				"method": "POST",
+				"success": function(data) {
+					$("#feedback-send-result").html(data);
+				}
+			});
+		}
+		else {
+			// some errors
+			var error_style = {
+				"border": " 2px solid red", 
+			};
+			if (!email && !telephone) {
+				$("#feedback-form-errors").append("<li>Please provide email or telephone<li>");
+				$("form[name=feedback-form-data] input[name=email]").css(error_style);
+				$("form[name=feedback-form-data] input[name=telephone]").css(error_style);
+			}
+			if (!message) {
+				$("#feedback-form-errors").append("<li>Please provide message of feedback<li>");
+				$("form[name=feedback-form-data] #feedback-form-text").css(error_style);
+			}
+		}
+	
+		return false;
+	});
+	
+	/*
+	ajaxForm({
+		"success": function(data) {
+			if (!data.success) {
+				//display errors
+				for (control in data.errors) {
+					for (er in data.errors[control]) {
+						$("#feedback-"+control+"-error").text(data.errors[control][er]);
+						$("#"+control+"-element").css("margin-bottom", "0px");
+					}
+				}
+			}
+			else {
+				//clear errors 
+				$(".feedback-element-error").empty();
+				$("#feedback-form").hide();
+				$("#feedback-success-message").text(data.message);
+			}
+		},
+		"dataType": 'json'
+	})
+	*/
 
 });
 

@@ -160,7 +160,7 @@ class Nashmaster_View extends Zend_View
     */
     public function feedbackForm()
     {
-    	return new Users_Form_Feedback();
+    	return $this->render("feedbackform.phtml");
     }
     
     public function renderRegions()

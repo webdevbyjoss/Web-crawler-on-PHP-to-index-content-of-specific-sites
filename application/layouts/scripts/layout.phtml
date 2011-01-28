@@ -4,12 +4,12 @@
   <meta charset="utf-8"/>
   <meta name="description" content="<?php echo $this->T('meta-description') ?>" />
   <meta name="keywords" content="<?php echo $this->T('meta-keywords') ?>" />
+  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <?php echo $this->headTitle($this->T('site-name'))->setSeparator(' ') ?>
   <?php echo $this->headLink()->prependStylesheet('/css/layout.css')
                               ->prependStylesheet('/css/search-form.css') ?>
-
   <?php if (APPLICATION_ENV == 'production'): ?>
-
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
   <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
   <?php if (!$this->isAdmin()):?>

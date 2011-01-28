@@ -172,7 +172,14 @@
 		<source xml:lang="ru">о проекте</source>
 		<target xml:lang="uk">про проект</target>
 	</trans-unit>
-
+	<trans-unit id="did-you-mean">
+		<source xml:lang="ru">Воможно имелось в виду:</source>
+		<target xml:lang="uk">Можливо малося на увазі:</target>
+	</trans-unit>
+	<trans-unit id="query-is-incorrect">
+		<source xml:lang="ru">Введите интересующий вас вид услуг</source>
+		<target xml:lang="uk">Введіть вид послуг що вас цікавить</target>
+	</trans-unit>
 </body>
 </file>
 </xliff>

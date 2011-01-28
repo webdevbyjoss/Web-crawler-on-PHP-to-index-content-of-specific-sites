@@ -84,6 +84,7 @@ class Search_Model_Index extends Zend_Db_Table_Abstract
 		$select->where('service_id IN (' . implode(',', $serviceIds) . ')');
 		$select->where('region_id IN (' . implode(',', $regionIds) . ')');
 		$select->order('informational_index DESC');
+		$select->group('item_id');
 		
 		return new Zend_Paginator_Adapter_DbSelect($select);
 	}

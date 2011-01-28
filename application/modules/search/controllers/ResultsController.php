@@ -33,6 +33,9 @@ class Search_ResultsController extends Zend_Controller_Action
 		$pagination->setCurrentPageNumber($request->page);
 		$pagination->setDefaultItemCountPerPage(self::RESULTS_PER_PAGE);
 		$this->view->data = $pagination;
+		
+		// get data for matched words highlight
+		$Synonyms = new Joss_Crawler_Db_Synonyms();
+		$SynonymServices = new Joss_Crawler_Db_SynonymsServices();
 	}
-
 }

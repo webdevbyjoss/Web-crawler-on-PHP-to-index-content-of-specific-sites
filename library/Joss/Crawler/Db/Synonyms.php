@@ -150,7 +150,7 @@ class Joss_Crawler_Db_Synonyms extends Zend_Db_Table_Abstract
 	 *
 	 * output will contain the array with IDs and relevancy points
 	 *
-	 *
+	 * and also returns services titles and match keywords
 	 *
 	 * @param string $tag
 	 * @return array ids with the relevancy points
@@ -166,14 +166,18 @@ class Joss_Crawler_Db_Synonyms extends Zend_Db_Table_Abstract
 			return NULL;
 		}
 		
+		$title = array();
+		$ids = array();
 		foreach ($synonymsList as $syn) {
 			$ids[] = $syn->id;
+			$title[$syn->id] = $syn->title;
 		}
 		
 		$SynonymServices = new Joss_Crawler_Db_SynonymsServices();
 		$relations = $SynonymServices->getRelationsByIds($ids);
 		
 		$returnIds = array();
+		$titlePerService = array();
 		foreach ($relations as $rel) {
 
 			// TODO: we can also try to add extra measurement points here
@@ -183,7 +187,9 @@ class Joss_Crawler_Db_Synonyms extends Zend_Db_Table_Abstract
 			} else {
 				$returnIds[$rel->service_id]['rate'] += 1;
 			}
-
+			
+			// add match keyword to service
+			$titlePerService[$rel->service_id][] = $title[$rel->synonym_id];
 		}
 		
 		// get services data
@@ -196,9 +202,52 @@ class Joss_Crawler_Db_Synonyms extends Zend_Db_Table_Abstract
 			$returnFullIds[$id]['rate'] = $rate;
 			$returnFullIds[$id]['name'] = $service->name;
 			$returnFullIds[$id]['name_uk'] = $service->name_uk;
+			$returnFullIds[$id]['match'] = $titlePerService[$id];
+			// fill results array with marched keywords
 		}
 		
 		return $returnFullIds;
+	}
+
+	/**
+	 * Get items from database
+	 *
+	 * @param mixed $Ids can be a single-line CSV string or array of ids
+	 * @return Zend_Db_Table_Rowset
+	 */
+	public function getItemsByIds($Ids)
+	{
+		if (is_array($Ids)) {
+			$Ids = implode(',', $Ids);
+		}
+		
+		$select = $this->select(array('title'));
+		// FIXME: not secure but should be improved in advance
+		$select->where('id IN (' . $Ids .')');
+		return $this->fetchAll($select);
+	}
+	
+	/**
+	 * Returns simmilar words in case of typos
+	 *
+	 * Right now we use MySQL default tools so its impossible to
+	 * order suggestions by relevance
+	 *
+	 * TODO: we 100% should implement order by relevance
+	 * 		 using for example Levenshtein Distance algorythm
+	 */
+	public function getSoundsLike($phrase)
+	{
+		// SELECT DISTINCT ds.title, ds.id, ss.service_id
+		// FROM crawl_data_synonyms ds JOIN crawl_data_synonyms_services ss ON ds.id = ss.synonym_id
+		// WHERE title SOUNDS LIKE "' . $phrase . '"
+		$sql = 'SELECT DISTINCT ds.title title
+		FROM crawl_data_synonyms ds
+		WHERE title SOUNDS LIKE "' . $phrase . '"
+		LIMIT 10';
+		
+		$db = $this->getAdapter();
+		return $db->fetchCol($sql);
 	}
 
 }

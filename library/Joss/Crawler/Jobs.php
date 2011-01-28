@@ -115,7 +115,6 @@ class Joss_Crawler_Jobs
 		foreach ($data as $advert) {
 			$Items->add($advert);
 		}
-
 	}
 	
 	/**

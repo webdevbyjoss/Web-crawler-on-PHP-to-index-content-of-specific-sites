@@ -1,0 +1,44 @@
+<?php
+
+// init data array that will be converted to json in the future
+$data = array();
+$locale = $this->getLocale();
+
+// process regions
+if (is_array($this->regions)) {
+	foreach ($this->regions as $key => $val) {
+		$data['regions'][$val['id']] = ($locale == 'uk') ? $val['name_uk'] : $val['name'];
+	}
+}
+
+// process suggests in case service wasn't recognized
+// and force output
+if (!empty($this->suggest)) {
+	$data['suggest'] = $this->suggest;
+	$data['message'] = $this->T('did-you-mean');
+	
+	echo $this->php2js($data);
+	return;
+}
+
+// this will be showed up in case no any service can be recognized due to incorrect query
+if ($this->noservice) {
+	$data['message'] = $this->T('query-is-incorrect');
+	
+	if (count($data['regions']) > 1) {
+		
+	}
+	
+}
+
+// process services
+if (is_array($this->services)) {
+	foreach ($this->services as $key => $val) {
+		$data['services'][$val['id']] = ($locale == 'uk') ? $val['name_uk'] : $val['name'];
+	}
+}
+
+// load match keywords for highlight
+$data['match'] = $this->match;
+
+echo $this->php2js($data);

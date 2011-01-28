@@ -5,7 +5,6 @@ class Search_PresearchController extends Zend_Controller_Action
 	public function init()
 	{
 		$this->_helper->layout->disableLayout();
-		$this->_helper->viewRenderer->setNoRender(true);
 	}
 	
 	public function queryAction()
@@ -16,80 +15,59 @@ class Search_PresearchController extends Zend_Controller_Action
     	
 		$SearchForm = new Nashmaster_SearchForm($options);
 		
-		$regions = $SearchForm->getRegions();
-		$services = $SearchForm->getServices();
+		$this->view->regions = $SearchForm->getRegions();
+		$this->view->services = $SearchForm->getServices();
 		
 		// we need to have a locale to display services and cities in appropriate language
 		// but right now the cities are displayed in Russian in case Ukrainian name is not available
 		// and services are displayed in the current locale language selected by user
 		$locale = $this->view->getLocale();
 		
-		$data = array();
-		if (is_array($regions)) {
-			foreach ($regions as $key => $val) {
-				$data['regions'][$val['id']] = ($locale == 'uk') ? $val['name_uk'] : $val['name'];
+		// if no any services were recognized then output the region and suggested strings in case of typos
+		if (empty($this->view->services)) {
+			$suggest = $SearchForm->getSuggest($locale);
+			if (!empty($suggest)) {
+				$this->view->suggest = $suggest;
+				return;
 			}
+			
+			// this can be used in case no any service were recognized for suggestion
+			// we have have only region - so we can ask people to correct their request
+			$this->view->noservice = true;
+			return;
 		}
 		
-		if (is_array($services)) {
-			foreach ($services as $key => $val) {
-				$data['services'][$val['id']] = ($locale == 'uk') ? $val['name_uk'] : $val['name'];
+		$synonymsByServices = $SearchForm->getMatchSynonyms();
+		$SynonymServices = new Joss_Crawler_Db_SynonymsServices();
+		$Synonyms = new Joss_Crawler_Db_Synonyms();
+		
+		$match = $options['search_keywords'];
+		foreach ($synonymsByServices as $serviceId => $serviceMatch) {
+			
+			// assign direct matches from keywords
+			$match .= ',' . implode(',', $serviceMatch);
+			
+			/*
+			 * TODO: we need to improve and reorganize our services structure
+			 *       to have better results on inexplicid match
+			 *
+			// assign inexplicid matches from service synonyms
+			$synonymIdsRowset = $SynonymServices->getSynonymsByServiceId($serviceId);
+			$synonymIds = array();
+			foreach ($synonymIdsRowset as $val) {
+				$synonymIds[] = $val->synonym_id;
 			}
+			
+			$synonymsRowset = $Synonyms->getItemsByIds($synonymIds);
+			$synTitle = array();
+			foreach ($synonymsRowset as $syn) {
+				$synTitle[] = $syn->title;
+			}
+			
+			$data['match'] .= ',' . implode(',', $synTitle);
+			*/
 		}
 		
-		echo $this->php2js($data);
-	}
-
-	/**
-	 * json_encode() replacement that handles cyrillyc characters correctly
-	 *
-	 * Thanks to: http://www.php.net/manual/en/function.json-encode.php#78719
-	 *
-	 * @param mixed $a
-	 * @return string json code
-	 */
-	private function php2js($a=false)
-	{
-		  if (is_null($a)) return 'null';
-		  if ($a === false) return 'false';
-		  if ($a === true) return 'true';
-		  if (is_scalar($a))
-		  {
-		    if (is_float($a))
-		    {
-		      // Always use "." for floats.
-		      $a = str_replace(",", ".", strval($a));
-		    }
-		
-		    // All scalars are converted to strings to avoid indeterminism.
-		    // PHP's "1" and 1 are equal for all PHP operators, but
-		    // JS's "1" and 1 are not. So if we pass "1" or 1 from the PHP backend,
-		    // we should get the same result in the JS frontend (string).
-		    // Character replacements for JSON.
-		    static $jsonReplaces = array(array("\\", "/", "\n", "\t", "\r", "\b", "\f", '"'),
-		    array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'));
-		    return '"' . str_replace($jsonReplaces[0], $jsonReplaces[1], $a) . '"';
-		  }
-		  $isList = true;
-		  for ($i = 0, reset($a); $i < count($a); $i++, next($a))
-		  {
-		    if (key($a) !== $i)
-		    {
-		      $isList = false;
-		      break;
-		    }
-		  }
-		  $result = array();
-		  if ($isList)
-		  {
-		    foreach ($a as $v) $result[] = $this->php2js($v);
-		    return '[ ' . join(', ', $result) . ' ]';
-		  }
-		  else
-		  {
-		    foreach ($a as $k => $v) $result[] = $this->php2js($k).': '.$this->php2js($v);
-		    return '{ ' . join(', ', $result) . ' }';
-		  }
+		$this->view->match = $match;
 	}
 }
-

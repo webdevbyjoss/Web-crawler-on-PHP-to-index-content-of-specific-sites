@@ -251,9 +251,8 @@ span.selector-region-bar-selected-remove:hover {
 }
 
 .search-results-item .title {
-	font-size: 1.1em;
+	font-size: 1.4em;
 	text-transform: capitalize;
-	
 }
 
 .search-results-item .title a {
@@ -262,6 +261,7 @@ span.selector-region-bar-selected-remove:hover {
 
 .search-results-item .description {
 	/*width: 650px;*/
+	padding-top: 3px;
 }
 
 .search-results-item .url {
@@ -272,6 +272,11 @@ span.selector-region-bar-selected-remove:hover {
 
 .highlight { 
 	font-weight:bold;
+}
+
+#highlight-keywords {
+	/*border: 1px solid red;*/
+	display:none;
 }
 
 /* pagenation */
@@ -300,4 +305,33 @@ span.selector-region-bar-selected-remove:hover {
 .searchPaginationControl .pages-label {
 	font-size: 1.2em;
 	padding-right: 5px;
+}
+
+/* Did you mean */
+.suggest-block {
+	background-image: url("/images/alert.png");
+    background-position: 310px 10px;
+    background-repeat: no-repeat;
+    padding-bottom: 60px;
+    padding-left: 345px;
+    padding-top: 12px;
+}
+
+.suggest-message {
+	font-size: 1.2em;
+	font-family: Arial;
+}
+
+.suggest-item {
+	padding-top: 3px;
+}
+
+.suggest-item a {
+	padding: 5px;
+	margin-left: -2px;
+	padding-left: 3px;
+}
+
+.suggest-item a:hover {
+	background-color: #ffffcc;
 }

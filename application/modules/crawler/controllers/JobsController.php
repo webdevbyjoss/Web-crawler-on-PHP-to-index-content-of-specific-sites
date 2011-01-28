@@ -128,13 +128,17 @@ class Crawler_JobsController extends Zend_Controller_Action
 		
 	}
 	
+	/**
+	 * Builds the information index values for each item in search index
+	 */
 	public function buildindexAction()
 	{
 		$Items = new Joss_Crawler_Db_Items();
 		$searchIndex = new Search_Model_Index();
 		$SynonymServices = new Joss_Crawler_Db_SynonymsServices();
 		$ItemServices = new Joss_Crawler_Db_ItemServices();
-		
+		$Synonyms = new Joss_Crawler_Db_Synonyms();
+				
 		$synonyms = array();
 		$itemsRowset = $Items->getItems();
 		foreach ($itemsRowset as $key => $item) {
@@ -142,27 +146,46 @@ class Crawler_JobsController extends Zend_Controller_Action
 			/**
 			 * Calculates Information Index
 			 * that will determine the priority of search results
+			 *
+			 * For now each item has +50 points for content availability
+			 * +40 for each synonyms match in the title
+			 * +10 for each synonyms match in the description
 			 */
-			$itemInformationIndex = 1;
+			$itemInformationIndex = 50;
 			
 			if (('' == trim($item->title)) || ('' == trim($item->description))) {
-				$itemInformationIndex = 0;
-			}
-			
-			// get serive
-			$itemsServicesRowset = $ItemServices->getDataById($item->id);
-			foreach ($itemsServicesRowset as $myser) {
 				
-				if (empty($synonyms[$myser->service_id])) {
-					$synonyms[$myser->service_id] = $SynonymServices->getSynonymsByServiceId($myser->service_id);
+				$itemInformationIndex = 0;
+				
+			} else {
+				
+				// get serive
+				$itemsServicesRowset = $ItemServices->getDataById($item->id);
+				foreach ($itemsServicesRowset as $myser) {
+					
+					if (empty($synonyms[$myser->service_id])) {
+						$synonymIdsRowset = $SynonymServices->getSynonymsByServiceId($myser->service_id);
+						$synonymIds = array();
+						foreach ($synonymIdsRowset as $val) {
+							$synonymIds[] = $val->synonym_id;
+						}
+						$synonyms[$myser->service_id] = $Synonyms->getItemsByIds($synonymIds);
+					}
+					
+					$currentSynonyms = $synonyms[$myser->service_id];
+	
+					foreach ($currentSynonyms as $synonym) {
+						if (mb_stripos($item->title, $synonym->title) !== false) {
+							$itemInformationIndex = $itemInformationIndex + 40;
+						}
+						if (mb_stripos($item->description, $synonym->title) !== false) {
+							$itemInformationIndex = $itemInformationIndex + 10;
+						}
+					}
+					
 				}
-				$currentSynonyms = $synonyms[$myser->service_id];
-
-				var_dump(1);
-				die();
+					
 			}
-			
-
 			
 			$searchIndex->updateIndex($item->id, $itemInformationIndex);
 		}

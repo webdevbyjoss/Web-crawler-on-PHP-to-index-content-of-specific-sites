@@ -102,6 +102,9 @@
 
 <div id="header">
 <div id="logo">
+<?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>
+<img alt="<?php echo $this->T('logo') . ' ' . $this->T('site-name') ?>" src="<?php echo $this->getImagesUrl() . 'nash-master-logo-' . $this->getLocale() . '.png' ?>" />
+<?php else: ?>
 <a href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
@@ -111,6 +114,7 @@
 	)
 	,'default'); ?>" title="<?php echo $this->T('site-name') . ' - ' . $this->T('slogan') ?>">
 <img alt="<?php echo $this->T('logo') . ' ' . $this->T('site-name') ?>" src="<?php echo $this->getImagesUrl() . 'nash-master-logo-' . $this->getLocale() . '.png' ?>" /></a>
+<?php endif; ?>
 <div id="beta-mark"><img alt="<?php echo $this->T('beta-version'); ?>" src="<?php echo $this->getImagesUrl() . 'beta.png'; ?>" /></div>
 </div>
 

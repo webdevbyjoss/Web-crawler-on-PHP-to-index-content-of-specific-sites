@@ -83,6 +83,12 @@ class Joss_Crawler_Db_Items extends Zend_Db_Table_Abstract
 		$adapterId = $Adapters->getIdByName($advert['adapter']);
 
 		// extract existing or create new item
+		// FIXME: we have a serious problem here
+		// it can be found by running the following query:
+		// SELECT *, COUNT(id) items FROM crawl_item GROUP BY adapter_specific_id HAVING COUNT(id) > 1 ORDER BY items DESC
+		// it looks like getItemByAdapterId() method not always returns correct "Item" object
+		// we can add a unique index (adapter_id, adapter_specific_id) to have an database level method to ensure DB consistency
+		// but anyway its better to investigate, reproduce this error and resolve it
 		$isCreated = false;
 		$Item = $this->getItemByAdapterId($advert['id'], $adapterId);
 

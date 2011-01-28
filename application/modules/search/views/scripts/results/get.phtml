@@ -14,9 +14,7 @@ function cuttext($string, $cutoff)
 ?>
 
 <?php if (count($this->data) < 1): ?>
-
 <div style="padding:150px;text-align:center;"><?php echo $this->t('no-search-results') ?> :(</div>
-
 <?php else: ?>
 
 <div class="search-results">
@@ -29,5 +27,4 @@ function cuttext($string, $cutoff)
 <?php endforeach; ?>
 <?php echo $this->paginationControl($this->data, 'Sliding', 'search_pagination_control.phtml'); ?>
 </div>
-
 <?php endif; ?>

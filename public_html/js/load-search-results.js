@@ -5,8 +5,18 @@
 // search form tempaltes
 var templateSearchFormBlocks = 
 	  '<a tabindex="3" id="header-selector-regions" href="#">{{html Regions}}&nbsp;</a>'
-	+ '<a tabindex="2" id="header-selector-services" href="#">{{html Services}}&nbsp;</a>';
+	+ '<a tabindex="2" id="header-selector-services" href="#">{{html Services}}&nbsp;</a>'
+	+ '<div id="highlight-keywords">{{html Highlight}}&nbsp;</div>';
 
+var templateSearchSuggests = 
+	  '<div class="suggest-block">'
+	+ '<div class="suggest-message">{{html Message}}</div>'
+	+ '{{each Suggests}}'
+	+ '<div class="suggest-item">'
+	+ '<a href="#q=${$value}">${$value}</a>'
+	+ '</div>'
+	+ '{{/each}}'
+	+ '</div>';
 
 //this will allow us to store the local cache
 //TODO: its better to save data using persistent storage like "jquery-offline"
@@ -64,15 +74,16 @@ $(document).ready(function () {
 	/**
 	 * We should process search results in case search params were passed
 	 */
+	processHash();
+});
+
+function processHash() {
 	var queryParams = getHashVars(location.hash);
 	var $elem = $('#header-search-form-element');
 	$elem.attr('value', queryParams['q']);
 	currentPage = parseInt(queryParams['page']);
 	analyzeSearchData($elem);
-});
-
-
-
+}
 
 // Detects hash params and bilds an array of values
 // 
@@ -111,7 +122,7 @@ function loadPreSearchData($elem)
 	// in case some data for this particular request was already loaded some time ago
 	// we can get that data fromt the local cache
 	// FIXME: this is commented out as I was not able to make this 
-	// operational withour bugs for some cyrillyc letters 
+	// stable withour bugs for some cyrillyc letters 
 	//if (data = Storage[keywords]) {
 	//	updateForm(data);
 	//	return;
@@ -145,6 +156,8 @@ function stopLoadingPreSearchData($elem) {
 function updateForm(data) {
 	
 	// temporrary solution
+	// we will need to move this to templates just after that plugin will be 
+	// less buggy and will be released out from BETA
 	var regionIds = null;
 	var serviceIds = null;
 	
@@ -184,24 +197,54 @@ function updateForm(data) {
 			
 		});
 	}
-
+	
 	$('#header-selector').html("");
 	var templateData = $.tmpl(templateSearchFormBlocks, 
-		{ Regions : regionsHTML, Services: servicesHTML }
+		{ Regions : regionsHTML, Services: servicesHTML,  Highlight: data.match }
 	).appendTo('#header-selector');
 	
-	// and now we can call for search results
+	// in case no any services were recognized there is no any need to do a data search results request
+	// lets show the list of possible suggestions to user
+	if (!data.services) {
+		
+		// stop loading progress
+		stopLoadingPreSearchData($('#header-search-form-element'));
+		
+		// deal with json
+		// var jsonSuggest = JSON.parse(data.suggest);
+		// FIXME: this is very unsecure way ()
+		var jsonSuggest = eval(data.suggest);
+        
+		$('#main').html('');
+		templateData = $.tmpl(templateSearchSuggests,
+			{ Suggests:jsonSuggest, Message: data.message }
+		).appendTo('#main');
+
+		// bind onclick events for suggestions links
+		$('.suggest-item a').click(function () {
+			location.hash = $(this).attr('href');
+			processHash();
+			return false;
+		});
+
+		$('#header-search-form-element').focus();
+		return;
+	}
+	
+	// and now when we have all the information availabe
+	// we can call for search results	
 	loadSearchResults(serviceIds, regionIds, currentPage);
 }
 
 //loads data from the backend
 function loadSearchResults(serviceIds, regionIds, page) {
 	
-	if (null == page) {
-		page = 1;
+	var url = '/' + locale +'/search/results/get/service/' + encodeURIComponent(serviceIds) + '/region/' + encodeURIComponent(regionIds)
+	
+	if (!(isNaN(page) || page == 1)) {
+		url = url + '/page/' + page
 	}
 	
-	var url = '/' + locale +'/search/results/get/service/' + encodeURIComponent(serviceIds) + '/region/' + encodeURIComponent(regionIds) + '/page/' + page;
 	loadSearchResultsByUrl(url);
 }
 
@@ -227,21 +270,28 @@ function loadSearchResultsByUrl(url) {
 			return false;
 		});
 	});
-	
 }
 
 // lets highlight search results
 function highlightResults()
 {
+	// highlight user input
 	var searchQuery = $('#header-search-form-element').attr('value');
 	var keywords = searchQuery.split(' '); 
 	
 	// lets hilight search query
 	for (var i in keywords) {
-		
 		if (keywords[i].length > MIN_SEARCH_LENGHT) {
 			$(".search-results-item").highlight(keywords[i]);
 		}
-
+	}
+	
+	// highlight services recognision keywords
+	var searchQuery = $('#highlight-keywords').text();
+	var keywords = searchQuery.split(','); 
+	
+	// lets hilight search query
+	for (var i in keywords) {
+		$(".search-results-item").highlight(keywords[i]);
 	}
 }

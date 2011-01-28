@@ -25,6 +25,18 @@ class Nashmaster_SearchForm
 	private $_services = null;
 	
 	/**
+	 * Holds matched services labels
+	 */
+	private $_matchServices = null;
+	
+	/**
+	 * Holds array of words simmilar to requested
+	 *
+	 * @var array
+	 */
+	private $_suggests = null;
+	
+	/**
 	 * Lets init start values or/and get saved values from session
 	 *
 	 * @param array $options
@@ -44,7 +56,7 @@ class Nashmaster_SearchForm
 	}
 
 	/**
-	 * Sate data into the session
+	 * Save data into the session
 	 */
 	public function __destruct()
 	{
@@ -135,13 +147,59 @@ class Nashmaster_SearchForm
 		$keywordList = array_diff($keywordList, $regionsMatch['hit_keywords']);
 		
 		$servicesMatch = $this->getServicesByKeywords($keywordList);
-		$this->_inline_services = $servicesMatch['services'];
-		$this->_last_inline_services = $servicesMatch['services'];
+		
+		if (empty($servicesMatch['services'])) {
+			$this->_suggests = $servicesMatch['suggest'];
+		} else {
+			$this->_inline_services = $servicesMatch['services'];
+			$this->_last_inline_services = $servicesMatch['services'];
+			$this->_matchServices = $servicesMatch['match_synonyms'];
+		}
 		
 		// save value for future use
 		$this->_last_search_keywords = $keywords;
 	}
+	
+	/**
+	 * Returns the list of matched synonyms that were recognized in getServicesByKeywords()
+	 * this value is used to highlight valuable keywords in search results
+	 *
+	 * @return array
+	 */
+	public function getMatchSynonyms()
+	{
+		return $this->_matchServices;
+	}
 
+	/**
+	 * Returns suggested possible keywords fro "Did you mean functionality
+	 * with the region(s) in case it was specified
+	 *
+	 * @param string $locale
+	 * @return array of strings
+	 */
+	public function getSuggest($locale = 'uk')
+	{
+		if (empty($this->_suggests)) {
+			return NULL;
+		}
+		
+		$citiesPhrase = '';
+		if (!empty($this->_inline_regions)) {
+			$cities = $this->_inline_regions;
+			foreach ($cities as $city) {
+				$citiesPhrase .=  ' ' . (($locale == 'uk') ? $city['name_uk'] : $city['name']);
+			}
+		}
+		
+		$fullSuggest = array();
+		foreach ($this->_suggests as $title) {
+			$fullSuggest[] = $title . $citiesPhrase;
+		}
+		
+		return $fullSuggest;
+	}
+	
 	/**
 	 * Strip punctuation marks and all words that are shorter that 3 characters
 	 *
@@ -150,7 +208,7 @@ class Nashmaster_SearchForm
 	 *       to receive move accurate search results
 	 *
 	 * @param string $keywords
-	 * @return string array of words in keywords string
+	 * @return array of strings, words in keywords string
 	 */
 	public function prepareKeywords($keywords)
 	{
@@ -292,19 +350,20 @@ class Nashmaster_SearchForm
 		$ids = array();
 		$hit_keywords = array();
 		$servicesPowerList = array();
+		$matchSynonyms = array();
 		
 		// we need to have a 2 words lookup first
 		// to receive more relevant results for two words matches
-		if (count($keywords) > 1) {
-			
+		if (count($keywords) > 1)
+		{
 			// lets build a pairs of keywords
 			// in case we have 3 words "word1 word2 word3"
 			// we will have 2 pairs "word1 word2" and "word2 word3"
 			for ($i = 0;$i < (count($keywords) - 1); $i++) {
 				// NOTE: we are using a trick of MySQL "LIKE" inctruction that will
-				//       process underscode symbol "_" as single-characted wildcard
-				//       so both variants will match "Plastic window" and "Plastic-window"
-				$matchServices = $Services->searchServicesByTag($keywords[$i] . '_' . $keywords[$i + 1]);
+				//       process symbol "%" as wildcard
+				//       so following variants will match "Plastic window", "Plastic-window", "window from Plastic" (reverse order)
+				$matchServices = $Services->searchServicesByTag($keywords[$i] . '%' . $keywords[$i + 1]);
 				
 				if (null === $matchServices) {
 					continue;
@@ -322,6 +381,64 @@ class Nashmaster_SearchForm
 					} else {
 						$servicesPowerList[$serviceId] += $serviceData['rate'];
 					}
+					
+					// save match synonyms data
+					if (isset($matchSynonyms[$serviceId]) && is_array($matchSynonyms[$serviceId])) {
+						$matchSynonyms[$serviceId] = array_merge($matchSynonyms[$serviceId], $serviceData['match']);
+					} else {
+						$matchSynonyms[$serviceId] = $serviceData['match'];
+					}
+					
+				}
+				
+				// lets skip both words
+				$hit_keywords[] = $keywords[$i];
+				$i++;
+				$hit_keywords[] = $keywords[$i];
+			}
+
+			// after the pair lookup was finished
+			// we should exclude the keywords that are already recognized as services
+			// to avoid redundant lookups and possibly falce single-word service recognision like
+			// "fixing plastic windows" => "fixing windows"
+			// so in case we already found the two words service it will not process appropriate
+			// single-word service
+			$keywords = array_diff($keywords, $hit_keywords);
+			
+			
+			// lets build the same pairs of keywords
+			// but in reverse order, so for the same example "word1 word2 word3"
+			// we will have pairs like "word2 word1" and "word3 word2"
+			for ($i = 0;$i < (count($keywords) - 1); $i++) {
+				// NOTE: we are using a trick of MySQL "LIKE" inctruction that will
+				//       process symbol "%" as wildcard
+				//       so following variants will match "Plastic window", "Plastic-window", "window from Plastic" (reverse order)
+				$matchServices = $Services->searchServicesByTag($keywords[$i + 1] . '%' . $keywords[$i]);
+				
+				if (null === $matchServices) {
+					continue;
+				}
+				
+				foreach($matchServices as $serviceId => $serviceData) {
+				
+					if (empty($servicesPowerList[$serviceId])) {
+						
+						$servicesPowerList[$serviceId] = $serviceData['rate'];
+						
+						$serviceTitle[$serviceId] = $serviceData['name'];
+						$serviceTitleUk[$serviceId] = $serviceData['name_uk'];
+	
+					} else {
+						$servicesPowerList[$serviceId] += $serviceData['rate'];
+					}
+					
+					// save match synonyms data
+					if (isset($matchSynonyms[$serviceId]) && is_array($matchSynonyms[$serviceId])) {
+						$matchSynonyms[$serviceId] = array_merge($matchSynonyms[$serviceId], $serviceData['match']);
+					} else {
+						$matchSynonyms[$serviceId] = $serviceData['match'];
+					}
+					
 				}
 				
 				// lets skip both words
@@ -339,7 +456,7 @@ class Nashmaster_SearchForm
 			// single-word service
 			$keywords = array_diff($keywords, $hit_keywords);
 		}
-		
+
 		// the service recognizion algorithm will be very simple for now
 		// 1. get all matches for each single keyword
 		// 2. then count the amount of matches of the same type of service
@@ -369,11 +486,34 @@ class Nashmaster_SearchForm
 				} else {
 					$servicesPowerList[$serviceId] += $serviceData['rate'];
 				}
+
+				// save match synonyms data
+				if (isset($matchSynonyms[$serviceId]) && is_array($matchSynonyms[$serviceId])) {
+					$matchSynonyms[$serviceId] = array_merge($matchSynonyms[$serviceId], $serviceData['match']);
+				} else {
+					$matchSynonyms[$serviceId] = $serviceData['match'];
+				}
+
 			}
 
 			$hit_keywords[] = $keyword;
 		}
 
+		// in case no any services were recognized we should suggest something
+		// just like "Did you mean..."
+		if (empty($servicesPowerList)) {
+			$res = array();
+			$Synonyms = new Joss_Crawler_Db_Synonyms();
+			$items = $Synonyms->getSoundsLike(implode(' ', $keywords));
+			
+			// FIXME: fetchCol() returns array with 1 empty element
+			// we should add temporrary workaround here to skip empty values
+			$items = array_filter($items);
+			
+			$res['suggest'] = $items;
+			return $res;
+		}
+		
 		$servicesPower = 0;
 		foreach($servicesPowerList as $serviceId => $serviceInfo) {
 			$servicesPower += $serviceInfo['rate'];
@@ -395,6 +535,7 @@ class Nashmaster_SearchForm
 		$res = array();
 		$res['hit_keywords'] = $hit_keywords;
 		$res['services'] = $resultServices;
+		$res['match_synonyms'] = $matchSynonyms;
 		return $res;
 	}
 	

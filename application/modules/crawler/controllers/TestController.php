@@ -40,4 +40,41 @@ class Crawler_TestController extends Zend_Controller_Action
 		
 	}
 	
+	public function clearcrawlAction()
+	{
+		$db = Zend_Db_Table::getDefaultAdapter();
+
+		$sql = 'SELECT *, COUNT(id) items FROM crawl_item GROUP BY adapter_specific_id HAVING COUNT(id) > 1 ORDER BY items DESC';
+		$multiItems = $db->fetchAll($sql);
+		
+		foreach ($multiItems as $multiItem) {
+			// search all dublicates
+			$sql = 'SELECT * FROM crawl_item WHERE adapter_specific_id = ' . $multiItem['adapter_specific_id'];
+			$dublicateItems = $db->fetchAll($sql);
+			
+			// we should leave only one element and remove all dublicates
+			unset($dublicateItems[0]);
+			
+			$dubIds = array();
+			foreach ($dublicateItems as $dublicateItem) {
+				$dubIds[] = $dublicateItem['id'];
+			}
+			$dubIds = implode(',', $dubIds);
+			
+			$sql1 = 'DELETE FROM crawl_item_contacts WHERE item_id IN (' . $dubIds . ')';
+			$sql2 = 'DELETE FROM crawl_item_details WHERE item_id IN (' . $dubIds . ')';
+			$sql3 = 'DELETE FROM crawl_item_regions WHERE item_id IN (' . $dubIds . ')';
+			$sql4 = 'DELETE FROM crawl_item_services WHERE item_id IN (' . $dubIds . ')';
+			
+			$db->query($sql1);
+			$db->query($sql2);
+			$db->query($sql3);
+			$db->query($sql4);
+			
+			// delete items
+			$sql = 'DELETE FROM crawl_item WHERE id IN (' . $dubIds . ')';
+			$db->query($sql);
+		}
+	}
+	
 }

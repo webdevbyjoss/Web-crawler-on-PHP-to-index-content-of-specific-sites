@@ -101,6 +101,20 @@ $(document).ready(function () {
 	
 	$('#feedbackLink').click(function(){
 		$('#feedback-form').removeClass('feedback-invisible');
+		$('#feedback-form-text').autoResize({
+		    // On resize:
+		    onResize : function() {
+		        $(this).css({opacity:0.8});
+		    },
+		    // After resize:
+		    animateCallback : function() {
+		        $(this).css({opacity:1});
+		    },
+		    // Quite slow animation:
+		    animateDuration : 500,
+		    // More extra space:
+		    extraSpace : 40
+		});
 		return false;
 	});
 

@@ -23,7 +23,10 @@ class ErrorController extends Zend_Controller_Action
                 $this->view->responseCode = 500;
 		        $this->view->stack_trace = $this->_getFullErrorMessage($errors);
 		        
-		        //save exception info into database
+		        // save exception info into database
+		        // TODO: make an HTTP request to third-party script
+		        //		 to avoid collision when we have an database connection error
+		        
 		        $dbAdapter = $this->getFrontController()
 		            ->getParam('bootstrap')
 		            ->getResource('multidb')

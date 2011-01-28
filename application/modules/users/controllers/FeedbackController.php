@@ -1,16 +1,14 @@
 <?php
-
 /**
- * Controller for users feedbacks 
- * 
+ * Controller for users feedbacks
+ *
  * @version		0.0.1
  * @see			http://webdevbyjoss.blogspot.com/
  * @author		Andrew Gonchar <gonandriy@gmail.com>
  * @copyright	2010
  * @license		GPL
  */
-
-class Users_FeedbackController extends Zend_Controller_Action 
+class Users_FeedbackController extends Zend_Controller_Action
 {
 	public function postAction()
 	{
@@ -19,6 +17,7 @@ class Users_FeedbackController extends Zend_Controller_Action
 
 		//send feedback message to ofuz over Zend_Http_Client
 		$ofuzUri = "http://todo.nash-master.com/ofuz_helper.php";
+		
 		$client = new Zend_Http_Client($ofuzUri);
 		$req = $this->getRequest();
 		$category = $req->getParam('category');
@@ -40,12 +39,9 @@ class Users_FeedbackController extends Zend_Controller_Action
 		));
 		$ofuz_response = $client->request("POST")->getBody();
 		if ($ofuz_response == "SUCCESS") {
-			echo Zend_Registry::get("Zend_Translate")->_('Thanks for your feedback'); 
+			echo Zend_Registry::get("Zend_Translate")->_('Thanks for your feedback');
 		}
-		else 
+		else
 			echo $ofuz_response;
 	}
 }
-
-
-?>

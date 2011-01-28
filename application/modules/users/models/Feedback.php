@@ -1,16 +1,15 @@
 <?php
-
 /**
- * 
+ *
  * @author Andriy
  * Model class for manipulate feedback
  *
  */
-class Users_Model_Feedback  
+class Users_Model_Feedback
 {
 	/**
-	 * 
-	 * @var array $_modes 
+	 *
+	 * @var array $_modes
 	 * array of modes in which feedback message have been stored
 	 * possible values at that time is 'bugtracker' and 'dbase'
 	 */
@@ -31,12 +30,10 @@ class Users_Model_Feedback
 	
 	public function save($params=array())
 	{
-		if (!$params)
+		if (!$params) {
 			return false;
+		}
+		
 		$bugtrackerAdapter = new Model_OfuzAdapter();
-		var_dump($bugtracker);
 	}
 }
-
-
-?>

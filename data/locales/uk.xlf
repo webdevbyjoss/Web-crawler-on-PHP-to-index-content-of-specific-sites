@@ -196,6 +196,50 @@
 		<source xml:lang="ru">Здесь будут ссылки на актуальные статьи и новости из мира строительства и ремонта</source>
 		<target xml:lang="uk">Тут будуть посилання на актуальні статті та новини з світу будівництва та ремонту</target>
 	</trans-unit>
+	<trans-unit id="ff-title">
+		<source xml:lang="ru">Спасибо, что помогаете нам стать лучше!</source>
+		<target xml:lang="uk">Дякуємо, що допомагаєте нам стати кращими!</target>
+	</trans-unit>
+	<trans-unit id="ff-select-option">
+		<source xml:lang="ru">Выберите пункт наиболее точно характеризующий ваше сообщение</source>
+		<target xml:lang="uk">Виберіть пункт що найбільш точно характеризує ваше повідомлення</target>
+	</trans-unit>
+	<trans-unit id="ff-option-errors">
+		<source xml:lang="ru">ошыбки в работе сайта</source>
+		<target xml:lang="uk">помилки в роботі сайту</target>
+	</trans-unit>
+	<trans-unit id="ff-option-search-fail">
+		<source xml:lang="ru">не удалось найти нужную информацию</source>
+		<target xml:lang="uk">не вдалося знайти потрібну інформацію</target>
+	</trans-unit>
+	<trans-unit id="ff-option-too-slow">
+		<source xml:lang="ru">сайт работает слишком медленно</source>
+		<target xml:lang="uk">сайт працює надто повільно</target>
+	</trans-unit>
+	<trans-unit id="ff-option-make-better">
+		<source xml:lang="ru">совет по улучшению работы ресурса</source>
+		<target xml:lang="uk">порада щодо покращення роботи ресурсу</target>
+	</trans-unit>
+	<trans-unit id="ff-option-partnership">
+		<source xml:lang="ru">предлагаю сотрудничество с моим сайтом или компанией</source>
+		<target xml:lang="uk">пропоную співпрацю з моїм сайтом або компанією</target>
+	</trans-unit>
+	<trans-unit id="ff-option-affiliate">
+		<source xml:lang="ru">хочу быть вашим представителем в своем городе</source>
+		<target xml:lang="uk">хочу бути вашим представником у своєму місті</target>
+	</trans-unit>
+	<trans-unit id="ff-dont-forget">
+		<source xml:lang="ru">Не забудьте указать контактную информацию для общения в будущем</source>
+		<target xml:lang="uk">Не забудьте вказати контактну інформацію для подальшого зв’язку</target>
+	</trans-unit>
+	<trans-unit id="ff-send-message">
+		<source xml:lang="ru">отправить сообщение</source>
+		<target xml:lang="uk">надіслати повідомлення</target>
+	</trans-unit>
+	<trans-unit id="ff-not-now">
+		<source xml:lang="ru">не сейчас</source>
+		<target xml:lang="uk">не зараз</target>
+	</trans-unit>
 </body>
 </file>
 </xliff>

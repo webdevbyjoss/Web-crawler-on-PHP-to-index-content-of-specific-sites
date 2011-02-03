@@ -1,31 +1,36 @@
 <div id="feedback-form" class="feedback-invisible">
-	<div id="feedback-form-header">
-		Дякуємо що допомагаєте нам стати кращими
-	</div>
+	<div id="feedback-form-header"><?php echo $this->T('ff-title') ?></div>
+	<div id="feedback-send-result"></div>
+	<ul id="feedback-form-errors"></ul>
 	
 	<form name="feedback-form-data" method="POST" action="/users/feedback/post/">
 		<div id="feedback-form-options">
-			<span>
-				<strong>Виберіть пункт що найбільш точно характеризує ваше повідомлення</strong>
-			</span>
-			<div id="feedback-send-result"></div>
-			<ul id="feedback-form-errors"></ul>
-			<div><input id="option-1" name="category[]" value="1" type="radio" /><label for="option-1" class="negative">щось не працює або працює взагалі неправильно</label></div>
-			<div><input id="option-2" name="category[]" value="2" type="radio" /><label for="option-2" class="negative">не вдалося нічого знайти чи результати пошуку низької якості</label></div>
-			<div><input id="option-3" name="category[]" value="3" type="radio" /><label for="option-3" class="positive">маю пораду щодо вдосконалення чи покращення роботи ресурсу</label></div>
-			<div><input id="option-4" name="category[]" value="4" type="radio" /><label for="option-4" class="positive">пропоную співпрацю з моїм сайтом або компанією</label></div>
-			<div><input id="option-5" name="category[]" value="5" type="radio" /><label for="option-5" class="positive">хочу бути вашим представником у своєму місті</label></div>
-			<span>Не забудьте вказати контактну інформацію для подальшого звязку</span>
+			<span><strong><?php echo $this->T('ff-select-option');?></strong></span>
+			
+			<div><input id="option-1" name="category[]" value="1" type="radio" />
+				<label for="option-1" class="negative"><?php echo $this->T('ff-option-errors') ?></label></div>
+			<div><input id="option-2" name="category[]" value="2" type="radio" />
+				<label for="option-2" class="negative"><?php echo $this->T('ff-option-search-fail') ?></label></div>
+			<div><input id="option-3" name="category[]" value="3" type="radio" />
+				<label for="option-3" class="negative"><?php echo $this->T('ff-option-too-slow') ?></label></div>
+			<div><input id="option-4" name="category[]" value="4" type="radio" />
+				<label for="option-4" class="positive"><?php echo $this->T('ff-option-make-better') ?></label></div>
+			<div><input id="option-5" name="category[]" value="5" type="radio" />
+				<label for="option-5" class="positive"><?php echo $this->T('ff-option-partnership') ?></label></div>
+			<div><input id="option-6" name="category[]" value="6" type="radio" />
+				<label for="option-6" class="positive"><?php echo $this->T('ff-option-affiliate') ?></label></div>
+
+			<span><?php echo $this->T('ff-dont-forget') ?></span>
+			
 			<div class="feedback-form-contacts">
-				E-mail:&nbsp;<input value="" name="email" type="text" size="50" /> &nbsp; 
-				Тел.:&nbsp;<input value="" name="telephone"  type="text" size="50" /> 
+				E-mail:&nbsp;<input value="" name="email" type="text" size="50" /> &nbsp;
+				Тел.:&nbsp;<input value="" name="telephone"  type="text" size="50" />
 			</div>
 		</div>
-		
 		<textarea id="feedback-form-text" name="message"></textarea>
 		<div id="feedback-form-buttons">
-			<a href="#" id="feedback-button-submit">надіслати повідомлення</a>
-			<a href="#" id="feedback-button-hide">не зараз</a>
+			<a href="#" id="feedback-button-submit"><?php echo $this->T('ff-send-message') ?></a>
+			<a href="#" id="feedback-button-hide"><?php echo $this->T('ff-not-now') ?></a>
 		</div>
 	</form>
 </div>

@@ -401,3 +401,24 @@ h1, h2, h3, h4, h5, h6 {
 #feedback-send-result {
 	color: green;
 }
+
+/**
+ * Homepage
+ */
+#homepage-greetings {
+	padding: 50px;
+	padding-bottom: 200px;
+	padding-top: 70px;
+	/*padding-top: 50px;*/
+	
+}
+
+#help-instructions {
+	
+}
+
+#help-instructions p span {
+	font-size: 2.4em;
+	font-family: arial;
+	padding: 10px;
+}

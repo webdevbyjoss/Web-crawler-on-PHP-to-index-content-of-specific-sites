@@ -180,6 +180,22 @@
 		<source xml:lang="ru">Введите интересующий вас вид услуг</source>
 		<target xml:lang="uk">Введіть вид послуг що вас цікавить</target>
 	</trans-unit>
+	<trans-unit id="questions-answers">
+		<source xml:lang="ru">Вопросы и ответы</source>
+		<target xml:lang="uk">Питання та відповіді</target>
+	</trans-unit>
+	<trans-unit id="under-construction">
+		<source xml:lang="ru">Раздел в разработке. Очень скоро он будет готов к запуску</source>
+		<target xml:lang="uk">Ми працюємо над цим розділом, незабаром він буде готовий до запуску</target>
+	</trans-unit>
+	<trans-unit id="questions-answers-description">
+		<source xml:lang="ru">Здесь будет возможность прочитать решения типичных проблем или задать свой вопрос для обсуждения</source>
+		<target xml:lang="uk">Тут буде можливість прочитати вирішення типових проблем або задати власне питання для обговорення</target>
+	</trans-unit>
+	<trans-unit id="articles-description">
+		<source xml:lang="ru">Здесь будут ссылки на актуальные статьи и новости из мира строительства и ремонта</source>
+		<target xml:lang="uk">Тут будуть посилання на актуальні статті та новини з світу будівництва та ремонту</target>
+	</trans-unit>
 </body>
 </file>
 </xliff>

@@ -20,9 +20,9 @@ function cuttext($string, $cutoff)
 <div class="search-results">
 <?php foreach ($this->data as $res): ?>
 	<div class="search-results-item">
-		<div class="title"><a href="#info-<?php echo $res['id'] ?>"><?php echo cuttext($res['title'], 70) ?></a></div>
+		<div class="title"><a target="_blank" href="<?php echo $res['url'] ?>"><?php echo cuttext($res['title'], 70) ?></a></div>
 		<div class="description"><?php echo cuttext($res['description'], 200) ?></div>
-		<div class="url"><?php echo $res['url'] ?></div>
+		<a target="_blank" href="<?php echo $res['url'] ?>" class="url"><?php echo $res['url'] ?></a>
 	</div>
 <?php endforeach; ?>
 <?php echo $this->paginationControl($this->data, 'Sliding', 'search_pagination_control.phtml'); ?>

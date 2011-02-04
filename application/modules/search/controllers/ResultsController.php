@@ -38,4 +38,17 @@ class Search_ResultsController extends Zend_Controller_Action
 		$Synonyms = new Joss_Crawler_Db_Synonyms();
 		$SynonymServices = new Joss_Crawler_Db_SynonymsServices();
 	}
+	
+	function statAction()
+	{
+		// disable auto render
+		$this->_helper->viewRenderer->setNoRender(true);
+
+		// get information from request
+		$request = $this->getRequest();
+		
+		$StatSearchClicks = new Search_Model_StatSearchClicks();
+		$StatSearchClicks->add(urldecode($request->data));
+	}
+	
 }

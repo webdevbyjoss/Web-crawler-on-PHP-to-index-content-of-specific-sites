@@ -269,6 +269,16 @@ function loadSearchResultsByUrl(url) {
 			loadSearchResultsByUrl($(this).attr('href'));
 			return false;
 		});
+		
+		// add statistics tracking functionality for search results
+		$('.search-results-item a').mousedown(function () {
+			$.ajax({
+				   type: "GET",
+				   url: "/search/results/stat/data/" + encodeURIComponent(encodeURIComponent( $(this).attr('href') )),
+				   async: true,
+				   cache: false
+			});
+		});
 	});
 }
 

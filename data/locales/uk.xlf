@@ -157,8 +157,8 @@
 		<target xml:lang="uk">новини</target>
 	</trans-unit>
 	<trans-unit id="terms-and-conditions">
-		<source xml:lang="ru">условия предоставления услуг</source>
-		<target xml:lang="uk">умови надання послуг</target>
+		<source xml:lang="ru">Условия предоставления услуг</source>
+		<target xml:lang="uk">Умови надання послуг</target>
 	</trans-unit>
 	<trans-unit id="for-developers">
 		<source xml:lang="ru">разработчикам</source>

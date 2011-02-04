@@ -197,6 +197,7 @@ h1, h2, h3, h4, h5, h6 {
 #footer-menu a {
 	color: gray;
 	padding: 5px;
+	text-transform: lowercase;
 }
 
 #footer-menu a:hover {

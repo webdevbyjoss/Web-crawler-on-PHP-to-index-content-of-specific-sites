@@ -20,15 +20,19 @@ class Users_FeedbackController extends Zend_Controller_Action
 		
 		$client = new Zend_Http_Client($ofuzUri);
 		$req = $this->getRequest();
+		
 		$category = $req->getParam('category');
-		if (is_array($category))
+		if (is_array($category)) {
 			$category = $category[0];
+		}
+		
 		switch ($category) {
-			case "1": $category = "щось не працює або працює взагалі неправильно"; break;
-			case "2": $category = "не вдалося нічого знайти чи результати пошуку низької якості"; break;
-			case "3": $category = "маю пораду щодо вдосконалення чи покращення роботи ресурсу"; break;
-			case "4": $category = "пропоную співпрацю з моїм сайтом або компанією"; break;
-			case "5": $category = "хочу бути вашим представником у своєму місті"; break;
+			case "1": $category = "errors on site"; break;
+			case "2": $category = "search fail"; break;
+			case "3": $category = "too slow"; break;
+			case "4": $category = "make better"; break;
+			case "5": $category = "partnership"; break;
+			case "6": $category = "affiliate"; break;
 		}
 
 		$client->setParameterPost(array(

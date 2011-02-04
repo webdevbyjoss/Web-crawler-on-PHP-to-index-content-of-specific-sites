@@ -102,16 +102,8 @@ $(document).ready(function () {
 	$('#feedbackLink').click(function(){
 		$('#feedback-form').removeClass('feedback-invisible');
 		$('#feedback-form-text').autoResize({
-		    // On resize:
-		    onResize : function() {
-		        $(this).css({opacity:0.8});
-		    },
-		    // After resize:
-		    animateCallback : function() {
-		        $(this).css({opacity:1});
-		    },
 		    // Quite slow animation:
-		    animateDuration : 500,
+		    animateDuration : 0,
 		    // More extra space:
 		    extraSpace : 40
 		});
@@ -127,7 +119,7 @@ $(document).ready(function () {
 	
 	function FeedbackFormclearErrors()
 	{
-		$("#feedback-form-errors").empty();
+		// $("#feedback-form-errors").empty();
 		$("form[name=feedback-form-data] input[name=email]").css({"border": "1px solid silver"});
 		$("form[name=feedback-form-data] input[name=telephone]").css({"border": "1px solid silver"});
 		$("form[name=feedback-form-data] #feedback-form-text").css({"border": "1px solid silver"});
@@ -139,6 +131,13 @@ $(document).ready(function () {
 	}
 	
 	$('#feedback-button-submit').click(function(){
+		
+		// check for selected radio
+		if (!$("input[@name='category']:checked").val()) {
+			// TODO: add message to explain user to about selecting the apropriate radios
+			return false;
+		}
+		
 		//clean errors messages
 		FeedbackFormclearErrors();
 		FeedbackFormclearResult();
@@ -147,27 +146,45 @@ $(document).ready(function () {
 		var email = $("form[name=feedback-form-data] input[name=email]").val();
 		var telephone = $("form[name=feedback-form-data] input[name=telephone]").val();
 		var message = $("form[name=feedback-form-data] #feedback-form-text").val();
+		
+		// TODO: do a regexp email validation
+		// TODO: message should be more than 100 characters long
+		
 		if ((email || telephone) && message) {
 			//everything ok, send form data to server
 			$("form[name=feedback-form-data]").ajaxSubmit({
 				"method": "POST",
 				"success": function(data) {
-					$("#feedback-send-result").html(data);
+					
+					// TODO: change this functionality to make it more accurate
+					FeedbackFormclearErrors();
+					FeedbackFormclearResult();
+					$('#feedback-form').addClass('feedback-invisible');
+					
+					// TODO: show a beautifull message to user
+					// $("#feedback-send-result").html(data);
+					// alert(data);
+					
+					// TODO: clear form more accurate
+					$("form[name=feedback-form-data] input[name=email]").val('');
+					$("form[name=feedback-form-data] input[name=telephone]").val('');
+					$("form[name=feedback-form-data] #feedback-form-text").val('');
+					$("input[@name='category']:radio").attr("checked", false);
 				}
 			});
 		}
 		else {
 			// some errors
 			var error_style = {
-				"border": " 2px solid red", 
+				"border": " 2px solid red"
 			};
 			if (!email && !telephone) {
-				$("#feedback-form-errors").append("<li>Please provide email or telephone<li>");
+				//$("#feedback-form-errors").append("<li>Please provide email or telephone<li>");
 				$("form[name=feedback-form-data] input[name=email]").css(error_style);
 				$("form[name=feedback-form-data] input[name=telephone]").css(error_style);
 			}
 			if (!message) {
-				$("#feedback-form-errors").append("<li>Please provide message of feedback<li>");
+				// $("#feedback-form-errors").append("<li>Please provide message of feedback<li>");
 				$("form[name=feedback-form-data] #feedback-form-text").css(error_style);
 			}
 		}

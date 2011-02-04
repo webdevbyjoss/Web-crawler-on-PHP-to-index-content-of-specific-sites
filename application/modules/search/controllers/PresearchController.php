@@ -12,16 +12,20 @@ class Search_PresearchController extends Zend_Controller_Action
 		$options = array();
     	$options['remote_ip'] = $_SERVER['REMOTE_ADDR'];
     	$options['search_keywords'] = $this->getRequest()->data;
-    	
 		$SearchForm = new Nashmaster_SearchForm($options);
-		
+
+		// retrieve data from search form
 		$this->view->regions = $SearchForm->getRegions();
 		$this->view->services = $SearchForm->getServices();
-		
+
 		// we need to have a locale to display services and cities in appropriate language
 		// but right now the cities are displayed in Russian in case Ukrainian name is not available
 		// and services are displayed in the current locale language selected by user
 		$locale = $this->view->getLocale();
+
+		// write search statistics
+		$StatKeywords = new Search_Model_StatKeywords();
+		$StatKeywords->add($options['search_keywords'], $locale, implode(',', array_keys($this->view->services)), implode(',', array_keys($this->view->regions)));
 		
 		// if no any services were recognized then output the region and suggested strings in case of typos
 		if (empty($this->view->services)) {
@@ -36,7 +40,8 @@ class Search_PresearchController extends Zend_Controller_Action
 			$this->view->noservice = true;
 			return;
 		}
-		
+
+		// process synonyms for search results highlight
 		$synonymsByServices = $SearchForm->getMatchSynonyms();
 		$SynonymServices = new Joss_Crawler_Db_SynonymsServices();
 		$Synonyms = new Joss_Crawler_Db_Synonyms();

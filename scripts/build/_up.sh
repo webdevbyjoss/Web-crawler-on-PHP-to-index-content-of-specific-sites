@@ -5,7 +5,16 @@ APP_DIR=`readlink -f ./../../`
 ./local-cleanup.sh
 
 # application deployment
-rsync -avz $APP_DIR/application/* nash:/home/nashmast/application/
+# NOTE: we skipping configuration directory
+rsync -avz $APP_DIR/application/controllers/* nash:/home/nashmast/application/controllers/
+rsync -avz $APP_DIR/application/layouts/* nash:/home/nashmast/application/layouts/
+rsync -avz $APP_DIR/application/models/* nash:/home/nashmast/application/models/
+rsync -avz $APP_DIR/application/modules/* nash:/home/nashmast/application/modules/
+rsync -avz $APP_DIR/application/services/* nash:/home/nashmast/application/services/
+rsync -avz $APP_DIR/application/views/* nash:/home/nashmast/application/views/
+rsync -avz $APP_DIR/application/Bootstrap.php nash:/home/nashmast/application/Bootstrap.php
+
+# internal application resources deployment
 rsync -avz $APP_DIR/data/* nash:/home/nashmast/data/
 ./_up_public.sh
 

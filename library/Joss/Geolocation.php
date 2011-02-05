@@ -65,11 +65,28 @@ class Joss_Geolocation
 		// convet retrieved data to local database IDs
 		// and store data into local database
 		// and store data into local cache
-		$data = Joss_Geolocation_Hostip::getCityByIp($ip);
+		unset($data);
+		try {
+			$data = Joss_Geolocation_Hostip::getCityByIp($ip);
+		} catch (Exception $e) {
+			// FIXME: we NEED to refactor the way we using this service
+			return null;
+		}
 		
+		if (empty($data)) {
+			// no any city was recognized
+			return null;
+		}
+		
+		// if coordinates are returned then lets try to recognize the city
 		$Cities = new Searchdata_Model_Cities();
 		$currentCity = $Cities->getCityByCoords($data['lng'], $data['lat']);
 
+		if (empty($currentCity)) {
+			// TODO: late return because no any city was recognized
+			return null;
+		}
+		
 		$GeoDb->addCity($ip, $currentCity);
 		
 		$return[] = array(

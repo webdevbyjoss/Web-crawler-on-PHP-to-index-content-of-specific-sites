@@ -172,9 +172,13 @@ class Nashmaster_View extends Zend_View
     	$regions = $this->searchForm->getRegions();
     	
     	$regionsHTML = '';
-    	foreach ($regions as $reg) {
-    		$name = ($this->getLocale() == 'uk') ? $reg['name_uk'] : $reg['name'];
-    		$regionsHTML .= ((empty($regionsHTML)? '' : ',' ) . '<span id="city-' . $reg['id'] . '">' . $name . '</span>');
+    	if (!empty($regions) && count($regions) > 0) {
+	    	foreach ($regions as $reg) {
+	    		$name = ($this->getLocale() == 'uk') ? $reg['name_uk'] : $reg['name'];
+	    		$regionsHTML .= ((empty($regionsHTML)? '' : ',' ) . '<span id="city-' . $reg['id'] . '">' . $name . '</span>');
+	    	}
+    	} else {
+			$regionsHTML = $this->T('specify-city-in-request');
     	}
     	
     	return $regionsHTML;

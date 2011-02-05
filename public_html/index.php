@@ -46,7 +46,7 @@ require_once 'Nashmaster/Starter.php';
 $Starter = new Nashmaster_Starter(APPLICATION_PATH, APPLICATION_ENV);
 
 // You should avoid putting too many lines before the cache section.
-DISABLE_FULL_PAGE_CACHE ? null : $Starter->pageCache(APPLICATION_CACHE, DEBUG_ENABLE);
+// DISABLE_FULL_PAGE_CACHE ? null : $Starter->pageCache(APPLICATION_CACHE, DEBUG_ENABLE);
 // if the cache is hit, the result is sent to the browser and the
 // script stop here
 
@@ -54,4 +54,4 @@ $Starter->run();
 
 // calculate total execution time
 // and track the slow page generations
-$Starter->trackTime();
+// $Starter->trackTime();

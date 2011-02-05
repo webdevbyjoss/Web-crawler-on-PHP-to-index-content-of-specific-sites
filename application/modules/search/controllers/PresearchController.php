@@ -25,7 +25,15 @@ class Search_PresearchController extends Zend_Controller_Action
 
 		// write search statistics
 		$StatKeywords = new Search_Model_StatKeywords();
-		$StatKeywords->add($options['search_keywords'], $locale, implode(',', array_keys($this->view->services)), implode(',', array_keys($this->view->regions)));
+		$servicesList = '';
+		if (is_array($this->view->services) && (count($this->view->services) > 0)) {
+			$servicesList = implode(',', array_keys($this->view->services));
+		}
+		$regionsList = '';
+		if (is_array($this->view->regions) && (count($this->view->regions) > 0)) {
+			$regionsList = implode(',', array_keys($this->view->regions));
+		}
+		$StatKeywords->add($options['search_keywords'], $locale, $servicesList, $regionsList);
 		
 		// if no any services were recognized then output the region and suggested strings in case of typos
 		if (empty($this->view->services)) {

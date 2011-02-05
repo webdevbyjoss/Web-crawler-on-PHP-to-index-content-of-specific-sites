@@ -88,6 +88,7 @@ class ErrorController extends Zend_Controller_Action
         
         if (null !== $error) {
 	        $message .= "RequestURI: " . $error->request->getRequestUri() . "\n";
+	        $message .= "Exception type: " . get_class($error->exception) . "\n";
 	        $message .= "Message: " . $error->exception->getMessage() . "\n\n";
 	        $message .= "Trace:\n" . $error->exception->getTraceAsString() . "\n\n";
 	        $message .= "Request data: " . var_export($error->request->getParams(), true) . "\n\n";

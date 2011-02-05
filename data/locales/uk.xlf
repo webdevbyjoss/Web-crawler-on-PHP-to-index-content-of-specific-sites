@@ -240,6 +240,10 @@
 		<source xml:lang="ru">не сейчас</source>
 		<target xml:lang="uk">не зараз</target>
 	</trans-unit>
+	<trans-unit id="specify-city-in-request">
+		<source xml:lang="ru">введите вид услуг и интересующий вас город в поисковом запросе</source>
+		<target xml:lang="uk">введіть вид послуг та місто що вас цікавить в пошуковому запиті</target>
+	</trans-unit>
 </body>
 </file>
 </xliff>

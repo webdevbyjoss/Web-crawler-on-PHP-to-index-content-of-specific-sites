@@ -40,6 +40,14 @@ class Joss_Geolocation_Db extends Zend_Db_Table_Abstract
 	 */
 	public function addCity($ip, $city)
 	{
+		if (empty($city)) {
+			throw new Exception('Incorrect city Geo-IP information provided');
+		}
+		
+		if (empty($ip)) {
+			throw new Exception('Incorrect IP-address information provided');
+		}
+		
 		$data = array(
 			'ip' => $ip,
 			'country_id' => $city->country_id,

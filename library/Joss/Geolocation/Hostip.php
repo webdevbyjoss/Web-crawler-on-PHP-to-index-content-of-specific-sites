@@ -28,34 +28,50 @@ class Joss_Geolocation_Hostip
 	 */
 	static public function getCityByIp($ip)
 	{
-		// build URL
-		$requestUrl = self::API_URL . '?ip=' . $ip;
+          // build URL
+          $requestUrl = self::API_URL . '?ip=' . $ip;
 
-		// get API responce
-		$client = new Zend_Http_Client($requestUrl);
-		$response = $client->request()->getBody();
-		
-		// analyze responce
-		$xml = new SimpleXMLElement($response);
-		
-		// coordinates are available as lng,lat
-		$coordinates = current($xml->xpath('//gml:coordinates'));
-		if (empty($coordinates)) {
-			return null;
-		}
-		
-		$coordsString = $coordinates->__toString();
-		$coords = explode(',', $coordsString);
-		$geoData['lng'] = $coords[0];
-		$geoData['lat'] = $coords[1];
-		
-		// extract additional data
-		$geoData['ip'] = current($xml->xpath('//ip'))->__toString();
-		$geoData['country'] = current($xml->xpath('//countryName'))->__toString();
-		$geoData['country_code'] = current($xml->xpath('//countryAbbrev'))->__toString();
-		$geoData['city_name'] = current($xml->xpath('//Hostip/gml:name'))->__toString();
-		
-		return $geoData;
+          // get API responce
+          $client = new Zend_Http_Client($requestUrl, array(
+            'maxredirects' => 0,
+          	'timeout'	   => 1
+          ));
+
+          $responseObject = $client->request();
+
+          if ($responseObject->getStatus() != 200) {
+          	  return null;
+          }
+
+          $response = $responseObject->getBody();
+
+          // analyze responce
+          $xml = new SimpleXMLElement($response);
+
+          // coordinates are available as lng,lat
+          $coordinates = current($xml->xpath('//gml:coordinates'));
+
+          if (empty($coordinates)) {
+          	return null;
+          }
+
+       	  // WARNING: only for PHP 5.3
+          // $coordsString = $coordinates->__toString();
+          // FOR PHP before version 5.3 use:
+          $coordsString = sprintf("%s", $coordinates);
+
+          $coords = explode(',', $coordsString);
+          $geoData['lng'] = $coords[0];
+          $geoData['lat'] = $coords[1];
+
+          // extract additional data
+          $geoData['ip'] = $ip;
+          // NOTE: doesn't works before PHP 5.3
+          // $geoData['country'] = current($xml->xpath('//countryName'))->__toString();
+          // $geoData['country_code'] = current($xml->xpath('//countryAbbrev'))->__toString();
+          // $geoData['city_name'] = current($xml->xpath('//Hostip/gml:name'))->__toString();
+
+          return $geoData;
 	}
 
 }

@@ -80,7 +80,11 @@ $(document).ready(function () {
 function processHash() {
 	var queryParams = getHashVars(location.hash);
 	var $elem = $('#header-search-form-element');
-	$elem.attr('value', queryParams['q']);
+	
+	if (queryParams['q']) {
+		$elem.attr('value', queryParams['q']);
+	}
+
 	currentPage = parseInt(queryParams['page']);
 	analyzeSearchData($elem);
 }
@@ -114,7 +118,7 @@ function getHashVars()
 //loads pre-fetch data
 function loadPreSearchData($elem)
 {
-	var keywords = $elem.attr('value');
+	var keywords = $.trim($elem.attr('value'));
 	
 	// start loading 
 	stopLoadingPreSearchData($elem);
@@ -205,16 +209,18 @@ function updateForm(data) {
 	
 	// in case no any services were recognized there is no any need to do a data search results request
 	// lets show the list of possible suggestions to user
-	if (!data.services) {
+	if (data.message) {
 		
 		// stop loading progress
 		stopLoadingPreSearchData($('#header-search-form-element'));
 		
-		// deal with json
-		// var jsonSuggest = JSON.parse(data.suggest);
-		// FIXME: this is very unsecure way ()
-		var jsonSuggest = eval(data.suggest);
-        
+		if (!data.services) {
+			// deal with json
+			// var jsonSuggest = JSON.parse(data.suggest);
+			// FIXME: this is very unsecure way ()
+			var jsonSuggest = eval(data.suggest);
+		}
+		
 		$('#main').html('');
 		templateData = $.tmpl(templateSearchSuggests,
 			{ Suggests:jsonSuggest, Message: data.message }
@@ -227,6 +233,14 @@ function updateForm(data) {
 			return false;
 		});
 
+		keywords = $('#header-search-form-element').attr('value');
+		// NOTE: we adding extra space here to have properly positioned cursor
+		// for example "service |", so we a ready to write "service city" without 
+		// typing extra [space] from the keyboard note that if extra space was 
+		// already introduced then we don't need to add anything
+		if (keywords.substring(keywords.length-1, keywords.length) != ' ') {
+			$('#header-search-form-element').attr('value', keywords + ' ');
+		}
 		$('#header-search-form-element').focus();
 		return;
 	}

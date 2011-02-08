@@ -103,10 +103,11 @@ $(document).ready(function () {
 		$('#feedback-form').removeClass('feedback-invisible');
 		$('#feedback-form-text').autoResize({
 		    // Quite slow animation:
-		    animateDuration : 0,
+		    animateDuration : 100,
 		    // More extra space:
 		    extraSpace : 40
 		});
+		$('#feedback-form-text').focus();
 		return false;
 	});
 
@@ -150,7 +151,7 @@ $(document).ready(function () {
 		// TODO: do a regexp email validation
 		// TODO: message should be more than 100 characters long
 		
-		if ((email || telephone) && message) {
+		if (message) {
 			//everything ok, send form data to server
 			$("form[name=feedback-form-data]").ajaxSubmit({
 				"method": "POST",
@@ -178,13 +179,11 @@ $(document).ready(function () {
 			var error_style = {
 				"border": " 2px solid red"
 			};
+			
 			if (!email && !telephone) {
-				//$("#feedback-form-errors").append("<li>Please provide email or telephone<li>");
 				$("form[name=feedback-form-data] input[name=email]").css(error_style);
-				$("form[name=feedback-form-data] input[name=telephone]").css(error_style);
 			}
 			if (!message) {
-				// $("#feedback-form-errors").append("<li>Please provide message of feedback<li>");
 				$("form[name=feedback-form-data] #feedback-form-text").css(error_style);
 			}
 		}

@@ -1,21 +1,28 @@
-<?php
-$this->headTitle()->prepend($this->T('error'));
-?>
-<h1><?php echo $this->T('error-page-header') ?></h1>
-
 <?php if (404 == $this->responseCode): ?>
-<h2>404 - <?php echo $this->T('page-not-found') ?></h2>
+<?php $this->headTitle()->prepend($this->T('page-not-found')); ?>
+<h1><?php echo $this->T('page-not-found') ?></h1>
 <p><?php echo $this->T('page-has-been-moved')?></p>
-<p><?php echo $this->T('try-visit-the-following-pages') ?>:
+<p><?php echo $this->T('try-visit-the-following-pages') ?>:</p>
 <ul>
-	<li><a href="/"><?php echo $this->T('home-page') ?> "<?php echo $this->T('site-name') ?>"</a></li>
+	<li><a href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'help',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>"><?php echo $this->T('help') ?></a></li>
+	
+	<li><a href="/"><?php echo $this->T('search') ?> "<?php echo $this->T('site-name') ?>"</a></li>
+	
 	<?php /* ?><li><a href=""><?php echo $this->T('login-page') ?>Вхід в систему</a></li> <?php */ ?>
 </ul>
-</p>
 <?php elseif(500 == $this->responseCode): ?>
-<h2>500 - <?php echo $this->T('application-internal-error') ?></h2>
+<?php $this->headTitle()->prepend($this->T('application-internal-error')); ?>
+<h1><?php echo $this->T('application-internal-error') ?></h1>
 <?php else: ?>
-<h2><?php echo $this->message ?></h2>
+<?php $this->headTitle()->prepend($this->T('error')); ?>
+<h1><?php echo $this->message ?></h1>
 <?php endif; ?>
 
 <?php if (APPLICATION_ENV == 'development'): ?>

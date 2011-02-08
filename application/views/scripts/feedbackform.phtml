@@ -5,28 +5,27 @@
 	<form name="feedback-form-data" method="POST" action="/users/feedback/post/">
 		<div id="feedback-form-options">
 			<span><strong><?php echo $this->T('ff-select-option');?></strong></span>
-			
-			<div><input id="option-1" name="category[]" value="1" type="radio" />
-				<label for="option-1" class="negative"><?php echo $this->T('ff-option-errors') ?></label></div>
+
 			<div><input id="option-2" name="category[]" value="2" type="radio" />
 				<label for="option-2" class="negative"><?php echo $this->T('ff-option-search-fail') ?></label></div>
-			<div><input id="option-3" name="category[]" value="3" type="radio" />
-				<label for="option-3" class="negative"><?php echo $this->T('ff-option-too-slow') ?></label></div>
+			<div><input id="option-1" name="category[]" value="1" type="radio" />
+				<label for="option-1" class="negative"><?php echo $this->T('ff-option-errors') ?></label></div>
+			<?php /* ?><div><input id="option-3" name="category[]" value="3" type="radio" />
+				<label for="option-3" class="negative"><?php echo $this->T('ff-option-too-slow') ?></label></div><?php */ ?>
 			<div><input id="option-4" name="category[]" value="4" type="radio" />
 				<label for="option-4" class="positive"><?php echo $this->T('ff-option-make-better') ?></label></div>
 			<div><input id="option-5" name="category[]" value="5" type="radio" />
 				<label for="option-5" class="positive"><?php echo $this->T('ff-option-partnership') ?></label></div>
 			<div><input id="option-6" name="category[]" value="6" type="radio" />
 				<label for="option-6" class="positive"><?php echo $this->T('ff-option-affiliate') ?></label></div>
-
+		</div>
+		<textarea id="feedback-form-text" name="message" rows="7"></textarea>
+		<div id="feedback-form-contacts">
 			<span><?php echo $this->T('ff-dont-forget') ?></span>
-			
 			<div class="feedback-form-contacts">
-				E-mail:&nbsp;<input value="" name="email" type="text" size="50" /> &nbsp;
-				Тел.:&nbsp;<input value="" name="telephone"  type="text" size="50" />
+				E-mail:&nbsp;<input value="" name="email" type="text" size="60" />
 			</div>
 		</div>
-		<textarea id="feedback-form-text" name="message"></textarea>
 		<div id="feedback-form-buttons">
 			<a href="#" id="feedback-button-submit"><?php echo $this->T('ff-send-message') ?></a>
 			<a href="#" id="feedback-button-hide"><?php echo $this->T('ff-not-now') ?></a>

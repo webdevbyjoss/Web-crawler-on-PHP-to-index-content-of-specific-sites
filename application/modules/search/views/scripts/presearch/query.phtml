@@ -36,6 +36,14 @@ if (is_array($this->services)) {
 	foreach ($this->services as $key => $val) {
 		$data['services'][$val['id']] = ($locale == 'uk') ? $val['name_uk'] : $val['name'];
 	}
+
+	// if we have services but we don't have a city recognized
+	if (!is_array($this->regions)) {
+		$data['message'] = $this->T('specify-city-in-request');
+		echo $this->php2js($data);
+		return;
+	}
+
 }
 
 // load match keywords for highlight

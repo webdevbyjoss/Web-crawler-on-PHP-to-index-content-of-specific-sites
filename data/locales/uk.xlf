@@ -11,7 +11,7 @@
 		<target xml:lang="uk">пошук спеціалістів з ремонту та будівництва</target>
 	</trans-unit>
 	<trans-unit id="meta-keywords">
-		<source xml:lang="ru">ремонт и строительство, поиск специалисток, ремонтные бригады, ремонт квартир</source>
+		<source xml:lang="ru">ремонт и строительство, поиск специалистов, ремонтные бригады, ремонт квартир</source>
 		<target xml:lang="uk">ремонт та будівництво, пошук спеціалістів, ремонтні бригади, ремонт квартир</target>
 	</trans-unit>
 	<trans-unit id="slogan">
@@ -23,8 +23,8 @@
 		<target xml:lang="uk">Логотип</target>
 	</trans-unit>
 	<trans-unit id="beta-version">
-		<source xml:lang="ru">Продукт на стадии тестирования</source>
-		<target xml:lang="uk">Продукт на етапі тестування</target>
+		<source xml:lang="ru">сайт на стадии тестирования</source>
+		<target xml:lang="uk">сайт на етапі тестування</target>
 	</trans-unit>
 	<trans-unit id="alpha-welcome-text">
 		<source xml:lang="ru">&lt;h1&gt;Наш Маcтер – инструмент для поиска специалистов по строительству и ремонту&lt;/h1&gt;&lt;p&gt;Добро пожаловать на сайт поисковой службы "Наш Мастер” для поиска специалистов по строительству и ремонту. В вашем распоряжении будет самая эффективная отраслевая система поиска с возможностью отбора профессионалов по регионам и видам деятельности.&lt;/p&gt;
@@ -45,16 +45,16 @@
 		<target xml:lang="uk">Помилка</target>
 	</trans-unit>
 	<trans-unit id="page-not-found">
-		<source xml:lang="ru">cтраница не найдена</source>
-		<target xml:lang="uk">cторінку не знайдено</target>
+		<source xml:lang="ru">Страница не найдена</source>
+		<target xml:lang="uk">Сторінку не знайдено</target>
 	</trans-unit>
 	<trans-unit id="application-internal-error">
-		<source xml:lang="ru">внутренняя ошибка приложения</source>
-		<target xml:lang="uk">внутрішня помилка застосунку</target>
+		<source xml:lang="ru">Внутренняя ошибка приложения</source>
+		<target xml:lang="uk">Внутрішня помилка застосунку</target>
 	</trans-unit>
 	<trans-unit id="page-has-been-moved">
-		<source xml:lang="ru">Возможно адрес страницы изменился или ссылка по которой вы кликнули неправильная.</source>
-		<target xml:lang="uk">Можливо сторінка змінила адресу або посилання яким ви скористалися є не вірним.</target>
+		<source xml:lang="ru">Возможно, адрес страницы изменился или ссылка, по которой вы кликнули, неправильная.</source>
+		<target xml:lang="uk">Можливо, сторінка змінила адресу або посилання, яким ви скористалися, є неправильним.</target>
 	</trans-unit>
 	<trans-unit id="try-visit-the-following-pages">
 		<source xml:lang="ru">Попробуйте перейти на следующие страницы</source>
@@ -90,19 +90,19 @@
 	</trans-unit>
 	<trans-unit id="Value is required and can't be empty">
 		<source xml:lang="ru">Значение етого поля не может быть пустым</source>
-		<target xml:lang="uk">Значення цього поля не може бути пустим</target>
+		<target xml:lang="uk">Значення цього поля не може бути порожнім</target>
 	</trans-unit>
 	<trans-unit id="Thanks for your feedback">
 		<source xml:lang="ru">Спасибо за ваше мнение. Ми обязательно разсмотрем его</source>
-		<target xml:lang="uk">Дякуємо вам за вашу думку. Ми її обовязково розглянемо</target>
+		<target xml:lang="uk">Дякуємо за вашу думку. Ми її обовязково розглянемо</target>
 	</trans-unit>
 	<trans-unit id="site-window-title">
 		<source xml:lang="ru">Поиск специалистов по ремонту и строительству</source>
 		<target xml:lang="uk">Пошук спеціалістів з ремонту та будівництва</target>
 	</trans-unit>
 	<trans-unit id="help">
-		<source xml:lang="ru">справка</source>
-		<target xml:lang="uk">довідка</target>
+		<source xml:lang="ru">Cправка</source>
+		<target xml:lang="uk">Довідка</target>
 	</trans-unit>
 	<trans-unit id="search">
 		<source xml:lang="ru">Поиск</source>
@@ -173,12 +173,12 @@
 		<target xml:lang="uk">про проект</target>
 	</trans-unit>
 	<trans-unit id="did-you-mean">
-		<source xml:lang="ru">Воможно имелось в виду:</source>
-		<target xml:lang="uk">Можливо малося на увазі:</target>
+		<source xml:lang="ru">Воможно, имелось в виду:</source>
+		<target xml:lang="uk">Можливо, малося на увазі:</target>
 	</trans-unit>
 	<trans-unit id="query-is-incorrect">
 		<source xml:lang="ru">Введите интересующий вас вид услуг</source>
-		<target xml:lang="uk">Введіть вид послуг що вас цікавить</target>
+		<target xml:lang="uk">Введіть вид послуг, що вас цікавить</target>
 	</trans-unit>
 	<trans-unit id="questions-answers">
 		<source xml:lang="ru">Вопросы и ответы</source>
@@ -190,11 +190,11 @@
 	</trans-unit>
 	<trans-unit id="questions-answers-description">
 		<source xml:lang="ru">Здесь будет возможность прочитать решения типичных проблем или задать свой вопрос для обсуждения</source>
-		<target xml:lang="uk">Тут буде можливість прочитати вирішення типових проблем або задати власне питання для обговорення</target>
+		<target xml:lang="uk">Тут буде можливість прочитати вирішення типових проблем або запропонувати власну тему для обговорення</target>
 	</trans-unit>
 	<trans-unit id="articles-description">
 		<source xml:lang="ru">Здесь будут ссылки на актуальные статьи и новости из мира строительства и ремонта</source>
-		<target xml:lang="uk">Тут будуть посилання на актуальні статті та новини з світу будівництва та ремонту</target>
+		<target xml:lang="uk">Тут будуть посилання на актуальні статті та новини зі світу будівництва та ремонту</target>
 	</trans-unit>
 	<trans-unit id="ff-title">
 		<source xml:lang="ru">Спасибо, что помогаете нам стать лучше!</source>
@@ -202,11 +202,11 @@
 	</trans-unit>
 	<trans-unit id="ff-select-option">
 		<source xml:lang="ru">Выберите пункт наиболее точно характеризующий ваше сообщение</source>
-		<target xml:lang="uk">Виберіть пункт що найбільш точно характеризує ваше повідомлення</target>
+		<target xml:lang="uk">Виберіть пункт, що найбільш точно характеризує ваше повідомлення</target>
 	</trans-unit>
 	<trans-unit id="ff-option-errors">
-		<source xml:lang="ru">ошыбки в работе сайта</source>
-		<target xml:lang="uk">помилки в роботі сайту</target>
+		<source xml:lang="ru">что то не работает</source>
+		<target xml:lang="uk">щось не працює</target>
 	</trans-unit>
 	<trans-unit id="ff-option-search-fail">
 		<source xml:lang="ru">не удалось найти нужную информацию</source>
@@ -217,8 +217,8 @@
 		<target xml:lang="uk">сайт працює надто повільно</target>
 	</trans-unit>
 	<trans-unit id="ff-option-make-better">
-		<source xml:lang="ru">совет по улучшению работы ресурса</source>
-		<target xml:lang="uk">порада щодо покращення роботи ресурсу</target>
+		<source xml:lang="ru">совет по улучшению ресурса</source>
+		<target xml:lang="uk">порада щодо покращення ресурсу</target>
 	</trans-unit>
 	<trans-unit id="ff-option-partnership">
 		<source xml:lang="ru">предлагаю сотрудничество с моим сайтом или компанией</source>
@@ -229,8 +229,8 @@
 		<target xml:lang="uk">хочу бути вашим представником у своєму місті</target>
 	</trans-unit>
 	<trans-unit id="ff-dont-forget">
-		<source xml:lang="ru">Не забудьте указать контактную информацию для общения в будущем</source>
-		<target xml:lang="uk">Не забудьте вказати контактну інформацію для подальшого зв’язку</target>
+		<source xml:lang="ru">Укажите електронный адрес для связи с Вами (<b>не обьязательно</b>)</source>
+		<target xml:lang="uk">Вкажіть електронну адресу для зв’язку з Вами (<b>не обов’язково</b>)</target>
 	</trans-unit>
 	<trans-unit id="ff-send-message">
 		<source xml:lang="ru">отправить сообщение</source>
@@ -241,8 +241,8 @@
 		<target xml:lang="uk">не зараз</target>
 	</trans-unit>
 	<trans-unit id="specify-city-in-request">
-		<source xml:lang="ru">введите вид услуг и интересующий вас город в поисковом запросе</source>
-		<target xml:lang="uk">введіть вид послуг та місто що вас цікавить в пошуковому запиті</target>
+		<source xml:lang="ru">кроме вида услуг введите город для поиска</source>
+		<target xml:lang="uk">крім виду послуг введіть місто для пошуку</target>
 	</trans-unit>
 </body>
 </file>

@@ -24,8 +24,8 @@ class ErrorController extends Zend_Controller_Action
 		        $this->view->stack_trace = $this->_getFullErrorMessage($errors);
 		        
 		        // save exception info into database
-		        // TODO: make an HTTP request to third-party script
-		        //		 to avoid collision when we have an database connection error
+		        // TODO: to avoid collision when we have an database connection error
+		        // send message to site administrator
 		        
 		        $dbAdapter = $this->getFrontController()
 		            ->getParam('bootstrap')

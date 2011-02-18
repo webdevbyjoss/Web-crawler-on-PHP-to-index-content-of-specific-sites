@@ -241,8 +241,8 @@
 		<target xml:lang="uk">не зараз</target>
 	</trans-unit>
 	<trans-unit id="specify-city-in-request">
-		<source xml:lang="ru">кроме вида услуг введите город для поиска</source>
-		<target xml:lang="uk">крім виду послуг введіть місто для пошуку</target>
+		<source xml:lang="ru">кроме вида услуг, введите город</source>
+		<target xml:lang="uk">крім виду послуг, введіть місто</target>
 	</trans-unit>
 </body>
 </file>

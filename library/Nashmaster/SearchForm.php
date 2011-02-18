@@ -145,6 +145,8 @@ class Nashmaster_SearchForm
 		// we can eliminate overhead here
 		// by excluding keywords that are already recognized as regions
 		$keywordList = array_diff($keywordList, $regionsMatch['hit_keywords']);
+		// reset array keys
+		$keywordList = array_merge(array(), $keywordList);
 		
 		$servicesMatch = $this->getServicesByKeywords($keywordList);
 		
@@ -315,7 +317,8 @@ class Nashmaster_SearchForm
 			// so in case we already found the two words city it will not process appropriate
 			// single-word city
 			$keywords = array_diff($keywords, $hit_keywords);
-		
+			// reset array keys
+			$keywords = array_merge(array(), $keywords);
 		}
 		
 		// Lookup single-word cities
@@ -404,6 +407,8 @@ class Nashmaster_SearchForm
 			// so in case we already found the two words service it will not process appropriate
 			// single-word service
 			$keywords = array_diff($keywords, $hit_keywords);
+			// reset array keys
+			$keywords = array_merge(array(), $keywords);
 			
 			
 			// lets build the same pairs of keywords
@@ -455,6 +460,8 @@ class Nashmaster_SearchForm
 			// so in case we already found the two words service it will not process appropriate
 			// single-word service
 			$keywords = array_diff($keywords, $hit_keywords);
+			// reset array keys
+			$keywords = array_merge(array(), $keywords);
 		}
 
 		// the service recognizion algorithm will be very simple for now

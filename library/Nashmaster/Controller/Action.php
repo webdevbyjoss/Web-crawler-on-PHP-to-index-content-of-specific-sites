@@ -30,11 +30,5 @@ class Nashmaster_Controller_Action extends Zend_Controller_Action
 	        return;
         }
         
-        // Prepage search form
-        $options = array();
-    	$options['remote_ip'] = $_SERVER['REMOTE_ADDR'];
-    	
-        $SearchForm = new Nashmaster_SearchForm($options);
-        $this->view->searchForm = $SearchForm;
 	}
 }

@@ -2,11 +2,48 @@
 // load custom title
 $this->headTitle($this->T('site-window-title'));
 // load search results script
-$this->headScript()->appendFile('/js/load-search-results.js')
-				   ->appendFile('/js/jquery.highlight-3.yui.js');
+$this->headScript()->appendFile('/js/jquery.highlight-3.yui.js');
 
 // display welcome text
 ?>
-<div id="homepage-greetings">
-<?php echo $this->T('beta-welcome-text'); ?>
+
+<div class="city-finder">
+
+<h1>В якому місті Ви знаходитесь?</h1>
+<div>Щоб показати перелік спеціалістів по певному виду послуг нам необхідно знати в якому місті Ви перебуваєте. Вкажіть будь-ласка місто вашого перебування, що дозволить нам надати найбільш цікаву для Вас інформацію.</div>
+
+<?php /* ?>
+<input type="text" id="city-finder-select-control" class="finder-select-control" />
+<?php */ ?>
+
+<select id="city-finder-regions" class="finder-selectbox-control">
+<option value="">[ виберіть область ]</option>
+<?php foreach ($this->regions as $region): ?>
+<option><?php echo $region->name_uk ?></option>
+<?php endforeach; ?>
+</select>
+
+
+<select id="city-finder-city" class="finder-selectbox-control">
+<option value="">[ виберіть місто ]</option>
+<option>Заліщики</option>
+<option>Чортків</option>
+<option>Кременець</option>
+</select>
+
+
+</div>
+
+<div class="services-finder">
+<h1>Який вид послуг Вас цікавить?</h1>
+<div>Виберіть вид послуг який вас цікавить щоб визначити перелік необхідних вам спеціалістів.</div>
+
+<input type="text" id="services-finder-select-control" class="finder-select-control" />
+
+<div id="services-list">
+<?php foreach ($this->services as $service): ?>
+<div class="service"><a href="<?php echo $this->url(array('lang' => $this->getLocale() ,'services_lang')); ?>"><?php echo $service->name_uk ?></a></div>
+<?php endforeach; ?>
+</div>
+
 </div>

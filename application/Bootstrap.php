@@ -29,13 +29,51 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 	    
 	    // Chain it with language route
 	    $routeLangDefault = $routeLang->chain($routeDefault);
-	    
+
 	    // Add both language route chained with default route and
 	    // plain language route
 	    $router->addRoute('default_nolang', $routeDefault);
 	    $router->addRoute('default', $routeLangDefault);
 	    $router->addRoute('lang', $routeLang);
 	    
+
+	    
+	    
+	    	    
+	   	// SEO purposes
+	    // application URL to be indexed by search engine
+	    
+	    // nash-master.com/ru/город/днепропетровск/евроремонт/
+	    // nash-master.com/ua/місто/заліщики/пластикові-вікна/
+		$cityRouteUa = new Zend_Controller_Router_Route_Regex(
+             '(місто|город)/?([^/]*)?/?([^/]*)?',
+             array(
+             	 'module' => 'default',
+                 'controller' => 'catalog',
+                 'action'     => 'index'
+          	 )
+      	);
+      	// $router->addRoute('city', $cityRoute);
+		$router->addRoute('city_lang', $routeLang->chain($cityRouteUa));
+
+
+
+
+
+		$cityRouteRu = new Zend_Controller_Router_Route_Regex(
+             '(вид-робіт|вид-работ)/?([^/]*)?',
+             array(
+             	 'module' => 'default',
+                 'controller' => 'catalog',
+                 'action'     => 'services'
+          	 )
+      	);
+      	// $router->addRoute('city', $cityRoute);
+		$router->addRoute('services_lang', $routeLang->chain($cityRouteRu));
+
+
+
+
 	    // Register plugin to handle language changes
 	    $front->registerPlugin(new Nashmaster_Controller_Plugin_Language());
 	}

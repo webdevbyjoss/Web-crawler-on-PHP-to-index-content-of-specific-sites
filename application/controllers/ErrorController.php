@@ -32,7 +32,7 @@ class ErrorController extends Zend_Controller_Action
 		            ->getResource('multidb')
 		            ->getDb("front_db");
 		        $dbAdapter->insert('errors', array(
-		        	"requestUri" => $errors->request->getRequestUri(),
+		        	"requestUri" => urldecode($errors->request->getRequestUri()),
 		        	"message" => $errors->exception->getMessage(),
 		        	"trace" => $errors->exception->getTraceAsString(),
 		        	"params" => var_export($errors->request->getParams(), true),
@@ -87,7 +87,7 @@ class ErrorController extends Zend_Controller_Action
         $message .= "Server time: " . date("Y-m-d H:i:s") . "\n";
         
         if (null !== $error) {
-	        $message .= "RequestURI: " . $error->request->getRequestUri() . "\n";
+	        $message .= "RequestURI: " . urldecode($error->request->getRequestUri()) . "\n";
 	        $message .= "Exception type: " . get_class($error->exception) . "\n";
 	        $message .= "Message: " . $error->exception->getMessage() . "\n\n";
 	        $message .= "Trace:\n" . $error->exception->getTraceAsString() . "\n\n";

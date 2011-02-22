@@ -33,7 +33,7 @@
   endif; ?>
 
   <?php echo $this->headScript()
-  	->appendFile('/js/search-form-actions.js')
+  	->appendFile('/js/layout.js')
   	->appendFile('/js/jquery.typing-0.2.0.min.js')
   	->appendFile('/js/jquery.form.js')
   	->appendFile('/js/autoresize.jquery.min.js')
@@ -45,14 +45,55 @@
 </head>
 <body>
 <div id="page"><div id="page-inner">
+
+
+
+
+
+
+
+<div id="header">
+<div id="logo">
+<?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>
+<img alt="<?php echo $this->T('logo') . ' ' . $this->T('site-name') ?>" src="<?php echo $this->getImagesUrl() . 'nash-master-logo-' . $this->getLocale() . '.png' ?>" />
+<?php else: ?>
+<a href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'index',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>" title="<?php echo $this->T('site-name') . ' - ' . $this->T('slogan') ?>">
+<img alt="<?php echo $this->T('logo') . ' ' . $this->T('site-name') ?>" src="<?php echo $this->getImagesUrl() . 'nash-master-logo-' . $this->getLocale() . '.png' ?>" /></a>
+<?php endif; ?>
+<?php /* ?><div id="beta-mark"><img alt="<?php echo $this->T('beta-version'); ?>" src="<?php echo $this->getImagesUrl() . 'beta.png'; ?>" /></div><?php */ ?>
+</div>
+
+
+
+
+
+
+
 <div id="top-menu">
+
 	<div id="top-menu-right">
+	
 		<a id="feedbackLink" title="<?php echo $this->T('send-us-your-feedback') ?>" href="#"><?php echo $this->T('feedback') ?></a>
-		<?php /* ?>
-		<a href="/login"><?php echo $this->T('login'); ?></a>
-		<?php */ ?>
+	
+		<?php if ($this->isAdmin()):?>
+		<a href="/crawler/editor" title="Knowlage Base Editor">KBE</a>
+		<a href="/crawler/relations" title="Synonyms Relations Management">SRM</a>
+		<?php endif; ?>
+		
+		<?php echo $this->profileLink(); ?>
+		
 	</div>
+
 	<div id="top-menu-left">
+	
+	<?php /* ?>
 	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
@@ -60,7 +101,33 @@
 		'action' => 'index',
 		'module' => 'default',
 	)
-	,'default'); ?>"><?php echo $this->T('search'); ?></a>
+	,'default'); ?>">Головна</a>
+	<?php */ ?>
+
+	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'index',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>">Спеціалісти</a>
+	
+	
+	<?php /* ?>
+	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'tenders'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'index',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default'); ?>">Робота</a>
+	
+	*/ ?>
+	
+	<?php /*
+	
 	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'articles'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
@@ -69,6 +136,9 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('articles'); ?></a>
+	
+	*/ ?>
+	
 	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'questions-answers'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
@@ -97,60 +167,106 @@
 	)
 	,'default'); ?>"><?php echo $this->T('links'); ?></a>
 	<?php */ ?>
+
 	</div>
 </div>
 
-<?php if ($this->isAdmin()):?>
-<div style="width:99%;float:left;padding-bottom:30px;">
-	<div style="float:left;">
-	<a href="/crawler/editor">Knowlage Base Editor</a>
-	<a href="/crawler/relations">Synonyms Relations Management</a>
-	</div>
-	<div style="float: right;">
-	<?php echo $this->profileLink(); ?>
-	</div>
-</div>
-<?php else: ?>
 
-<div id="header">
-<div id="logo">
-<?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>
-<img alt="<?php echo $this->T('logo') . ' ' . $this->T('site-name') ?>" src="<?php echo $this->getImagesUrl() . 'nash-master-logo-' . $this->getLocale() . '.png' ?>" />
-<?php else: ?>
-<a href="<?php echo $this->url(
-	array(
-		'lang' => $this->getLocale(),
-		'controller' => 'index',
-		'action' => 'index',
-		'module' => 'default',
-	)
-	,'default'); ?>" title="<?php echo $this->T('site-name') . ' - ' . $this->T('slogan') ?>">
-<img alt="<?php echo $this->T('logo') . ' ' . $this->T('site-name') ?>" src="<?php echo $this->getImagesUrl() . 'nash-master-logo-' . $this->getLocale() . '.png' ?>" /></a>
-<?php endif; ?>
-<div id="beta-mark"><img alt="<?php echo $this->T('beta-version'); ?>" src="<?php echo $this->getImagesUrl() . 'beta.png'; ?>" /></div>
-</div>
 
-<?php if (!empty($this->searchForm)): ?>
+
+
+
+
+<?php /* ?>
+
 <div id="header-search-form" class="header-search-form-wide">
 <div id="header-search-form-block">
-<?php /* ?><!--  <span><?php echo $this->T('what-type-of-service-question') ?></span><br />  --><?php */ ?>
-<input tabindex="1" maxlength="200" id="header-search-form-element" type="text" />
-<div id="header-selector">
-<a tabindex="3" id="header-selector-regions" href="#"><?php echo $this->renderRegions(); ?>&nbsp;</a>
-<a tabindex="2" id="header-selector-services" href="#">&nbsp;</a>
-</div>
-</div>
-</div>
-<?php endif;?>
-</div>
-<?php endif; ?>
 
-<div id="main"><div id="page-content">
+
+</div>
+</div>
+
+<?php */ ?>
+
+
+</div>
+
+
+
+
+<div id="main">
+<div id="main-inner">
+
+
+<div id="page-content">
 <?php echo $this->layout()->content ?>
-</div></div>
+</div>
+
+
+<div id="panel">
+
+
+
+	<div id="search-panel-main" class="search-panel">
+		<div class="search-form-column-city">
+			<div class="item-title-main-block">
+			<span class="item-title-main">Переяслав-Хмельницький</span> <span class="edit-city">[ <a href="#">змінити місто</a> ]</span>
+			</div>
+			
+			<div class="label"><input type="checkbox" /> найближчі міста</div>
+			<div><span class="item-title">Коломия</span> <span class="label">35 км</span></div>
+			<div><span class="item-title">Кіцмань</span> <span class="label">55 км</span></div>
+			<div><span class="item-title">Чортків</span> <span class="label">65 км</span></div>
+			
+			<div class="label"><input type="checkbox" /> великі міста</div>
+			<div><span class="item-title">Чернівці</span> <span class="label">85 км</span></div>
+			<div><span class="item-title">Тернопіль</span> <span class="label">120 км</span></div>
+			<div><span class="item-title">Івано-Франківськ</span> <span class="label">150 км</span></div>
+			<div><span class="item-title">Кам’янець-Подільський</span> <span class="label">170 км</span></div>
+
+		</div>
+	
+	</div>
+	
+	<?php /* ?>
+
+	<div id="search-panel-extra" class="search-panel">
+		<div class="label">останні обговорення</div>
+		<div><a href="">як поставити штукатурку?</a></div>
+		<div><a href="">зняти пластикові вікна?</a></div>
+		<div><a href="">вибираємо свердло</a></div>
+		<div><a href="">кришиться цегла</a></div>
+		<div><a href="">як правильно підібрати колір ламінату?</a></div>
+		<div><a href="">як поставити штукатурку?</a></div>
+		<div><a href="">як поставити штукатурку?</a></div>
+
+	</div>
+	
+	<div id="search-panel-data" class="search-panel">
+		<div class="label">останні пропозиції роботи</div>
+		<div><a href="">шукаємо грущиків для цікавої роботи</a></div>
+		<div><a href="">потрібні різноробочі</a></div>
+		
+	</div>
+
+	<div id="search-panel-info" class="search-panel">
+	   other search params, other search params, other search params,
+	</div>
+	
+<?php */ ?>
+	
+
+</div>
+
+
+</div>
+</div>
+
+
 
 <div id="footer">
 	<div id="footer-menu">
+	
 	<?php /* ?>
 		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'about-us'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(

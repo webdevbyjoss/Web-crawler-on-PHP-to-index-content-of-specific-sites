@@ -17,4 +17,10 @@ class Searchdata_Model_Services extends Zend_Db_Table_Abstract
     {
     	return $this->find($id)->current();
     }
+    
+    
+    public function getAllItems()
+    {
+    	return $this->fetchAll();
+    }
 }

@@ -20,6 +20,10 @@ if ('development' == APPLICATION_ENV) {
 	error_reporting(E_ALL);
 	define('DEBUG_ENABLE', true);
 	define('DISABLE_FULL_PAGE_CACHE', true);
+	
+	// $paths = explode(PATH_SEPARATOR, get_include_path());
+	$paths[] = '/var/www/zend/';
+	
 } else {
 	define('DEBUG_ENABLE', false);
 	define('DISABLE_FULL_PAGE_CACHE', false);
@@ -36,7 +40,6 @@ define('APPLICATION_LIBRARY_PATH', realpath(APPLICATION_PATH . '/../library'));
 /*
  * Set the include paths to point to the new defined paths
  */
-// $paths = explode(PATH_SEPARATOR, get_include_path());
 $paths[] = APPLICATION_LIBRARY_PATH;
 set_include_path(implode(PATH_SEPARATOR, $paths));
 

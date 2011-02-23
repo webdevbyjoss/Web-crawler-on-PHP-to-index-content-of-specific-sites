@@ -122,7 +122,7 @@ class Nashmaster_View extends Zend_View
         if ((count($options) === 1) and (is_array($options[0]) === true)) {
             $options = $options[0];
         }
-    	
+        
     	/**
          * Proxify the call to Zend_Translate_Adapter
          */

@@ -1,0 +1,29 @@
+<div id="search-panel-main" class="search-panel">
+	<div class="search-form-column-city">
+		<div class="item-title-main-block">
+		<span class="item-title-main"><?php echo ($this->getLocale() == 'uk') ? $this->city->name_uk : $this->city->name ?></span> <span class="edit-city">[ <a href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'index',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'default') ?>">змінити місто</a> ]</span>
+		</div>
+
+		<?php /* ?>
+		<div class="label"><input type="checkbox" id="including-close-cities" /> <label for="including-close-cities">включити найближчі міста</label></div>
+		<div class="item-element"><span class="item-title">Коломия</span> <span class="label">35 км</span></div>
+		<div class="item-element"><span class="item-title">Кіцмань</span> <span class="label">55 км</span></div>
+		<div class="item-element"><span class="item-title">Чортків</span> <span class="label">65 км</span></div>
+
+		<div class="label"><input type="checkbox" id="including-lange-cities" /> <label for="including-lange-cities">включити великі міста</label></div>
+		<div class="item-element"><span class="item-title">Чернівці</span> <span class="label">85 км</span></div>
+		<div class="item-element"><span class="item-title">Тернопіль</span> <span class="label">120 км</span></div>
+		<div class="item-element"><span class="item-title">Івано-Франківськ</span> <span class="label">150 км</span></div>
+		<div class="item-element"><span class="item-title">Кам’янець-Подільський</span> <span class="label">170 км</span></div>
+
+		<?php */ ?>
+
+	</div>
+</div>

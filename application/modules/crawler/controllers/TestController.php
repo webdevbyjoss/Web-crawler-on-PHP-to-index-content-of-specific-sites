@@ -77,4 +77,50 @@ class Crawler_TestController extends Zend_Controller_Action
 		}
 	}
 	
+	
+	public function seocitiesAction()
+	{
+		$Cities = new Searchdata_Model_Cities();
+		
+		$ukrainianCities = $Cities->getItems();
+		
+		foreach ($ukrainianCities as $city)
+		{
+			// create russian SEO URL
+			$name = (!empty($city->uniq_name)) ? $city->uniq_name : $city->name;
+			$city->seo_name = $this->normalizeUrl($name);
+			
+			$name_uk = (!empty($city->uniq_name_uk)) ? $city->uniq_name_uk : $city->name_uk;
+			$city->seo_name_uk = $this->normalizeUrl($name_uk);
+			
+			$city->save();
+		}
+	}
+	
+	public function seoservicesAction()
+	{
+		$Services = new Searchdata_Model_Services();
+		$serList = $Services->getAllItems();
+		
+		foreach ($serList as $service)
+		{
+			$service->seo_name = $this->normalizeUrl($service->name);
+			$service->seo_name_uk = $this->normalizeUrl($service->name_uk);
+			$service->save();
+		}
+		
+	}
+	
+	public function normalizeUrl($text)
+	{
+		$text = mb_strtolower($text);
+		
+		$text = mb_ereg_replace('(,|\.|-)', ' ', $text);
+		$text = mb_ereg_replace(' +', ' ', $text);
+		$text = trim($text);
+		$text = mb_ereg_replace(' ', '-', $text);
+		
+		return $text;
+	}
+	
 }

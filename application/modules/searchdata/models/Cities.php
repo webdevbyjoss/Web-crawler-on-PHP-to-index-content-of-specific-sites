@@ -1,5 +1,15 @@
 <?php
-
+/**
+ * Cities
+ *
+ * is_region_center - indicates if current city is an administrative center of regions
+ * name - the UTF-8 name of the city in russian
+ * name_uk - the UTF-8 name of the city in ukrainian
+ * uniq_name - unique name in russian, in case we have couple cities with the same name we will set the unique name here that will include the administrative regions
+ * uniq_name_uk - unique name in ukrainian
+ * seo_name - the russian varuan of SEO-friendly URL
+ * seo_name_uk - the ukrainian varuan of SEO-friendly URL
+ */
 class Searchdata_Model_Cities extends Zend_Db_Table_Abstract
 {
     protected $_name = 'city';
@@ -15,12 +25,18 @@ class Searchdata_Model_Cities extends Zend_Db_Table_Abstract
     	if (null === $regionId) {
     		return $this->fetchAll();
     	}
-    	
+
+		$select = $this->select();
+		
     	if (!is_array($regionId)) {
-    		return $this->fetchAll(array('region_id = ' . (int) $regionId));
+    		$select->where('region_id = ?', (int) $regionId);
+    	} else {
+    		$select->where('region_id IN (' . implode(',', $regionId) . ')');
     	}
+
+    	$select->order(array('is_region_center DESC'));
     	
-    	return $this->fetchAll(array('region_id IN (' . implode(',', $regionId) . ')'));
+    	return $this->fetchAll($select);
     }
     
     /**
@@ -66,4 +82,26 @@ class Searchdata_Model_Cities extends Zend_Db_Table_Abstract
     	return $data->current();
     }
 
+    /**
+     * Returns city by its uniques SEO name
+     *
+     * @param string $seoName
+     * @return Zend_Db_Table_Row_Abstract
+     */
+    public function getCityBySeoName($seoName)
+    {
+    	$select = $this->select();
+    	
+    	$select->where('seo_name = ?', $seoName);
+    	$select->orWhere('seo_name_uk = ?', $seoName);
+    	
+    	$data = $this->fetchAll($select);
+
+    	if (0 == count($data)) {
+    		return null;
+    	}
+    	
+    	return $data->current();
+    }
+    
 }

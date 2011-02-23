@@ -2,79 +2,23 @@
 
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
-	protected function _initRoutes()
+	protected function _initEncoding()
+	{
+		/**
+		 * Set he initial data
+		 * FIXME: this should be moved somewhere else
+		 */
+		mb_internal_encoding("UTF-8");
+		mb_regex_encoding("UTF-8");
+	}
+	
+	protected function _initL18n()
 	{
 		$this->bootstrap('frontController');
 		$this->bootstrap('Translation');
+		$front = $this->getResource('frontController');
 		
-		$locale = $this->getResource('Locale');
-		
-		// Create route with language id (lang)
-		$routeLang = new Zend_Controller_Router_Route(
-			':lang',
-			null, // array('lang' => $locale->getLanguage()),
-			array('lang' => '[a-z]{2}')
-		);
-		
-		// Now get router from front controller
-		$front  = $this->getResource('frontController');
-		$router = $front->getRouter();
-		
-		// Instantiate default module route
-		$routeDefault = new Zend_Controller_Router_Route_Module (
-	        array(),
-	        $front->getDispatcher(),
-	        $front->getRequest()
-	    );
-	    
-	    // Chain it with language route
-	    $routeLangDefault = $routeLang->chain($routeDefault);
-
-	    // Add both language route chained with default route and
-	    // plain language route
-	    $router->addRoute('default_nolang', $routeDefault);
-	    $router->addRoute('default', $routeLangDefault);
-	    $router->addRoute('lang', $routeLang);
-	    
-
-	    
-	    
-	    	    
-	   	// SEO purposes
-	    // application URL to be indexed by search engine
-	    
-	    // nash-master.com/ru/город/днепропетровск/евроремонт/
-	    // nash-master.com/ua/місто/заліщики/пластикові-вікна/
-		$cityRouteUa = new Zend_Controller_Router_Route_Regex(
-             '(місто|город)/?([^/]*)?/?([^/]*)?',
-             array(
-             	 'module' => 'default',
-                 'controller' => 'catalog',
-                 'action'     => 'index'
-          	 )
-      	);
-      	// $router->addRoute('city', $cityRoute);
-		$router->addRoute('city_lang', $routeLang->chain($cityRouteUa));
-
-
-
-
-
-		$cityRouteRu = new Zend_Controller_Router_Route_Regex(
-             '(вид-робіт|вид-работ)/?([^/]*)?',
-             array(
-             	 'module' => 'default',
-                 'controller' => 'catalog',
-                 'action'     => 'services'
-          	 )
-      	);
-      	// $router->addRoute('city', $cityRoute);
-		$router->addRoute('services_lang', $routeLang->chain($cityRouteRu));
-
-
-
-
-	    // Register plugin to handle language changes
+		// Register plugin to handle language changes
 	    $front->registerPlugin(new Nashmaster_Controller_Plugin_Language());
 	}
 	
@@ -160,15 +104,5 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		Zend_Registry::set('Zend_Locale', $locale); // set locale application wide
 		
 		return $locale;
-	}
-	
-	protected function _initEncoding()
-	{
-		/**
-		 * Set he initial data
-		 * FIXME: this should be moved somewhere else
-		 */
-		mb_internal_encoding("UTF-8");
-		mb_regex_encoding("UTF-8");
 	}
 }

@@ -23,4 +23,26 @@ class Searchdata_Model_Services extends Zend_Db_Table_Abstract
     {
     	return $this->fetchAll();
     }
+    
+    /**
+     * Get service by SEO name
+     *
+     * @param string $seoName
+     * @return Zend_Db_Table_Row_Abstract
+     */
+    public function getBySeoName($seoName)
+    {
+    	$select = $this->select();
+    	
+    	$select->where('seo_name = ?', $seoName);
+    	$select->orWhere('seo_name_uk = ?', $seoName);
+    	
+    	$data = $this->fetchAll($select);
+
+    	if (0 == count($data)) {
+    		return null;
+    	}
+    	
+    	return $data->current();
+    }
 }

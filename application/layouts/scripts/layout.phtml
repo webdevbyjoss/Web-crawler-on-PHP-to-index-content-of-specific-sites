@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="<?php echo $this->getLocale() ?>">
 <head>
-  <meta charset="utf-8"/>
   <meta name="description" content="<?php echo $this->T('meta-description') ?>" />
   <meta name="keywords" content="<?php echo $this->T('meta-keywords') ?>" />
+  <meta charset="utf-8"/>
   <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
   <?php echo $this->headTitle($this->T('site-name'))->setSeparator(' — ') ?>
@@ -104,14 +104,14 @@
 	,'default'); ?>">Головна</a>
 	<?php */ ?>
 
-	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'catalog'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
 		'controller' => 'index',
 		'action' => 'index',
 		'module' => 'default',
 	)
-	,'default'); ?>">Спеціалісти</a>
+	,'default'); ?>"><?php echo $this->T('specialists'); ?></a>
 	
 	
 	<?php /* ?>
@@ -205,31 +205,11 @@
 
 <div id="panel">
 
-
-
-	<div id="search-panel-main" class="search-panel">
-		<div class="search-form-column-city">
-			<div class="item-title-main-block">
-			<span class="item-title-main">Переяслав-Хмельницький</span> <span class="edit-city">[ <a href="#">змінити місто</a> ]</span>
-			</div>
-			
-			<div class="label"><input type="checkbox" /> найближчі міста</div>
-			<div><span class="item-title">Коломия</span> <span class="label">35 км</span></div>
-			<div><span class="item-title">Кіцмань</span> <span class="label">55 км</span></div>
-			<div><span class="item-title">Чортків</span> <span class="label">65 км</span></div>
-			
-			<div class="label"><input type="checkbox" /> великі міста</div>
-			<div><span class="item-title">Чернівці</span> <span class="label">85 км</span></div>
-			<div><span class="item-title">Тернопіль</span> <span class="label">120 км</span></div>
-			<div><span class="item-title">Івано-Франківськ</span> <span class="label">150 км</span></div>
-			<div><span class="item-title">Кам’янець-Подільський</span> <span class="label">170 км</span></div>
-
-		</div>
-	
-	</div>
+	<?php if (!empty($this->city)):
+		echo $this->partial('city-panel.phtml', array('city' => $this->city));
+	endif; ?>
 	
 	<?php /* ?>
-
 	<div id="search-panel-extra" class="search-panel">
 		<div class="label">останні обговорення</div>
 		<div><a href="">як поставити штукатурку?</a></div>
@@ -252,8 +232,7 @@
 	<div id="search-panel-info" class="search-panel">
 	   other search params, other search params, other search params,
 	</div>
-	
-<?php */ ?>
+	<?php */ ?>
 	
 
 </div>

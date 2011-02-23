@@ -1,48 +1,38 @@
 <?php
+// client side action specific functionality
+$this->headScript()->appendFile('/js/specialists.js');
+
 // load custom title
 $this->headTitle($this->T('site-window-title'));
-// load search results script
-$this->headScript()->appendFile('/js/jquery.highlight-3.yui.js');
 
-// display welcome text
+// get locale to use for interface
+$loc = $this->getLocale();
 ?>
-
 <div class="city-finder">
+<h1><?php echo $this->T('in-what-city-you-are-right-now'); ?></h1>
 
-<h1>В якому місті Ви знаходитесь?</h1>
-<div>Щоб показати перелік спеціалістів по певному виду послуг нам необхідно знати в якому місті Ви перебуваєте. Вкажіть будь-ласка місто вашого перебування, що дозволить нам надати найбільш цікаву для Вас інформацію.</div>
-
-<?php /* ?>
-<input type="text" id="city-finder-select-control" class="finder-select-control" />
-<?php */ ?>
+<div><?php echo $this->T('in-what-city-you-are-right-now-description'); ?></div>
 
 <select id="city-finder-regions" class="finder-selectbox-control">
-<option value="">[ виберіть область ]</option>
+<option value="0">[ <?php echo $this->T('select-country-region'); ?> ]</option>
 <?php foreach ($this->regions as $region): ?>
-<option><?php echo $region->name_uk ?></option>
+<option value="<?php echo $region->region_id ?>"><?php echo ($loc == 'uk') ? $region->name_uk : $region->name ?></option>
 <?php endforeach; ?>
 </select>
 
-
-<select id="city-finder-city" class="finder-selectbox-control">
-<option value="">[ виберіть місто ]</option>
-<option>Заліщики</option>
-<option>Чортків</option>
-<option>Кременець</option>
-</select>
-
+<select id="city-finder-city" class="finder-selectbox-control hidden-element"></select>
 
 </div>
 
 <div class="services-finder">
-<h1>Який вид послуг Вас цікавить?</h1>
-<div>Виберіть вид послуг який вас цікавить щоб визначити перелік необхідних вам спеціалістів.</div>
+<h1><?php echo $this->T('what-type-of-service'); ?></h1>
+<div><?php echo $this->T('what-type-of-service-description'); ?></div>
 
 <input type="text" id="services-finder-select-control" class="finder-select-control" />
 
 <div id="services-list">
 <?php foreach ($this->services as $service): ?>
-<div class="service"><a href="<?php echo $this->url(array('lang' => $this->getLocale() ,'services_lang')); ?>"><?php echo $service->name_uk ?></a></div>
+<div class="service"><a href="<?php echo $this->url(array('lang' => $this->getLocale(), 'service' => ($loc == 'uk') ? $service->seo_name_uk : $service->seo_name) ,'services_lang'); ?>"><?php echo ($loc == 'uk') ? $service->name_uk : $service->name ?></a></div>
 <?php endforeach; ?>
 </div>
 

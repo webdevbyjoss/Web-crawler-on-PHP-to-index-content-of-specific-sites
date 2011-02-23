@@ -13,6 +13,7 @@ define('APPLICATION_CACHE', realpath(APPLICATION_PATH . '/../tmp'));
 define('APPLICATION_LIBRARY_PATH', realpath(APPLICATION_PATH . '/../library'));
 
 $paths = explode(PATH_SEPARATOR, get_include_path());
+$paths[] = '/var/www/zend';
 $paths[] = APPLICATION_LIBRARY_PATH;
 set_include_path(implode(PATH_SEPARATOR, $paths));
 unset($paths);

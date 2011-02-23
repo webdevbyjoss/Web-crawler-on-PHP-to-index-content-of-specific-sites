@@ -244,6 +244,50 @@
 		<source xml:lang="ru">кроме вида услуг, введите город</source>
 		<target xml:lang="uk">крім виду послуг, введіть місто</target>
 	</trans-unit>
+	<trans-unit id="url-city">
+		<source xml:lang="ru">город</source>
+		<target xml:lang="uk">місто</target>
+	</trans-unit>
+	<trans-unit id="url-type-of-service">
+		<source xml:lang="ru">вид-услуг</source>
+		<target xml:lang="uk">вид-послуг</target>
+	</trans-unit>
+	<trans-unit id="select-country-region">
+		<source xml:lang="ru">выберите область</source>
+		<target xml:lang="uk">виберіть область</target>
+	</trans-unit>
+	<trans-unit id="select-city">
+		<source xml:lang="ru">выберите город</source>
+		<target xml:lang="uk">виберіть місто</target>
+	</trans-unit>
+	<trans-unit id="in-what-city-you-are-right-now">
+		<source xml:lang="ru">В каком городе Вы находитесь?</source>
+		<target xml:lang="uk">В якому місті Ви знаходитесь?</target>
+	</trans-unit>
+	<trans-unit id="in-what-city-you-are-right-now-description">
+		<source xml:lang="ru">[тупая текстовка, надо переписать] Чтоб показать список специалистов по конкретному виду усгул в вашем городе или регионе нам необходимо знать в каком городе Вы находитесь.</source>
+		<target xml:lang="uk">[дурний напис, треба переписати] Щоб показати перелік спеціалістів по певному виду послуг в вашому місті чи регіоні нам необхідно знати в якому місті Ви перебуваєте.</target>
+	</trans-unit>
+	<trans-unit id="what-type-of-service">
+		<source xml:lang="ru">Какой вид услуг Вас интересует?</source>
+		<target xml:lang="uk">Який вид послуг Вас цікавить?</target>
+	</trans-unit>
+	<trans-unit id="what-type-of-service-description">
+		<source xml:lang="ru">Выберите вид услуг который вас интересует. Используйте строку ввода для быстрого поиска.</source>
+		<target xml:lang="uk">Виберіть вид послуг який вас цікавить. Використовуйте стрічку введення для швидкого пошуку.</target>
+	</trans-unit>
+	<trans-unit id="specialists">
+		<source xml:lang="ru">Специалисты</source>
+		<target xml:lang="uk">Спеціалісти</target>
+	</trans-unit>
+	<trans-unit id="what-type-of-service-in-city">
+		<source xml:lang="ru">Специалисты по строительству и ремонту в городе %s</source>
+		<target xml:lang="uk">Спеціалісти з будівництва та ремонту в місті %s</target>
+	</trans-unit>
+	<trans-unit id="specialists-in-city">
+		<source xml:lang="ru">Строительство и ремонт в городе %s</source>
+		<target xml:lang="uk">Будівництво та ремонт в місті %s</target>
+	</trans-unit>
 </body>
 </file>
 </xliff>

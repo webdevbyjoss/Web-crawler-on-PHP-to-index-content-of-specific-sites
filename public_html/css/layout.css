@@ -14,11 +14,12 @@ caption, th, td, input, textarea, select, option, legend, fieldset {
 
 label {
 	cursor: pointer;
-	padding: 5px;
+	padding-top: 3px;
+	padding-bottom: 3px;
 }
 
 label:hover {
-	background-color: #ffff99;
+	/*background-color: #ffff99;*/
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -159,6 +160,10 @@ h4 {
 	/*border: 1px solid silver;*/
 }
 
+.item-element {
+	padding-left: 25px;
+}
+
 .search-form-column-city {
 	width: auto;
 }
@@ -247,6 +252,14 @@ h4 {
 #search-panel-data {
 	background-color: #fff8f2;
 }
+
+
+.search-panel input {
+	position: relative;
+	top: 3px;
+}
+
+
 
 #footer {
 	text-align: center;
@@ -539,6 +552,13 @@ h4 {
 		
 }
 
+/* for progress animation */
+.city-finder img {
+	margin-left: 5px;
+	position: relative;
+	top: 5px;
+}
+
 #services-list {
 	padding-top: 10px;
 }
@@ -563,5 +583,9 @@ h4 {
 }
 
 #city-finder-city {
+	
+}
+
+.hidden-element {
 	display: none;
 }

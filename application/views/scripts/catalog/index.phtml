@@ -8,19 +8,21 @@ $cityTitle = ($loc == 'uk') ? $this->city->name_uk : $this->city->name;
 $citySeoTitle = ($loc == 'uk') ? $this->city->seo_name_uk : $this->city->seo_name;
 
 // load custom title
-$this->headTitle($this->T('specialists-in-city', $cityTitle));
+$this->headTitle($this->T('what-type-of-service-in-city', $cityTitle));
+
+$this->headMeta()->setName('description', $this->T('what-type-of-service-in-city', $cityTitle))
+		->setName('keywords', $cityTitle . ', ' . $this->T('meta-keywords'));
 
 ?>
 <div class="services-finder">
 <h1><?php echo $this->T('what-type-of-service-in-city', $cityTitle); ?> </h1>
 <div><?php echo $this->T('what-type-of-service-description'); ?></div>
-
+<?php /* ?>
 <input type="text" id="services-finder-select-control" class="finder-select-control" />
-
+<?php */ ?>
 <div id="services-list">
 <?php foreach ($this->services as $service): ?>
 <div class="service"><a href="<?php echo $this->url(array('service' => ($loc == 'uk') ? $service->seo_name_uk : $service->seo_name, 'city' => $citySeoTitle) ,'city_service_lang'); ?>"><?php echo ($loc == 'uk') ? $service->name_uk : $service->name ?></a></div>
 <?php endforeach; ?>
 </div>
-
 </div>

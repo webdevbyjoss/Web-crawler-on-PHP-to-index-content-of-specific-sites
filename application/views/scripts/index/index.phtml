@@ -5,6 +5,10 @@ $this->headScript()->appendFile('/js/specialists.js');
 // load custom title
 $this->headTitle($this->T('site-window-title'));
 
+$this->headMeta()
+	->setName('description', $this->T('meta-description'))
+	->setName('keywords', $this->T('meta-keywords'));
+
 // get locale to use for interface
 $loc = $this->getLocale();
 ?>
@@ -19,21 +23,15 @@ $loc = $this->getLocale();
 <option value="<?php echo $region->region_id ?>"><?php echo ($loc == 'uk') ? $region->name_uk : $region->name ?></option>
 <?php endforeach; ?>
 </select>
-
 <select id="city-finder-city" class="finder-selectbox-control hidden-element"></select>
-
 </div>
 
-<div class="services-finder">
-<h1><?php echo $this->T('what-type-of-service'); ?></h1>
-<div><?php echo $this->T('what-type-of-service-description'); ?></div>
+<p><?php echo $this->T('beta-welcome-text') ?></p>
 
-<input type="text" id="services-finder-select-control" class="finder-select-control" />
+<h2><?php echo $this->T('country-administrative-districts') ?></h2>
 
-<div id="services-list">
-<?php foreach ($this->services as $service): ?>
-<div class="service"><a href="<?php echo $this->url(array('lang' => $this->getLocale(), 'service' => ($loc == 'uk') ? $service->seo_name_uk : $service->seo_name) ,'services_lang'); ?>"><?php echo ($loc == 'uk') ? $service->name_uk : $service->name ?></a></div>
+<div class="tag-cloud">
+<?php foreach ($this->regions as $region): ?>
+<a href="<?php echo $this->url(array('id' => $region->region_id, 'action' => 'region'), 'default') ?>"><?php echo ($loc == 'uk') ? $region->name_uk : $region->name ?></a>
 <?php endforeach; ?>
-</div>
-
 </div>

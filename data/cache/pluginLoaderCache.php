@@ -47,3 +47,4 @@ include_once 'Zend/View/Helper/FormSelect.php';
 include_once 'Zend/Validate/InArray.php';
 include_once 'Zend/Validate/EmailAddress.php';
 include_once 'Zend/Paginator/ScrollingStyle/Sliding.php';
+include_once 'Zend/View/Helper/HeadMeta.php';

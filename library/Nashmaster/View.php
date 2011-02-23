@@ -154,15 +154,8 @@ class Nashmaster_View extends Zend_View
     		if ($this->getLocale() == $key) {
     			$output .= ' <span class="active-language">' . $lang . '</span> ';
     		} else {
-    			$output .= ' <a href="' . $this->url(
-					array(
-						'lang' => $key,
-						'controller' => $this->getControllerName(),
-						'action' => $this->getActionName(),
-						'module' => $this->getModuleName(),
-					)
-					,'default')
-				. '">' . $lang . '</a> ';
+    			// $output .= ' <a href="' . $this->url(array('lang' => $key), null, null, $key) . '">' . $lang . '</a> ';
+    			$output .= ' <a href="/' . $key . '/">' . $lang . '</a> ';
     		}
 
     	}
@@ -252,4 +245,21 @@ class Nashmaster_View extends Zend_View
 		  }
 	}
 	
+	/**
+	 * Cut the text the the specified amount lenght
+	 *
+	 * @param string $string
+	 * @param int $cutoff
+	 * @return string
+	 */
+	public function cuttext($string, $cutoff)
+	{
+	    if (mb_strlen($string) < $cutoff) {
+	        return $string;
+	    } else {
+	        // look for a space
+	        $new_str = mb_substr($string, 0, $cutoff);
+	        return mb_strrchr($new_str, ' ', true) . '...';
+	    }
+	}
 }

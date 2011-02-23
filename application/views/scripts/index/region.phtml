@@ -1,0 +1,13 @@
+<?php
+
+// get locale to use for interface
+$loc = $this->getLocale();
+?>
+
+<h1><?php echo $this->T('in-what-city-you-are-right-now') ?></h1>
+
+<div class="tag-cloud">
+<?php foreach ($this->cities as $city): ?>
+<a href="<?php echo $this->url(array('city' => ($this->getLocale() == 'uk') ? $city->seo_name_uk : $city->seo_name), 'city_lang')  ?>"><?php echo ($loc == 'uk') ? $city->name_uk : $city->name ?></a>
+<?php endforeach; ?>
+</div>

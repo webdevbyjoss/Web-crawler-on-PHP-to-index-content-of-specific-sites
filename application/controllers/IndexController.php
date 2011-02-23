@@ -18,5 +18,14 @@ class IndexController extends Nashmaster_Controller_Action
 		$CountryCodeUkraine = 1;
 		$this->view->regions = $Regions->getItems($CountryCodeUkraine);
     }
+    
+    public function regionAction()
+    {
+    	$request = $this->getRequest();
+    	$regionId = $request->getParam('id');
+    	
+    	$Cities = new Searchdata_Model_Cities();
+        $this->view->cities = $Cities->getItems($regionId);
+    }
 
 }

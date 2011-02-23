@@ -2,6 +2,11 @@
 
 class CatalogController extends Nashmaster_Controller_Action
 {
+	/**
+	 * The amount of results per page to show in search
+	 */
+	const RESULTS_PER_PAGE = 10;
+	
 	public function indexAction()
 	{
 		$request = $this->getRequest();
@@ -34,12 +39,22 @@ class CatalogController extends Nashmaster_Controller_Action
 		$city = $Cities->getCityBySeoName($citySeoName);
 		$this->view->city = $city;
 
-		
 		$serviceSeoName = $request->getParam('service');
 		$Services = new Searchdata_Model_Services();
 		$this->view->service = $Services->getBySeoName($serviceSeoName);
+
+		// prepare search data
+		$serviceIds = array($this->view->service->service_id);
+		$regionIds = array($this->view->city->city_id);
+		$page = (((int) $request->page) > 1) ? (int) $request->page : 1;
+
+		// process search
+		$searchIndex = new Search_Model_Index();
+		$pagination = new Zend_Paginator($searchIndex->getDataPagenation($serviceIds, $regionIds));
+		$pagination->setCurrentPageNumber($page);
+		$pagination->setDefaultItemCountPerPage(self::RESULTS_PER_PAGE);
 		
-		var_dump($this->view->service);
+		$this->view->data = $pagination;
 	}
 
 }

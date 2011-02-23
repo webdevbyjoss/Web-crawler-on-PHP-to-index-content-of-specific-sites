@@ -238,17 +238,25 @@ span.selector-region-bar-selected-remove:hover {
  */
 .search-results {
 	font-size: 1em;
-	padding-left: 5px;
-	padding-right: 5px;
-	padding-top: 10px;
-
+	line-height: 1.3em;
+	
 	font-family: Arial, serif;
 	color: black;
 }
 
 .search-results-item {
-	padding-top: 15px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	border: 1px solid white;
+	/*padding-left: 5px;*/
 }
+
+/*
+.search-results-item:hover {
+	background-color: #FDFDFD;
+	border: 1px solid #EBEBEB;
+}
+*/
 
 .search-results-item .title {
 	font-size: 1.4em;

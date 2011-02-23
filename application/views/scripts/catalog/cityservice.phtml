@@ -1,1 +1,42 @@
 <?php
+
+// client side action specific functionality
+$this->headScript()->appendFile('/js/search-stat.js');
+
+// get locale to use for interface
+$loc = $this->getLocale();
+$cityTitle = ($loc == 'uk') ? $this->city->name_uk : $this->city->name;
+$citySeoTitle = ($loc == 'uk') ? $this->city->seo_name_uk : $this->city->seo_name;
+
+$serviceTitile = ($loc == 'uk') ? $this->service->name_uk : $this->service->name;
+
+// load custom title
+$this->headTitle($this->T('services-in-city', $serviceTitile, $cityTitle));
+
+$this->headMeta()->setName('description', $this->T('what-type-of-service-in-city', $cityTitle))
+		->setName('keywords', $serviceTitile . ', ' . $cityTitle . ', ' . $this->T('meta-keywords'));
+?>
+
+<?php /* ?>
+<a href="<?php echo $this->url(array('city' => $citySeoTitle), 'city_lang'); ?>">&lt;&lt; повернутися до переліку видів робіт в місті <?php echo $cityTitle ?></a>
+<?php */ ?>
+
+<div class="services-finder">
+<h1><?php echo $this->T('services-in-city', $serviceTitile, $cityTitle); ?></h1>
+</div>
+
+<?php if (count($this->data) < 1): ?>
+<div style="padding:150px;text-align:center;"><?php echo $this->t('no-search-results') ?> :(</div>
+<?php else: ?>
+
+<div class="search-results">
+<?php foreach ($this->data as $res): ?>
+	<div class="search-results-item">
+		<div class="title"><a target="_blank" href="<?php echo $res['url'] ?>"><?php echo $this->cuttext($res['title'], 70) ?></a></div>
+		<div class="description"><?php echo $this->cuttext($res['description'], 100) ?></div>
+		<a target="_blank" href="<?php echo $res['url'] ?>" class="url"><?php echo $res['url'] ?></a>
+	</div>
+<?php endforeach; ?>
+<?php echo $this->paginationControl($this->data, 'Sliding', 'search_pagination_control.phtml'); ?>
+</div>
+<?php endif; ?>

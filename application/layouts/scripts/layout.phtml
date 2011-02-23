@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html dir="ltr" lang="<?php echo $this->getLocale() ?>">
 <head>
-  <meta name="description" content="<?php echo $this->T('meta-description') ?>" />
-  <meta name="keywords" content="<?php echo $this->T('meta-keywords') ?>" />
-  <meta charset="utf-8"/>
-  <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-  <?php echo $this->headTitle($this->T('site-name'))->setSeparator(' — ') ?>
-  <?php echo $this->headLink()->prependStylesheet('/css/layout.css')
+<?php echo $this->headMeta(); ?>
+
+<?php echo $this->headTitle($this->T('site-name'))->setSeparator(' — '); ?>
+<meta charset="utf-8" />
+<link rel="icon" href="/favicon.ico" type="image/x-icon" />
+<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+<?php echo $this->headLink()->prependStylesheet('/css/layout.css')
                               ->prependStylesheet('/css/search-form.css') ?>
-  <?php if (APPLICATION_ENV == 'production'): ?>
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
-  <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
-  <?php if (!$this->isAdmin()):?>
-  <script>
+<?php if (APPLICATION_ENV == 'production'): ?>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js"></script>
+<script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+<?php if (!$this->isAdmin()):?>
+<script>
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-15610072-1']);
   _gaq.push(['_trackPageview']);
@@ -22,36 +22,27 @@
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
-  </script>
-  <?php endif; ?>
-  
-  <?php else:
+</script>
+<?php endif; ?>
+<?php else:
   	$this->headScript()
   	->prependFile('/js/jquery.tmpl.min.js')
 	->prependFile('/js/jquery-1.4.2.min.js')
   	;
   endif; ?>
-
-  <?php echo $this->headScript()
+<?php echo $this->headScript()
   	->appendFile('/js/layout.js')
   	->appendFile('/js/jquery.typing-0.2.0.min.js')
   	->appendFile('/js/jquery.form.js')
   	->appendFile('/js/autoresize.jquery.min.js')
   	;
   	?>
-  <script>
-  var locale = "<?php echo $this->getLocale() ?>";
-  </script>
+<script>
+var locale = "<?php echo $this->getLocale() ?>";
+</script>
 </head>
 <body>
 <div id="page"><div id="page-inner">
-
-
-
-
-
-
-
 <div id="header">
 <div id="logo">
 <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>
@@ -67,32 +58,20 @@
 	,'default'); ?>" title="<?php echo $this->T('site-name') . ' - ' . $this->T('slogan') ?>">
 <img alt="<?php echo $this->T('logo') . ' ' . $this->T('site-name') ?>" src="<?php echo $this->getImagesUrl() . 'nash-master-logo-' . $this->getLocale() . '.png' ?>" /></a>
 <?php endif; ?>
-<?php /* ?><div id="beta-mark"><img alt="<?php echo $this->T('beta-version'); ?>" src="<?php echo $this->getImagesUrl() . 'beta.png'; ?>" /></div><?php */ ?>
+<div id="beta-mark"><img alt="<?php echo $this->T('beta-version'); ?>" src="<?php echo $this->getImagesUrl() . 'beta.png'; ?>" /></div>
 </div>
 
-
-
-
-
-
-
 <div id="top-menu">
+<div id="top-menu-right">
+	<a id="feedbackLink" title="<?php echo $this->T('send-us-your-feedback') ?>" href="#"><?php echo $this->T('feedback') ?></a>
+<?php if ($this->isAdmin()):?>
+	<a href="/crawler/editor" title="Knowlage Base Editor">KBE</a>
+	<a href="/crawler/relations" title="Synonyms Relations Management">SRM</a>
+<?php endif; ?>
+<?php echo $this->profileLink(); ?>
+</div>
 
-	<div id="top-menu-right">
-	
-		<a id="feedbackLink" title="<?php echo $this->T('send-us-your-feedback') ?>" href="#"><?php echo $this->T('feedback') ?></a>
-	
-		<?php if ($this->isAdmin()):?>
-		<a href="/crawler/editor" title="Knowlage Base Editor">KBE</a>
-		<a href="/crawler/relations" title="Synonyms Relations Management">SRM</a>
-		<?php endif; ?>
-		
-		<?php echo $this->profileLink(); ?>
-		
-	</div>
-
-	<div id="top-menu-left">
-	
+<div id="top-menu-left">
 	<?php /* ?>
 	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
@@ -103,8 +82,7 @@
 	)
 	,'default'); ?>">Головна</a>
 	<?php */ ?>
-
-	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'catalog'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	<a <?php if ($this->getModuleName() == 'default' && ($this->getControllerName() == 'catalog' || $this->getControllerName() == 'index')): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
 		'controller' => 'index',
@@ -112,8 +90,6 @@
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('specialists'); ?></a>
-	
-	
 	<?php /* ?>
 	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'tenders'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
@@ -125,7 +101,6 @@
 	,'default'); ?>">Робота</a>
 	
 	*/ ?>
-	
 	<?php /*
 	
 	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'articles'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
@@ -138,7 +113,6 @@
 	,'default'); ?>"><?php echo $this->T('articles'); ?></a>
 	
 	*/ ?>
-	
 	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'questions-answers'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
@@ -167,48 +141,25 @@
 	)
 	,'default'); ?>"><?php echo $this->T('links'); ?></a>
 	<?php */ ?>
-
 	</div>
 </div>
-
-
-
-
-
-
-
 <?php /* ?>
-
 <div id="header-search-form" class="header-search-form-wide">
 <div id="header-search-form-block">
-
-
 </div>
 </div>
-
 <?php */ ?>
-
-
 </div>
-
-
-
 
 <div id="main">
 <div id="main-inner">
-
-
 <div id="page-content">
 <?php echo $this->layout()->content ?>
 </div>
-
-
 <div id="panel">
-
 	<?php if (!empty($this->city)):
 		echo $this->partial('city-panel.phtml', array('city' => $this->city));
 	endif; ?>
-	
 	<?php /* ?>
 	<div id="search-panel-extra" class="search-panel">
 		<div class="label">останні обговорення</div>
@@ -219,33 +170,22 @@
 		<div><a href="">як правильно підібрати колір ламінату?</a></div>
 		<div><a href="">як поставити штукатурку?</a></div>
 		<div><a href="">як поставити штукатурку?</a></div>
-
 	</div>
-	
 	<div id="search-panel-data" class="search-panel">
 		<div class="label">останні пропозиції роботи</div>
 		<div><a href="">шукаємо грущиків для цікавої роботи</a></div>
 		<div><a href="">потрібні різноробочі</a></div>
-		
 	</div>
-
 	<div id="search-panel-info" class="search-panel">
 	   other search params, other search params, other search params,
 	</div>
 	<?php */ ?>
-	
-
-</div>
-
-
 </div>
 </div>
-
-
+</div>
 
 <div id="footer">
 	<div id="footer-menu">
-	
 	<?php /* ?>
 		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'about-us'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
@@ -305,9 +245,7 @@
 	</div>
 	<div id="copyright">&copy; 2011 nash-master.com, <?php echo $this->languageSelector() ?></div>
 </div>
-
 <?php echo $this->feedbackForm(); ?>
-
 </div></div>
 </body>
 </html>

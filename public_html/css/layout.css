@@ -589,3 +589,20 @@ h4 {
 .hidden-element {
 	display: none;
 }
+
+.tag-cloud {
+	text-align: center;
+}
+
+.tag-cloud a {
+	color: gray;
+    font-size: 1.8em;
+    padding: 10px;
+    line-height: 1.8em;
+    white-space: nowrap;
+}
+
+.tag-cloud a:hover {
+	color: silver;
+	/*font-size: 2.1em;*/
+}

@@ -105,4 +105,15 @@ class LoginController extends Zend_Controller_Action
         $this->_helper->redirector('index'); // back to login page
     }
     
+    public function subscribeAction()
+    {
+    	$this->_helper->layout->disableLayout();
+    	$request = $this->getRequest();
+
+    	$Users = new Users_Model_Users();
+    	$Users->subscribeEmail($request->getParam('email'));
+    	
+    	$this->view->email = $request->getParam('email');
+    }
+    
 }

@@ -43,9 +43,26 @@ var locale = "<?php echo $this->getLocale() ?>";
 </head>
 <body>
 <div id="page"><div id="page-inner">
+<div id="top-menu-right">
+	<a id="feedbackLink" title="<?php echo $this->T('send-us-your-feedback') ?>" href="#"><?php echo $this->T('feedback') ?></a>
+	[ <?php echo $this->languageSelector() ?> ]
+<?php if ($this->isAdmin()):?>
+	<a href="/crawler/editor" title="Knowlage Base Editor">KBE</a>
+	<a href="/crawler/relations" title="Synonyms Relations Management">SRM</a>
+<?php endif; ?>
+<?php /* echo $this->profileLink(); */ ?>
+	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'login'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'login',
+		'module' => 'default',
+	)
+	,'default'); ?>"><?php echo $this->T('signup-signin'); ?></a>
+</div>
+
 <div id="header">
 <div id="logo">
-<?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>
+<?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index' && $this->getActionName() == 'index'): ?>
 <img alt="<?php echo $this->T('logo') . ' ' . $this->T('site-name') ?>" src="<?php echo $this->getImagesUrl() . 'nash-master-logo-' . $this->getLocale() . '.png' ?>" />
 <?php else: ?>
 <a href="<?php echo $this->url(
@@ -55,22 +72,12 @@ var locale = "<?php echo $this->getLocale() ?>";
 		'action' => 'index',
 		'module' => 'default',
 	)
-	,'default'); ?>" title="<?php echo $this->T('site-name') . ' - ' . $this->T('slogan') ?>">
+	,'lang'); ?>" title="<?php echo $this->T('site-name') . ' - ' . $this->T('slogan') ?>">
 <img alt="<?php echo $this->T('logo') . ' ' . $this->T('site-name') ?>" src="<?php echo $this->getImagesUrl() . 'nash-master-logo-' . $this->getLocale() . '.png' ?>" /></a>
 <?php endif; ?>
 <div id="beta-mark"><img alt="<?php echo $this->T('beta-version'); ?>" src="<?php echo $this->getImagesUrl() . 'beta.png'; ?>" /></div>
 </div>
-
 <div id="top-menu">
-<div id="top-menu-right">
-	<a id="feedbackLink" title="<?php echo $this->T('send-us-your-feedback') ?>" href="#"><?php echo $this->T('feedback') ?></a>
-<?php if ($this->isAdmin()):?>
-	<a href="/crawler/editor" title="Knowlage Base Editor">KBE</a>
-	<a href="/crawler/relations" title="Synonyms Relations Management">SRM</a>
-<?php endif; ?>
-<?php echo $this->profileLink(); ?>
-</div>
-
 <div id="top-menu-left">
 	<?php /* ?>
 	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
@@ -89,7 +96,7 @@ var locale = "<?php echo $this->getLocale() ?>";
 		'action' => 'index',
 		'module' => 'default',
 	)
-	,'default'); ?>"><?php echo $this->T('specialists'); ?></a>
+	,'lang'); ?>"><?php echo $this->T('specialists'); ?></a>
 	<?php /* ?>
 	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'tenders'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
@@ -99,10 +106,7 @@ var locale = "<?php echo $this->getLocale() ?>";
 		'module' => 'default',
 	)
 	,'default'); ?>">Робота</a>
-	
 	*/ ?>
-	<?php /*
-	
 	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'articles'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
@@ -111,8 +115,6 @@ var locale = "<?php echo $this->getLocale() ?>";
 		'module' => 'default',
 	)
 	,'default'); ?>"><?php echo $this->T('articles'); ?></a>
-	
-	*/ ?>
 	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'questions-answers'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
@@ -141,6 +143,7 @@ var locale = "<?php echo $this->getLocale() ?>";
 	)
 	,'default'); ?>"><?php echo $this->T('links'); ?></a>
 	<?php */ ?>
+	<?php $this->renderSubNavigation(); ?>
 	</div>
 </div>
 <?php /* ?>
@@ -150,7 +153,6 @@ var locale = "<?php echo $this->getLocale() ?>";
 </div>
 <?php */ ?>
 </div>
-
 <div id="main">
 <div id="main-inner">
 <div id="page-content">
@@ -158,8 +160,18 @@ var locale = "<?php echo $this->getLocale() ?>";
 </div>
 <div id="panel">
 	<?php if (!empty($this->city)):
-		echo $this->partial('city-panel.phtml', array('city' => $this->city));
+		echo $this->partial('city-panel.phtml', array(
+			  'city' => $this->city
+			, 'city_near' => $this->city_near
+			, 'city_large' => $this->city_large
+			, 'extraCities' => $this->extraCities
+		));
 	endif; ?>
+	<?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'): ?>
+	<div id="search-panel-data" class="search-panel">
+	<?php echo $this->T('beta-welcome-text') ?>
+	</div>
+	<?php endif; ?>
 	<?php /* ?>
 	<div id="search-panel-extra" class="search-panel">
 		<div class="label">останні обговорення</div>
@@ -171,23 +183,19 @@ var locale = "<?php echo $this->getLocale() ?>";
 		<div><a href="">як поставити штукатурку?</a></div>
 		<div><a href="">як поставити штукатурку?</a></div>
 	</div>
-	<div id="search-panel-data" class="search-panel">
+	<div id="search-panel-info" class="search-panel">
 		<div class="label">останні пропозиції роботи</div>
 		<div><a href="">шукаємо грущиків для цікавої роботи</a></div>
 		<div><a href="">потрібні різноробочі</a></div>
-	</div>
-	<div id="search-panel-info" class="search-panel">
-	   other search params, other search params, other search params,
 	</div>
 	<?php */ ?>
 </div>
 </div>
 </div>
-
 <div id="footer">
 	<div id="footer-menu">
 	<?php /* ?>
-		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'about-us'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'about-us'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
 		'controller' => 'about-us',
@@ -197,7 +205,7 @@ var locale = "<?php echo $this->getLocale() ?>";
 	,'default'); ?>"><?php echo $this->T('about-us'); ?></a>
 	<?php */ ?>
 	<?php /* ?>
-		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'news'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'news'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
 		'controller' => 'news',
@@ -206,7 +214,7 @@ var locale = "<?php echo $this->getLocale() ?>";
 	)
 	,'default'); ?>"><?php echo $this->T('news'); ?></a>
 	<?php */ ?>
-		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'terms-and-conditions'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'terms-and-conditions'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
 		'controller' => 'terms-and-conditions',
@@ -215,7 +223,7 @@ var locale = "<?php echo $this->getLocale() ?>";
 	)
 	,'default'); ?>"><?php echo $this->T('terms-and-conditions'); ?></a>
 	<?php /* ?>
-		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'for-developers'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'for-developers'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
 		'controller' => 'for-developers',
@@ -225,7 +233,7 @@ var locale = "<?php echo $this->getLocale() ?>";
 	,'default'); ?>"><?php echo $this->T('for-developers'); ?></a>
 	<?php */ ?>
 	<?php /* ?>
-		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'contacts'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'contacts'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
 		'controller' => 'contacts',
@@ -234,7 +242,7 @@ var locale = "<?php echo $this->getLocale() ?>";
 	)
 	,'default'); ?>"><?php echo $this->T('contacts'); ?></a>
 	<?php */ ?>
-		<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'help'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
+	<a <?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'help'): ?>class="active"<?php endif; ?> href="<?php echo $this->url(
 	array(
 		'lang' => $this->getLocale(),
 		'controller' => 'help',
@@ -243,9 +251,8 @@ var locale = "<?php echo $this->getLocale() ?>";
 	)
 	,'default'); ?>"><?php echo $this->T('help'); ?></a>
 	</div>
-	<div id="copyright">&copy; 2011 nash-master.com, <?php echo $this->languageSelector() ?></div>
+	<div id="copyright">&copy; 2011 nash-master.com</div>
 </div>
 <?php echo $this->feedbackForm(); ?>
-</div></div>
 </body>
 </html>

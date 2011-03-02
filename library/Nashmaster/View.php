@@ -7,12 +7,41 @@ class Nashmaster_View extends Zend_View
 	private $_locale = null;
 	private $_request = null;
 	
+	private $_subnavigation = null;
+	
 	public function __construct($options)
 	{
 		$this->_auth = Zend_Auth::getInstance();
 		parent::__construct($options);
 	}
 	
+	/**
+	 * Next two methods will add the sub-navigation functionality that will allow to add navigation URLs
+	 * to the line under the main navigation
+	 *
+	 * sub-navigation controlls can be controlled from the controller action template
+	 */
+	public function addSubNavication($url, $title, $cssClass = null)
+	{
+		$this->_subnavigation[] = '<a href="' . $url . '"'
+			. (($cssClass !== null) ? ' class="' . $cssClass . '"' : ''  ) . '>'
+			. $title . '</a>';
+		
+	}
+	
+	public function renderSubNavigation()
+	{
+		if (count($this->_subnavigation) < 1) {
+			return;
+		}
+		
+		echo '<div id="navigation-bar">' . implode("\n", $this->_subnavigation) . '</div>';
+	}
+	
+	
+	/**
+	 * Returns text representation of current locale
+	 */
 	public function getLocale()
 	{
 		return $this->_locale->toString();

@@ -1,3 +1,14 @@
+<?php
+
+if( !function_exists('ceiling') )
+{
+    function ceiling($number, $significance = 1)
+    {
+        return ( is_numeric($number) && is_numeric($significance) ) ? (ceil($number/$significance)*$significance) : false;
+    }
+}
+
+?>
 <div id="search-panel-main" class="search-panel">
 	<div class="search-form-column-city">
 		<div class="item-title-main-block">
@@ -8,22 +19,73 @@
 		'action' => 'index',
 		'module' => 'default',
 	)
-	,'default') ?>">змінити місто</a> ]</span>
+	,'default') ?>"><?php echo $this->T('change-city') ?></a> ]</span>
 		</div>
 
-		<?php /* ?>
-		<div class="label"><input type="checkbox" id="including-close-cities" /> <label for="including-close-cities">включити найближчі міста</label></div>
-		<div class="item-element"><span class="item-title">Коломия</span> <span class="label">35 км</span></div>
-		<div class="item-element"><span class="item-title">Кіцмань</span> <span class="label">55 км</span></div>
-		<div class="item-element"><span class="item-title">Чортків</span> <span class="label">65 км</span></div>
+		<?php if ($this->city_near): ?>
+		<div class="label"><?php echo $this->T('closest-towns');?></div>
+		<?php foreach ($this->city_near as $city):
+		
+		if (empty($this->extraCities)) {
+			
+			$url = $this->url(array('also_search' =>  $city->city_id, 'page' => 1));
+			$checked = false;
+			
+		} else {
+		
+			if (in_array($city->city_id, $this->extraCities)) {
+				$newCities = array_diff($this->extraCities, array($city->city_id));
+				if (!empty($newCities)) {
+					$url = $this->url(array('also_search' =>  implode(',', $newCities), 'page' => 1));
+				} else {
+					$url = $this->url(array('page' => 1, 'also_search' => null));
+				}
+				$checked = true;
+			} else {
+				$newCities = array_merge($this->extraCities, array($city->city_id));
+				$url = $this->url(array('also_search' =>  implode(',', $newCities), 'page' => 1));
+				$checked = false;
+			}
+		}
+		?>
+		<div class="item-element">
+			<input <?php if ($checked === true) :?> checked="checked" <?php endif;?> value="<?php echo $url ?>" type="checkbox" id="including-close-cities-<?php echo $city->city_id ?>" /><label for="including-close-cities-<?php echo $city->city_id ?>" class="item-title"><?php echo ($this->getLocale() == 'uk') ? $city->name_uk : $city->name ?></label>
+			<span class="label">~<?php echo ceiling($city->distance, 10) ?> км</span>
+		</div>
+		<?php endforeach; ?>
+		<?php endif; ?>
 
-		<div class="label"><input type="checkbox" id="including-lange-cities" /> <label for="including-lange-cities">включити великі міста</label></div>
-		<div class="item-element"><span class="item-title">Чернівці</span> <span class="label">85 км</span></div>
-		<div class="item-element"><span class="item-title">Тернопіль</span> <span class="label">120 км</span></div>
-		<div class="item-element"><span class="item-title">Івано-Франківськ</span> <span class="label">150 км</span></div>
-		<div class="item-element"><span class="item-title">Кам’янець-Подільський</span> <span class="label">170 км</span></div>
-
-		<?php */ ?>
-
+		<?php if ($this->city_large): ?>
+		<div class="label"><?php echo $this->T('closest-administrative-centers');?></div>
+		<?php foreach ($this->city_large as $city):
+		
+		if (empty($this->extraCities)) {
+			
+			$url = $this->url(array('also_search' =>  $city->city_id, 'page' => 1));
+			$checked = false;
+			
+		} else {
+		
+			if (in_array($city->city_id, $this->extraCities)) {
+				$newCities = array_diff($this->extraCities, array($city->city_id));
+				if (!empty($newCities)) {
+					$url = $this->url(array('also_search' =>  implode(',', $newCities), 'page' => 1));
+				} else {
+					$url = $this->url(array('page' => 1, 'also_search' => null));
+				}
+				$checked = true;
+			} else {
+				$newCities = array_merge($this->extraCities, array($city->city_id));
+				$url = $this->url(array('also_search' =>  implode(',', $newCities), 'page' => 1));
+				$checked = false;
+			}
+		}
+		?>
+		<div class="item-element">
+			<input <?php if ($checked === true) :?> checked="checked" <?php endif;?> value="<?php echo $url ?>"  type="checkbox" id="including-close-cities-<?php echo $city->city_id ?>" /><label for="including-close-cities-<?php echo $city->city_id ?>" class="item-title"><?php echo ($this->getLocale() == 'uk') ? $city->name_uk : $city->name ?></label>
+			<span class="label">~<?php echo ceiling($city->distance, 10) ?> км</span>
+		</div>
+		<?php endforeach; ?>
+		<?php endif; ?>
 	</div>
 </div>

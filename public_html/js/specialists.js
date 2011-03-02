@@ -62,7 +62,7 @@ function loadCities(regionId)
 		elem.html(citiesCache[regionId]);
 	} else {
 		elem.addClass('hidden-element');
-		elem.load('/searchdata/list/cities/regionid/' + regionId, null, function(){
+		elem.load('/' + locale + '/searchdata/list/cities/regionid/' + regionId, null, function(){
 			$('#loading-progress').remove();
 			elem.removeClass('hidden-element');
 			citiesCache[regionId] = $(this).html();

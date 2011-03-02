@@ -23,8 +23,8 @@ rsync -avz $APP_DIR/library/Custom/* nash:/home/nashmast/library/Custom/
 rsync -avz $APP_DIR/library/Joss/* nash:/home/nashmast/library/Joss/
 rsync -avz $APP_DIR/library/Nashmaster/* nash:/home/nashmast/library/Nashmaster/
 rsync -uv $APP_DIR/library/simple_html_dom.php nash:/home/nashmast/library/simple_html_dom.php
-rsync -avz /usr/share/php/libzend-framework-php/Zend/* nash:/home/nashmast/library/Zend/
-rsync -avz /usr/share/php/libzend-framework-php/ZendX/* nash:/home/nashmast/library/ZendX/
+rsync -avz /var/www/zend/Zend/* nash:/home/nashmast/library/Zend/
+rsync -avz /var/www/zend/ZendX/* nash:/home/nashmast/library/ZendX/
 
 # scripts 
 rsync -uv $APP_DIR/scripts/zf-cli.php nash:/home/nashmast/scripts/zf-cli.php

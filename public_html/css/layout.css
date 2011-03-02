@@ -54,28 +54,50 @@ h4 {
 
 
 /* HEADER */
+.active-language {
+	
+}
+
 #top-menu {
 	padding: 0px;
 	padding-top: 5px;
-
+	font-size: 1.4em;
 }
 
 #top-menu a {
 	padding-right: 10px;
 	padding-left: 10px;
 	color: gray;
-	font-size: 1.4em;
 	white-space: nowrap;
 }
 
 #top-menu a:hover {
 	color: #616161;
-	text-decoration: none;
 }
 
 #top-menu-right {
 	float: right;
+	padding-right: 10px;
+	font-size: 1.1em;
+	color: gray;
+	padding-top: 4px;
 }
+
+#top-menu-right a {
+	padding: 5px;
+	color: #7498b2;
+}
+
+#top-menu-right a:hover {
+	color: #616161;
+}
+
+#top-menu-right a.active {
+	color: black;
+	text-decoration: none;
+	cursor: default;
+}
+
 
 #top-menu-left {
 	float: left;
@@ -105,8 +127,28 @@ h4 {
 }
 
 #beta-mark {
-	position: relative;
-	left: -15px;
+	position: absolute;
+	left: 270px;
+	top: 15px;
+}
+
+#navigation-bar {
+	clear: both;
+	padding-left: 10px;
+}
+
+#navigation-bar a {
+	font-size: 0.8em;
+	padding-top: 15px;
+	float: left;
+	
+}
+
+#navigation-bar a.back-button {
+	background-image: url(/images/back.png);
+	background-repeat: no-repeat;
+	background-position: 0px 9px;
+	padding-left: 35px; 
 }
 
 /*
@@ -161,7 +203,12 @@ h4 {
 }
 
 .item-element {
-	padding-left: 25px;
+	/*padding-left: 25px;*/
+	font-size: 1.2em;
+}
+
+.item-element label {
+	padding-left: 5px;
 }
 
 .search-form-column-city {
@@ -187,14 +234,13 @@ h4 {
     overflow: hidden;
     position: relative;
     width: 100%;
-    padding-top: 10px;
 }
 
 #main-inner {
     float: left;
     position: relative;
     width: 100%;
-    right: 35%;
+    right: 38%;
 }
 
 #panel {
@@ -208,8 +254,8 @@ h4 {
 }
 
 #page-content {
-    left: 36%;
-    width: 61%;
+    left: 39%;
+    width: 64%;
     
     float: left;
     overflow: hidden;
@@ -278,14 +324,13 @@ h4 {
 }
 
 #footer-menu a {
-	color: gray;
+	color: #7498b2;
 	padding: 5px;
 	text-transform: lowercase;
 }
 
 #footer-menu a:hover {
-	color: silver;
-	text-decoration: none;
+	color: #616161;
 }
 
 #footer-menu a.active, #footer-menu a.active:hover {
@@ -500,11 +545,11 @@ h4 {
 }
 
 #help-instructions {
-	
+	padding-top: 20px;
 }
 
-#help-instructions p span {
-	font-size: 2.4em;
+#help-instructions h2 span {
+	font-size: 2em;
 	font-family: arial;
 	padding: 10px;
 }
@@ -569,7 +614,7 @@ h4 {
 }
 
 #services-list .service a {
-	font-size: 2em;
+	font-size: 1.7em;
 	color: gray;
 }
 
@@ -605,4 +650,52 @@ h4 {
 .tag-cloud a:hover {
 	color: silver;
 	/*font-size: 2.1em;*/
+}
+
+#email {
+	width: 500px;
+	border: 1px solid silver;
+}
+
+#email-submit {
+	padding: 5px;
+	background-color: #d9ecff;
+	cursor: pointer;
+	padding-left: 20px;
+	padding-right: 20px;
+	border: 0;
+}
+
+#email-submit:hover {
+	background-color: #cce5ff;
+	
+}
+
+.signup-email {
+	font-size: 2em;
+	padding: 5px;
+}
+
+.signup-email-fail {
+	background-image: url(/images/feedback-form/no.png);
+	background-repeat: no-repeat;
+	background-position: 480px 10px;
+}
+
+.signup-email-ok {
+	background-image: url(/images/feedback-form/ok.png);
+	background-repeat: no-repeat;
+	background-position: 480px 10px;
+}
+
+.mail-example {
+	color: gray;
+}
+
+#email-confirmation {
+	margin-left: 10px;
+}
+
+#email-subscription b {
+	font-size: 1.4em;
 }

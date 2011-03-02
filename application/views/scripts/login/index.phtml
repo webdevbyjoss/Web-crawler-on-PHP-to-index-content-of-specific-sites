@@ -1,2 +1,22 @@
-<h2>Please Login</h2>
-<?php echo $this->form ?>
+<?php
+
+// client side action specific functionality
+$this->headScript()->appendFile('/js/jquery.metronome-min.js');
+
+// client side action specific functionality
+$this->headScript()->appendFile('/js/login.js');
+
+// load custom title
+$this->headTitle($this->T('signup-signin'));
+
+?>
+
+<div id="email-subscription">
+
+<h1><?php echo $this->T('signup-signin'); ?></h1>
+<?php /* echo $this->form */ ?>
+<p><?php echo $this->T('under-construction-email'); ?></p>
+
+<div class="mail-example"><?php echo $this->T('example-email') ?></div>
+<input id="email" class="signup-email" name="email" type="text" value="" />
+</div>

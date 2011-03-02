@@ -13,7 +13,6 @@ class Users_FeedbackController extends Zend_Controller_Action
 	public function postAction()
 	{
 		$this->_helper->layout->disableLayout();
-		$this->_helper->viewRenderer->setNoRender(true);
 
 		//send feedback message to ofuz over Zend_Http_Client
 		$ofuzUri = "http://todo.nash-master.com/ofuz_helper.php";
@@ -42,10 +41,5 @@ class Users_FeedbackController extends Zend_Controller_Action
 			"telephone" => $req->getParam("telephone")
 		));
 		$ofuz_response = $client->request("POST")->getBody();
-		if ($ofuz_response == "SUCCESS") {
-			echo Zend_Registry::get("Zend_Translate")->_('Thanks for your feedback');
-		}
-		else
-			echo $ofuz_response;
 	}
 }

@@ -8,25 +8,73 @@ $loc = $this->getLocale();
 $cityTitle = ($loc == 'uk') ? $this->city->name_uk : $this->city->name;
 $citySeoTitle = ($loc == 'uk') ? $this->city->seo_name_uk : $this->city->seo_name;
 
-$serviceTitile = ($loc == 'uk') ? $this->service->name_uk : $this->service->name;
+$serviceTitle = ($loc == 'uk') ? $this->service->name_uk : $this->service->name;
 
 // load custom title
-$this->headTitle($this->T('services-in-city', $serviceTitile, $cityTitle));
+$this->headTitle($this->T('services-in-city', $serviceTitle, $cityTitle));
 
 $this->headMeta()->setName('description', $this->T('what-type-of-service-in-city', $cityTitle))
-		->setName('keywords', $serviceTitile . ', ' . $cityTitle . ', ' . $this->T('meta-keywords'));
+		->setName('keywords', $serviceTitle . ', ' . $cityTitle . ', ' . $this->T('meta-keywords'));
+
+
+$this->addSubNavication($this->url(array('city' => $citySeoTitle), 'city_lang'), $this->T('return-to-city-page', $cityTitle) , 'back-button');
+
 ?>
-
-<?php /* ?>
-<a href="<?php echo $this->url(array('city' => $citySeoTitle), 'city_lang'); ?>">&lt;&lt; повернутися до переліку видів робіт в місті <?php echo $cityTitle ?></a>
-<?php */ ?>
-
 <div class="services-finder">
-<h1><?php echo $this->T('services-in-city', $serviceTitile, $cityTitle); ?></h1>
+<h1><?php echo $this->T('services-in-city', $serviceTitle, $cityTitle); ?></h1>
 </div>
 
 <?php if (count($this->data) < 1): ?>
-<div style="padding:150px;text-align:center;"><?php echo $this->t('no-search-results') ?> :(</div>
+<p><?php echo $this->t('no-search-results') ?></p>
+
+<p>
+<?php if (empty($this->extraCities)): ?>
+	<?php echo $this->T('no-searrch-results-description', $cityTitle, mb_strtolower($serviceTitle));?>
+<?php else:?>
+	<?php echo $this->T('no-search-results-with-extras-description', mb_strtolower($serviceTitle));?>
+<?php endif; ?>
+
+<?php if ($this->city_large): ?>
+
+<?php foreach ($this->city_large as $city):
+if (empty($this->extraCities)) {
+	$url = $this->url(array('also_search' =>  $city->city_id, 'page' => 1));
+	$checked = false;
+} else {
+	if (in_array($city->city_id, $this->extraCities)) {
+		$newCities = array_diff($this->extraCities, array($city->city_id));
+		if (!empty($newCities)) {
+			$url = $this->url(array('also_search' =>  implode(',', $newCities), 'page' => 1));
+		} else {
+			$url = $this->url(array('page' => 1, 'also_search' => null));
+		}
+		$checked = true;
+	} else {
+		$newCities = array_merge($this->extraCities, array($city->city_id));
+		$url = $this->url(array('also_search' =>  implode(',', $newCities), 'page' => 1));
+		$checked = false;
+	}
+}
+
+if ($checked === false):
+?>
+<a href="<?php echo $url ?>"><?php echo ($this->getLocale() == 'uk') ? $city->name_uk : $city->name ?></a>,
+<?php
+endif;
+endforeach; ?>
+<?php endif; ?>
+
+</p>
+
+<h1><?php echo $this->T('is-that-your-specialization', $serviceTitle); ?></h1>
+<p><?php echo $this->T('is-that-your-specialization-description', $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'login',
+		'module' => 'default',
+	)
+	,'default'), mb_strtolower($serviceTitle)) ?></p>
+
 <?php else: ?>
 
 <div class="search-results">

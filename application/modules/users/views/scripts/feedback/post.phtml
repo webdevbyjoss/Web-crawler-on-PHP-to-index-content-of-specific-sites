@@ -1,9 +1,2 @@
 <?php
-$response = array("success" => $this->success);
-if ($this->success) { 
-	$response["message"] = $this->T("Thanks for your feedback");
-} 
-else {
-	$response["errors"] = $this->errors;
-}
-echo Zend_Json::encode($response);
+echo $this->T('thanks-for-your-feedback');

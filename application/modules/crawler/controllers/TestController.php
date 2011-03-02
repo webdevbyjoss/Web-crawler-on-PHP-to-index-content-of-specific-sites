@@ -123,4 +123,29 @@ class Crawler_TestController extends Zend_Controller_Action
 		return $text;
 	}
 	
+	
+	public function citiesAction()
+	{
+		$Cities = new Searchdata_Model_Cities();
+		$CitiesDistances = new Searchdata_Model_CitiesDistances();
+		
+		$ukrainianCities = $Cities->getItems();
+		
+		foreach ($ukrainianCities as $city) {
+			$relCities = $Cities->getRelatedCities($city->latitude, $city->longitude);
+			foreach ($relCities as $relCity) {
+				$relRecord = $CitiesDistances->fetchNew();
+				$relRecord->parent_city_id = $city->city_id;
+				$relRecord->city_id = $relCity['city_id'];
+				$relRecord->distance = $relCity['distance'];
+				$relRecord->is_region_center = $relCity['is_region_center'];
+				$relRecord->name = $relCity['name'];
+				$relRecord->name_uk = $relCity['name_uk'];
+				$relRecord->seo_name = $relCity['seo_name'];
+				$relRecord->seo_name_uk = $relCity['seo_name_uk'];
+				$relRecord->save();
+				unset($relRecord);
+			}
+		}
+	}
 }

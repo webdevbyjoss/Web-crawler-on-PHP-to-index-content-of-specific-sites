@@ -104,4 +104,39 @@ class Searchdata_Model_Cities extends Zend_Db_Table_Abstract
     	return $data->current();
     }
     
+    /**
+     * Returns the list of cities that are no more than 250 km from current coordinates
+     */
+    public function getRelatedCities($lat, $lng, $distance = 250)
+    {
+    	$db = $this->getAdapter();
+    	
+    	$sql = 'SELECT
+	        *,
+		((6371.009 * (2 * ATAN2(SQRT((SIN(RADIANS(city.latitude - ' . $lat . ')/2)
+		* SIN(RADIANS(city.latitude - ' . $lat . ')/2)
+			+ COS(RADIANS( ' . $lat . ' )) * COS(RADIANS(city.latitude))
+			* SIN(RADIANS( city.longitude - ' . $lng . ')/2)
+			* SIN(RADIANS( city.longitude - ' . $lng . ')/2))),
+			SQRT(1 - (SIN(RADIANS(city.latitude -  ' . $lat . ' )/2)
+		* SIN(RADIANS(city.latitude - ' . $lat . ' )/2)
+			+ COS(RADIANS( ' . $lat . ' )) * COS(RADIANS(city.latitude))
+			* SIN(RADIANS( city.longitude - ' . $lng . ')/2) * SIN(RADIANS( city.longitude - ' . $lng . ')/2)))))) * 1.17)
+			 AS distance
+		FROM city
+		WHERE ((6371.009 * (2 * ATAN2(SQRT((SIN(RADIANS(city.latitude - ' . $lat . ')/2)
+		* SIN(RADIANS(city.latitude - ' . $lat . ')/2)
+			+ COS(RADIANS( ' . $lat . ' )) * COS(RADIANS(city.latitude))
+			* SIN(RADIANS( city.longitude - ' . $lng . ')/2)
+			* SIN(RADIANS( city.longitude - ' . $lng . ')/2))),
+			SQRT(1 - (SIN(RADIANS(city.latitude -  ' . $lat . ' )/2)
+		* SIN(RADIANS(city.latitude - ' . $lat . ' )/2)
+			+ COS(RADIANS( ' . $lat . ' )) * COS(RADIANS(city.latitude))
+			* SIN(RADIANS( city.longitude - ' . $lng . ')/2) * SIN(RADIANS( city.longitude - ' . $lng . ')/2)))))) * 1.17) BETWEEN 2 AND ' . $distance . '
+		ORDER BY DISTANCE ASC';
+    	
+		$cities = $db->fetchAll($sql);
+		return $cities;
+    }
+
 }

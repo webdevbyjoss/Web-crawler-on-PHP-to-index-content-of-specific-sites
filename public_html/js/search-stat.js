@@ -15,4 +15,9 @@ $(document).ready(function () {
 		});
 	});
 
+	$('.item-element input').change(function() {
+		var value = $(this).attr('value');
+		location.href = value;
+	});
+	
 });

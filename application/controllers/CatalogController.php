@@ -12,10 +12,12 @@ class CatalogController extends Nashmaster_Controller_Action
 		$request = $this->getRequest();
 		// retrieve city information
 		$citySeoName = $request->getParam('city');
-		$Cities = new Searchdata_Model_Cities();
-		$city = $Cities->getCityBySeoName($citySeoName);
-		$this->view->city = $city;
-		
+		$city = $this->getCityInfo($citySeoName);
+		$this->view->city = $city['city'];
+		if (!empty($city['city_near'])) {
+			$this->view->city_near = $city['city_near'];
+		}
+		$this->view->city_large = $city['city_large'];
 		// retrieve services information
 		$Services = new Searchdata_Model_Services();
 		$this->view->services = $Services->getAllItems();
@@ -35,10 +37,12 @@ class CatalogController extends Nashmaster_Controller_Action
 		$request = $this->getRequest();
 		// retrieve city information
 		$citySeoName = $request->getParam('city');
-		$Cities = new Searchdata_Model_Cities();
-		$city = $Cities->getCityBySeoName($citySeoName);
-		$this->view->city = $city;
-
+		$city = $this->getCityInfo($citySeoName);
+		$this->view->city = $city['city'];
+		if (!empty($city['city_near'])) {
+			$this->view->city_near = $city['city_near'];
+		}
+		$this->view->city_large = $city['city_large'];
 		$serviceSeoName = $request->getParam('service');
 		$Services = new Searchdata_Model_Services();
 		$this->view->service = $Services->getBySeoName($serviceSeoName);
@@ -47,6 +51,13 @@ class CatalogController extends Nashmaster_Controller_Action
 		$serviceIds = array($this->view->service->service_id);
 		$regionIds = array($this->view->city->city_id);
 		$page = (((int) $request->page) > 1) ? (int) $request->page : 1;
+		
+		$alsoSearch = $request->getParam('also_search');
+		if (!empty($alsoSearch)) {
+			$extraCities = explode(',', $alsoSearch);
+			$this->view->extraCities = $extraCities;
+			$regionIds = array_merge($regionIds, $extraCities);
+		}
 
 		// process search
 		$searchIndex = new Search_Model_Index();
@@ -55,6 +66,21 @@ class CatalogController extends Nashmaster_Controller_Action
 		$pagination->setDefaultItemCountPerPage(self::RESULTS_PER_PAGE);
 		
 		$this->view->data = $pagination;
+	}
+
+	
+	private function getCityInfo($cityTitle)
+	{
+		$Cities = new Searchdata_Model_Cities();
+		$CitiesDistance = new Searchdata_Model_CitiesDistances();
+		$city = $Cities->getCityBySeoName($cityTitle);
+		$return['city'] = $city;
+		if ($city->is_region_center == 0) {
+			// FIXME: this should be uncommented in case there will be information for these cities
+			// $return['city_near'] = $CitiesDistance->getNearCities($city->city_id);
+		}
+		$return['city_large'] = $CitiesDistance->getLargeCities($city->city_id);
+		return $return;
 	}
 
 }

@@ -9,6 +9,7 @@ $(document).ready(function () {
 
 	$('#feedbackLink').click(function(){
 		$('#feedback-form').removeClass('feedback-invisible');
+		$('html, body').animate({scrollTop:0}, 'slow');
 		$('#feedback-form-text').autoResize({
 		    // Quite slow animation:
 		    animateDuration : 100,
@@ -70,17 +71,18 @@ $(document).ready(function () {
 					// TODO: change this functionality to make it more accurate
 					FeedbackFormclearErrors();
 					FeedbackFormclearResult();
-					$('#feedback-form').addClass('feedback-invisible');
-					
-					// TODO: show a beautifull message to user
-					// $("#feedback-send-result").html(data);
-					// alert(data);
 					
 					// TODO: clear form more accurate
 					$("form[name=feedback-form-data] input[name=email]").val('');
 					$("form[name=feedback-form-data] input[name=telephone]").val('');
 					$("form[name=feedback-form-data] #feedback-form-text").val('');
 					$("input[@name='category']:radio").attr("checked", false);
+					$('#feedback-form').addClass('feedback-invisible');
+					
+					// TODO: show a beautifull message to user
+					// $("#feedback-send-result").html(data);
+					// $("#feedback-form").html('<h1>' + data + '</h1>');
+					alert(data);
 				}
 			});
 		}

@@ -33,8 +33,19 @@
 &lt;p&gt;Ми скоро відкриваємося!&lt;/p&gt;</target>
 	</trans-unit>
 	<trans-unit id="beta-welcome-text">
-		<source xml:lang="ru">&lt;h2&gt;Наш Маcтер – инструмент для поиска специалистов по строительству и ремонту&lt;/h2&gt;&lt;p&gt;Добро пожаловать на сайт поисковой службы "Наш Мастер” для поиска специалистов по строительству и ремонту. В вашем распоряжении будет самая эффективная отраслевая система поиска с возможностью отбора профессионалов по регионам и видам деятельности.&lt;/p&gt;</source>
-		<target xml:lang="uk">&lt;h2&gt;Наш Майстер – інструмент для пошуку спеціалістів з будівництва та ремонту&lt;/h2&gt;&lt;p&gt;Ласкаво просимо на сайт пошукової служби “Наш Майстер" для пошуку спеціалістів з будівництва та ремонту. Ми хочемо надати найефективнішу галузеву систему пошуку з можливістю відбору професіоналів за регіонами та видами діяльності.&lt;/p&gt;</target>
+		<source xml:lang="ru">&lt;h2&gt;Наш Маcтер – мир специалистов по строительству и ремонту&lt;/h2&gt;&lt;p&gt;
+			Добро пожаловать на сайт для специалистов по строительству и ремонту. Если Вы специалист по паркету, 
+			штукатурке или кафельной плитке, занимаетесь евроремонтами, сантехникой или електротехническими работами – 
+			Вы сможете продвигать и рекламировать себя в своем городе и содедних городах через наш сайт, 
+			а также общаться с другими специалистами. Мы ценим Ваше мнение и будем признательны, 
+			если Вы оставите нам несколько замечаний или предложений и Ваше общее впечатление о ресурсе.
+			&lt;/p&gt;</source>
+		<target xml:lang="uk">&lt;h2&gt;Наш Майстер – світ спеціалістів з будівництва та ремонту&lt;/h2&gt;&lt;p&gt;
+		Ласкаво просимо на сайт для спеціалістів з будівництва та ремонту. Якщо Ви спеціаліст з паркету, штукатурки чи кафельної плитки, займаєтеся євроремонтами,
+		сантехнікою чи електротехнічними роботами – Ви зможете просувати та рекламувати себе в своєму місті та сусідніх містах 
+		через наш сайт, а також спілкуватися з іншими спеціалістами. Ми цінуємо Вашу думку і будемо вдячні, 
+		якщо Ви залишите нам кілька зауважень або пропозицій та Ваше загальне враження про ресурс. 
+		 &lt;/p&gt;</target>
 	</trans-unit>
 	<trans-unit id="error-page-header">
 		<source xml:lang="ru">Произошла ошибка</source>
@@ -89,12 +100,12 @@
 		<target xml:lang="uk">Ваша думка важлива для нас</target>
 	</trans-unit>
 	<trans-unit id="Value is required and can't be empty">
-		<source xml:lang="ru">Значение етого поля не может быть пустым</source>
+		<source xml:lang="ru">Значение этого поля не может быть пустым</source>
 		<target xml:lang="uk">Значення цього поля не може бути порожнім</target>
 	</trans-unit>
-	<trans-unit id="Thanks for your feedback">
-		<source xml:lang="ru">Спасибо за ваше мнение. Ми обязательно разсмотрем его</source>
-		<target xml:lang="uk">Дякуємо за вашу думку. Ми її обовязково розглянемо</target>
+	<trans-unit id="thanks-for-your-feedback">
+		<source xml:lang="ru">Сообщение отправлено! Спасибо за ваш отзыв.</source>
+		<target xml:lang="uk">Повідомлення надіслано! Дякуємо за ваш відгук.</target>
 	</trans-unit>
 	<trans-unit id="site-window-title">
 		<source xml:lang="ru">Поиск специалистов по ремонту и строительству</source>
@@ -137,8 +148,8 @@
 		<target xml:lang="uk">За вашим запитом не знайдено жодного результату</target>
 	</trans-unit>
 	<trans-unit id="search-form-usage">
-		<source xml:lang="ru">Использование формы поиска</source>
-		<target xml:lang="uk">Використання форми пошуку</target>
+		<source xml:lang="ru">Использование функции поиска</source>
+		<target xml:lang="uk">Використання функції пошуку</target>
 	</trans-unit>
 	<trans-unit id="links">
 		<source xml:lang="ru">Ссылки</source>
@@ -188,21 +199,35 @@
 		<source xml:lang="ru">Раздел в разработке. Очень скоро он будет готов к запуску</source>
 		<target xml:lang="uk">Ми працюємо над цим розділом, незабаром він буде готовий до запуску</target>
 	</trans-unit>
+	<trans-unit id="under-construction-email">
+		<source xml:lang="ru">Сейчас сайт в активной разработке и регистрация еще не доступна.
+		Оставте свой адрес електронной почты и мы сообщим Вам когда регистрация будет открыта.</source>
+		<target xml:lang="uk">Наразі сайт знаходиться в активній розробці, тож поки реєстрація недоступна.<br /> 
+		Залиште свою електронну адресу, і ми повідомимо Вам, коли реєстрацію буде відкрито.</target>
+	</trans-unit>
+	<trans-unit id="example-email">
+		<source xml:lang="ru">пример: alexandrtest@mail.ru</source>
+		<target xml:lang="uk">приклад: alexandrtest@mail.ru</target>
+	</trans-unit>
 	<trans-unit id="questions-answers-description">
 		<source xml:lang="ru">Здесь будет возможность прочитать решения типичных проблем или задать свой вопрос для обсуждения</source>
 		<target xml:lang="uk">Тут буде можливість прочитати вирішення типових проблем або запропонувати власну тему для обговорення</target>
 	</trans-unit>
 	<trans-unit id="articles-description">
-		<source xml:lang="ru">Здесь будут ссылки на актуальные статьи и новости из мира строительства и ремонта</source>
-		<target xml:lang="uk">Тут будуть посилання на актуальні статті та новини зі світу будівництва та ремонту</target>
+		<source xml:lang="ru">На сайте будут публиковаться ссылки на актуальные статьи и новости из мира строительства и ремонта.
+		Также вы сможете принимать участие в тематических дискусиях и обсуждениях, общаться со специалистами из вашей отрасли.
+		</source>
+		<target xml:lang="uk">На сайті розміщуватимуться посилання на актуальні статті та новини зі світу будівництва та ремонту.
+		Також ви зможете брати участь в тематичних дискусіях та обговореннях, спілкуватися зі спеціалістами з вашої галузі.
+		</target>
 	</trans-unit>
 	<trans-unit id="ff-title">
 		<source xml:lang="ru">Спасибо, что помогаете нам стать лучше!</source>
 		<target xml:lang="uk">Дякуємо, що допомагаєте нам стати кращими!</target>
 	</trans-unit>
 	<trans-unit id="ff-select-option">
-		<source xml:lang="ru">Выберите пункт наиболее точно характеризующий ваше сообщение</source>
-		<target xml:lang="uk">Виберіть пункт, що найбільш точно характеризує ваше повідомлення</target>
+		<source xml:lang="ru">Выберите пункт, наиболее точно характеризующий Ваше сообщение</source>
+		<target xml:lang="uk">Виберіть пункт, що найбільш точно характеризує Ваше повідомлення</target>
 	</trans-unit>
 	<trans-unit id="ff-option-errors">
 		<source xml:lang="ru">что то не работает</source>
@@ -265,16 +290,16 @@
 		<target xml:lang="uk">Яке місто Вас цікавить?</target>
 	</trans-unit>
 	<trans-unit id="in-what-city-you-are-right-now-description">
-		<source xml:lang="ru">[тупая текстовка, надо переписать] Чтоб показать список специалистов по конкретному виду усгул в вашем городе или регионе нам необходимо знать в каком городе Вы находитесь.</source>
-		<target xml:lang="uk">[дурний напис, треба переписати] Щоб показати перелік спеціалістів по певному виду послуг в вашому місті чи регіоні нам необхідно знати в якому місті Ви перебуваєте.</target>
+		<source xml:lang="ru">Виберите город для просмотра специалистов по конкретному виду услуг</source>
+		<target xml:lang="uk">Виберіть місто для перегляду спеціалістів з певного виду послуг</target>
 	</trans-unit>
 	<trans-unit id="what-type-of-service">
 		<source xml:lang="ru">Какой вид услуг Вас интересует?</source>
 		<target xml:lang="uk">Який вид послуг Вас цікавить?</target>
 	</trans-unit>
 	<trans-unit id="what-type-of-service-description">
-		<source xml:lang="ru">Выберите вид услуг который вас интересует. </source>
-		<target xml:lang="uk">Виберіть вид послуг який вас цікавить. </target>
+		<source xml:lang="ru">Выберите вид услуг, который Вас интересует</source>
+		<target xml:lang="uk">Виберіть вид послуг, який Вас цікавить</target>
 	</trans-unit>
 	<trans-unit id="specialists">
 		<source xml:lang="ru">Специалисты</source>
@@ -296,7 +321,56 @@
 		<source xml:lang="ru">Административные области Украины</source>
 		<target xml:lang="uk">Адміністративні області України</target>
 	</trans-unit>
-	
+	<trans-unit id="signup-signin">
+		<source xml:lang="ru">Вход / Регистрация</source>
+		<target xml:lang="uk">Вхід / Реєстрація</target>
+	</trans-unit>
+	<trans-unit id="subscribed-successfully">
+		<source xml:lang="ru">Подписка завершена!</source>
+		<target xml:lang="uk">Підписку виконано!</target>
+	</trans-unit>
+	<trans-unit id="subscribed-successfully-details-message">
+		<source xml:lang="ru">Ваш електронный адрес <b>%s</b> успешно подписан на новости от нашего сайта</source>
+		<target xml:lang="uk">Вашу електронну адресу <b>%s</b> успішно підписано на новини від нашого сайту</target>
+	</trans-unit>
+	<trans-unit id="return-to-city-page">
+		<source xml:lang="ru">возврат на страницу города %s</source>
+		<target xml:lang="uk">повернутися на сторінку міста %s</target>
+	</trans-unit>
+	<trans-unit id="no-searrch-results-description">
+		<source xml:lang="ru">К сожалению, в городе %s не зарегистрировано ни одного специалиста по такому виду деятельности как %s. 
+			Попробуйте разширить регион поиска, включив ближайшые города и областные центры:</source>
+		<target xml:lang="uk">На жаль, в місті %s не зареєстровано жодного спеціаліста з такого виду діяльності як %s.
+			Спробуйте розширити регіон пошуку, включивши найближчі міста та областні центри:</target>
+	</trans-unit>
+	<trans-unit id="no-search-results-with-extras-description">
+		<source xml:lang="ru">К сожалению, в отмеченых городах не зарегистрировано ни одного специалиста по такому виду деятельности как %s.
+Попробуйте разширить регион поиска, включив дополнительные города или областные центры, в которых есть квалифицированые специалисты:</source>
+		<target xml:lang="uk">На жаль, у вибраних містах не зареєстровано жодного спеціаліста з такого виду діяльності як %s.
+Спробуйте розширити регіон пошуку, включивши додаткові міста чи областні центри, в яких знайдете кваліфікованих спеціалістів:</target>
+	</trans-unit>
+	<trans-unit id="is-that-your-specialization">
+		<source xml:lang="ru">%s – это ваша специализация?</source>
+		<target xml:lang="uk">%s – це ваша спеціалізація?</target>
+	</trans-unit>
+	<trans-unit id="is-that-your-specialization-description">
+		<source xml:lang="ru">Тогда &lt;a href="%s">зарегистрируйтесь&lt;/a>, как специалист по виду деятельности %s,
+и получите возможность найти новых клиентов из своего региона через наш сайт и сеть партнерских сайтов.</source>
+		<target xml:lang="uk">Тоді &lt;a href="%s">зареєструйтеся&lt;/a>, як спеціаліст з виду діяльності %s,
+та отримайте можливість знайти нових клієнтів зі свого регіону через наш сайт і мережу партнерських сайтів.</target>
+	</trans-unit>
+	<trans-unit id="closest-administrative-centers">
+		<source xml:lang="ru">ближайшие областные центры</source>
+		<target xml:lang="uk">найближчі областні центри</target>
+	</trans-unit>
+	<trans-unit id="closest-towns">
+		<source xml:lang="ru">ближайшие города</source>
+		<target xml:lang="uk">найближчі міста</target>
+	</trans-unit>
+	<trans-unit id="change-city">
+		<source xml:lang="ru">сменить город</source>
+		<target xml:lang="uk">змінити місто</target>
+	</trans-unit>
 </body>
 </file>
 </xliff>

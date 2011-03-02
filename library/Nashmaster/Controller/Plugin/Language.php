@@ -9,9 +9,15 @@ class Nashmaster_Controller_Plugin_Language extends Zend_Controller_Plugin_Abstr
 		
 		// we should take locale from the URL, in case it is presented there and then
 		// WARNING: this is very tricky and possibly there is some kind of better solution somewhere
+		if (!($request instanceof  Zend_Controller_Request_Http)) {
+			// QUICKFIX: we receiving error message while running from CLI
+			// PHP Fatal error:  Call to undefined method Zend_Controller_Request_Simple::getRequestUri()
+			return;
+		}
+		
 		$uri = $request->getRequestUri();
 		$match = null;
-		if (false !== mb_ereg('/([a-z]{2})/', $uri, $match)) {
+		if (false !== mb_ereg('^/([a-z]{2})', $uri, $match)) {
 			$lang = $match[1];
 			if ($translate->isAvailable($lang)) {
 				$locale->setLocale($lang);

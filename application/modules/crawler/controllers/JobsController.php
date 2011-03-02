@@ -191,5 +191,5 @@ class Crawler_JobsController extends Zend_Controller_Action
 		}
 		
 	}
-
+	
 }

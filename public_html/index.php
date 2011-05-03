@@ -12,6 +12,12 @@ $env = getenv('APPLICATION_ENV');
 defined('APPLICATION_ENV')
 	|| define('APPLICATION_ENV', (empty($env) ? 'production' : $env));
 
+/**
+ * Its bad practice to have email hardcoded here :)
+ * FIXME: Move this to configuration
+ */
+define('ADMIN_EMAIL', 'joseph.chereshnovsky@gmail.com,oleksiy.oliynyk@gmail.com');
+
 if ('development' == APPLICATION_ENV) {
 	/*
 	 * Put errors ON for debugging this file
@@ -25,7 +31,7 @@ if ('development' == APPLICATION_ENV) {
 	$paths[] = '/var/www/zend/';
 	
 } else {
-	define('DEBUG_ENABLE', false);
+	define('DEBUG_ENABLE', true);
 	define('DISABLE_FULL_PAGE_CACHE', false);
 }
 

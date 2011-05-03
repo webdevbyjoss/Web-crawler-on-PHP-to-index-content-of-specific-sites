@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * Special view class designed to handle nash-master specific functionality
+ */
 class Nashmaster_View extends Zend_View
 {
 	private $_auth = null;
@@ -7,37 +9,14 @@ class Nashmaster_View extends Zend_View
 	private $_locale = null;
 	private $_request = null;
 	
-	private $_subnavigation = null;
+	// social network integration settings
+	private $_vk = null;
 	
 	public function __construct($options)
 	{
 		$this->_auth = Zend_Auth::getInstance();
 		parent::__construct($options);
 	}
-	
-	/**
-	 * Next two methods will add the sub-navigation functionality that will allow to add navigation URLs
-	 * to the line under the main navigation
-	 *
-	 * sub-navigation controlls can be controlled from the controller action template
-	 */
-	public function addSubNavication($url, $title, $cssClass = null)
-	{
-		$this->_subnavigation[] = '<a href="' . $url . '"'
-			. (($cssClass !== null) ? ' class="' . $cssClass . '"' : ''  ) . '>'
-			. $title . '</a>';
-		
-	}
-	
-	public function renderSubNavigation()
-	{
-		if (count($this->_subnavigation) < 1) {
-			return;
-		}
-		
-		echo '<div id="navigation-bar">' . implode("\n", $this->_subnavigation) . '</div>';
-	}
-	
 	
 	/**
 	 * Returns text representation of current locale
@@ -56,8 +35,9 @@ class Nashmaster_View extends Zend_View
 	public function profileLink()
     {
         if ($this->_auth->hasIdentity()) {
-            $userData = $this->_auth->getStorage()->read();
-            return 'Profile: <a href="/profile/' . $userData['username'] . '">' . $userData['real_name'] .  '</a> <a href="' . $this->url(
+            $userData = $this->_auth->getStorage()->read(); // ' . $userData['username'] . '
+            // <img src="' . $userData['avatar'] . '" alt="' . $userData['real_name'] . '" />
+            return $userData['real_name'] . '<a href="' . $this->url(  // '<a href="/profile/">' . $userData['real_name'] . '</a>'
 			array(
 				'lang' => $this->getLocale(),
 				'controller' => 'login',
@@ -67,17 +47,25 @@ class Nashmaster_View extends Zend_View
 			,'default') . '">' . $this->T('logout') . '</a>';
         }
         
-        return '<a ' . ( ($this->getModuleName() == 'default' && $this->getControllerName() == 'login') ? 'class="active"' : '' )  . ' href="' . $this->url(
+        if ($this->getModuleName() == 'default' && $this->getControllerName() == 'login') {
+        	return ' <span style="color: black;">' . $this->T('signin') . '</span>'; // '[ ' . $this->languageSelector() . ' ] ' .
+        }
+        
+        return ' <a href="' . $this->url( // '[ ' . $this->languageSelector() . ' ]' .
 			array(
 				'lang' => $this->getLocale(),
 				'controller' => 'login',
 				'action' => 'index',
 				'module' => 'default',
 			)
-			,'default') . '">' . $this->T('login') . '</a>';
-		
+			,'default') . '">' . $this->T('signin') . '</a>';
     }
     
+    /**
+     * Detects if current user is within admin roles
+     *
+     * @return boolean true is user is admin
+     */
     public function isAdmin()
     {
     	$userData = $this->_auth->getStorage()->read();
@@ -88,6 +76,11 @@ class Nashmaster_View extends Zend_View
     	return false;
     }
     
+    /**
+     * Return the list of available languages
+     *
+     * @return array
+     */
     public function getLanguages()
     {
     	$langs = $this->_translate->getList();
@@ -102,6 +95,11 @@ class Nashmaster_View extends Zend_View
     	return $languagesTitles;
     }
     
+    /**
+     * Returns current request object using lazy loading mechanism
+     *
+     * @return Zend_Controller_Request_Abstract
+     */
     public function getRequest()
     {
     	if (empty($this->_request)) {
@@ -109,6 +107,22 @@ class Nashmaster_View extends Zend_View
     	}
     	
     	return $this->_request;
+    }
+    
+    /**
+     * Return configuration param for vkontakte social network integration
+     *
+     * @param string $key
+     * @return string config key value
+     */
+    public function getVk($key)
+    {
+    	if (empty($this->_vk)) {
+			$config = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOptions();
+			$this->_vk = $config['vkontakte'];
+    	}
+    	
+    	return $this->_vk[$key];
     }
     
     public function getActionName()
@@ -170,6 +184,14 @@ class Nashmaster_View extends Zend_View
         return vsprintf($message, $options);
     }
 
+    public function _($messageid) {
+        $options = func_get_args();
+        array_shift($options);
+    	
+    	$message = $this->T($messageid);
+    	return vsprintf($message, $options);
+    }
+    
     /**
      * Outputs language options with the ability to select desired one
      */
@@ -291,4 +313,37 @@ class Nashmaster_View extends Zend_View
 	        return mb_strrchr($new_str, ' ', true) . '...';
 	    }
 	}
+	
+	/**
+	 * Next two methods are designed to create and render breadcrumbs
+	 *
+	 * it will accept the array as
+	 * array(
+	 *         'title' => 'url',
+	 *         'title' => 'url',
+	 *         'title' => 'url',
+	 * )
+	 * @param array $breadcrumbsArray
+	 */
+	public function setBreadcrumbs($breadcrumbsArray)
+	{
+		foreach ($breadcrumbsArray as  $crumbTitle => $url) {
+			if (empty($url)) {
+				$this->_breadcrumbs[] = '<span>' . $crumbTitle . '</span>';
+			} else {
+				$this->_breadcrumbs[] = '<a href="' . $url . '" class="crumb"'
+				. '>' . $crumbTitle . '</a>';
+			}
+		}
+	}
+
+	public function renderBreadcrumbs()
+	{
+	    if (count($this->_breadcrumbs) < 2) {
+		    return;
+		}
+	
+		echo '<div id="breadcrumbs">' . implode("\n > ", $this->_breadcrumbs) . '</div>';
+	}
+
 }

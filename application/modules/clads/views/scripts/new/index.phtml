@@ -1,0 +1,67 @@
+<?php
+// get locale to use for interface
+$loc = $this->getLocale();
+
+// client side action specific functionality
+$this->headScript()->appendFile('/js/add-ad.js');
+
+$this->headLink()->appendStylesheet('/css/add-form.css');
+
+?>
+
+<form method="post" action="" id="add-ad-form" name="add-ad-form">
+
+<div id="city-selected"></div>
+<div id="selector-city">
+<?php echo $this->_('specify-your-city') ?>:<br />
+<select id="city-finder-regions" class="finder-selectbox-control">
+<option value="0" class="none"> - <?php echo $this->T('select-country-region'); ?> - </option>
+<?php foreach ($this->regions as $region): ?>
+<option value="<?php echo $region->region_id ?>"><?php echo ($loc == 'uk') ? $region->name_uk : $region->name ?></option>
+<?php endforeach; ?>
+</select>
+<select id="city-finder-city" class="finder-selectbox-control hidden-element"></select>
+
+<div class="text-tips">
+<span><?php echo $this->_('add-ad-cities') ?></span> &nbsp; > &nbsp;
+<a href="#" class="step-services"><?php echo $this->_('add-ad-services') ?></a>
+</div>
+
+</div>
+
+<div id="selector-service">
+<div class="selector-header"><?php echo $this->_('select-type-of-service') ?></div>
+<div id="services-list">
+<?php foreach ($this->services as $service): ?>
+<div class="services-list-items">
+	<input type="checkbox" id="ser-<?php echo $service->service_id ?>" value="<?php echo $service->service_id ?>" name="services[<?php echo $service->service_id ?>]" />
+	<label for="ser-<?php echo $service->service_id ?>"><?php echo ($loc == 'uk') ? $service->name_uk : $service->name ?></label>
+</div>
+<?php endforeach; ?>
+</div>
+
+<div class="text-tips">
+<a href="#" class="step-city"><?php echo $this->_('add-ad-cities') ?></a> &nbsp; > &nbsp;
+<span><?php echo $this->_('add-ad-services') ?></span> &nbsp; > &nbsp;
+<a href="#" class="step-description"><?php echo $this->_('add-ad-description') ?></a>
+</div>
+
+</div>
+
+<div id="selector-description">
+
+<div class="text-tips"><?php echo $this->_('phone-for-contacts') ?><br /><input id="phone" name="phone" type="text" maxlength="13" value="+380" /> +380XXXXXXXXX</div>
+<div class="text-tips"><?php echo $this->_('phone-for-name') ?><br /><input id="name" type="text" name="name" /></div>
+<div class="text-tips"><?php echo $this->_('phone-for-description') ?></div>
+<textarea name="description" id="description" cols="70" rows="5">
+</textarea>
+
+<div class="text-tips">
+<a href="#" class="step-city"><?php echo $this->_('add-ad-cities') ?></a> &nbsp; > &nbsp;
+<a href="#" class="step-services"><?php echo $this->_('add-ad-services') ?></a>&nbsp; > &nbsp;
+<span><?php echo $this->_('add-ad-description') ?></span> &nbsp; > &nbsp;
+<a href="#" class="step-submit"><?php echo $this->_('add-ad-done') ?></a>
+</div>
+</div>
+
+</form>

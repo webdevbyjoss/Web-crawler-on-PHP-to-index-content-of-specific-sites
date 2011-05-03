@@ -76,8 +76,7 @@ class CatalogController extends Nashmaster_Controller_Action
 		$city = $Cities->getCityBySeoName($cityTitle);
 		$return['city'] = $city;
 		if ($city->is_region_center == 0) {
-			// FIXME: this should be uncommented in case there will be information for these cities
-			// $return['city_near'] = $CitiesDistance->getNearCities($city->city_id);
+			$return['city_near'] = $CitiesDistance->getNearCities($city->city_id);
 		}
 		$return['city_large'] = $CitiesDistance->getLargeCities($city->city_id);
 		return $return;

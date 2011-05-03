@@ -61,7 +61,7 @@ h4 {
 #top-menu {
 	padding: 0px;
 	padding-top: 5px;
-	font-size: 1.4em;
+	font-size: 1.8em;
 }
 
 #top-menu a {
@@ -69,6 +69,19 @@ h4 {
 	padding-left: 10px;
 	color: gray;
 	white-space: nowrap;
+}
+
+#top-menu span {
+	background-color: blue;
+	padding: 10px;
+	padding-left: 25px;
+	padding-right: 25px;
+
+	background-color: #fff8f2;
+	color: #666666;
+	
+	-moz-border-radius: 10px;
+	border-radius: 10px;
 }
 
 #top-menu a:hover {
@@ -101,12 +114,12 @@ h4 {
 
 #top-menu-left {
 	float: left;
-	padding-left: 30px;
+	padding-left: 50px;
+	padding-top: 7px;
 }
 
 #top-menu a.active {
 	color: black;
-	text-decoration: none;
 	cursor: default;
 }
 
@@ -196,6 +209,7 @@ h4 {
 .item-title-main-block {
 	padding-bottom: 10px;
 	padding-top: 5px;
+	font-size: 1.2em;
 }
 
 .item-title:hover {
@@ -213,6 +227,7 @@ h4 {
 
 .search-form-column-city {
 	width: auto;
+	font-size: 0.8em;
 }
 
 .search-form-column-service {
@@ -269,18 +284,22 @@ h4 {
 
 .search-panel {
 	padding-bottom: 15px;
-	padding-top: 10px;
+	padding-top: 15px;
 	
 	margin-top: 15px;
 	
 	width:auto;
-	padding-left: 15px;
-	padding-right: 20px;
+	padding-left: 25px;
+	padding-right: 35px;
 
 	clear: both;
 
 	-moz-border-radius: 10px;
 	border-radius: 10px;
+}
+
+.search-panel h2 {
+	margin-bottom: 0;
 }
 
 #search-panel-main {
@@ -559,14 +578,7 @@ h4 {
  */
 
 .city-finder {
-	padding: 30px;
-	padding-top: 25px;
-	
-	background-color: #F2F9FF;
-	margin-bottom: 20px;
-
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+	margin-bottom: 5px;
 }
 
 #city-finder-select-control {
@@ -576,7 +588,7 @@ h4 {
 .finder-selectbox-control {
 	border: 1px solid silver;
 	background: white;
-    color: black;
+    
     font-family: arial;
     font-size: 1.5em;
     /*padding: 3px 3px 4px 5px;*/
@@ -585,12 +597,20 @@ h4 {
     cursor: pointer;
 }
 
+.finder-selectbox-control option {
+	color: black;
+}
+
+.finder-selectbox-control option.none {
+	color: #333333;
+}
+
 .finder-select-control {
 	border: 1px solid silver;
     color: black;
     font-family: arial;
-    font-size: 1.5em;
-    padding: 3px 3px 4px 5px;
+    font-size: 1.2em;
+    padding: 5px 5px 6px 7px;
     width: 90%;
 
     margin-top: 15px;
@@ -609,12 +629,13 @@ h4 {
 }
 
 #services-list .service {
-	padding-top: 5px;
-	padding-bottom: 10px;
+    float: left;
+    padding-bottom: 10px;
+    width: 32%;
 }
 
 #services-list .service a {
-	font-size: 1.7em;
+	font-size: 1.2em;
 	color: gray;
 }
 
@@ -698,4 +719,10 @@ h4 {
 
 #email-subscription b {
 	font-size: 1.4em;
+}
+
+
+#create-link {
+	font-size: 1.7em;
+	color: #7498B2;
 }

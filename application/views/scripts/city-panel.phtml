@@ -12,14 +12,7 @@ if( !function_exists('ceiling') )
 <div id="search-panel-main" class="search-panel">
 	<div class="search-form-column-city">
 		<div class="item-title-main-block">
-		<span class="item-title-main"><?php echo ($this->getLocale() == 'uk') ? $this->city->name_uk : $this->city->name ?></span> <span class="edit-city">[ <a href="<?php echo $this->url(
-	array(
-		'lang' => $this->getLocale(),
-		'controller' => 'index',
-		'action' => 'index',
-		'module' => 'default',
-	)
-	,'default') ?>"><?php echo $this->T('change-city') ?></a> ]</span>
+		<span class="item-title-main"><?php echo ($this->getLocale() == 'uk') ? $this->city->name_uk : $this->city->name ?></span>
 		</div>
 
 		<?php if ($this->city_near): ?>
@@ -56,7 +49,7 @@ if( !function_exists('ceiling') )
 		<?php endif; ?>
 
 		<?php if ($this->city_large): ?>
-		<div class="label"><?php echo $this->T('closest-administrative-centers');?></div>
+		<div class="label"><?php echo $this->T('closest-large-cities');?></div>
 		<?php foreach ($this->city_large as $city):
 		
 		if (empty($this->extraCities)) {

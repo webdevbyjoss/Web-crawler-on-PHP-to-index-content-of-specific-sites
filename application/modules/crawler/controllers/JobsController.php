@@ -138,7 +138,7 @@ class Crawler_JobsController extends Zend_Controller_Action
 		$SynonymServices = new Joss_Crawler_Db_SynonymsServices();
 		$ItemServices = new Joss_Crawler_Db_ItemServices();
 		$Synonyms = new Joss_Crawler_Db_Synonyms();
-				
+		
 		$synonyms = array();
 		$itemsRowset = $Items->getItems();
 		foreach ($itemsRowset as $key => $item) {

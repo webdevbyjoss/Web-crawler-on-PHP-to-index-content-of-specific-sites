@@ -1,22 +1,22 @@
 <?php
 
 // client side action specific functionality
-$this->headScript()->appendFile('/js/jquery.metronome-min.js');
-
-// client side action specific functionality
 $this->headScript()->appendFile('/js/login.js');
 
 // load custom title
-$this->headTitle($this->T('signup-signin'));
+$this->headTitle($this->T('signin'));
 
 ?>
 
-<div id="email-subscription">
+<h1><?php echo $this->T('signin'); ?></h1>
 
-<h1><?php echo $this->T('signup-signin'); ?></h1>
+<p><?php echo $this->T('login-description'); ?></p>
+
+<div id="vk_auth"></div>
+<script type="text/javascript">
+VK.Widgets.Auth("vk_auth", {width: "100%", authUrl: '<?php echo '/' . $this->getLocale() . $this->getVk('auth_url') ?>'});
+</script>
+
+<p><?php echo $this->T('login-post-description'); ?></p>
+
 <?php /* echo $this->form */ ?>
-<p><?php echo $this->T('under-construction-email'); ?></p>
-
-<div class="mail-example"><?php echo $this->T('example-email') ?></div>
-<input id="email" class="signup-email" name="email" type="text" value="" />
-</div>

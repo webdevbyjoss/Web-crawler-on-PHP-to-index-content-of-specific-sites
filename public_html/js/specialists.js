@@ -1,13 +1,11 @@
 /**
  * Holds the functionality related to "specialists" page
  */
-
 // cache regions and cities data retrieved via ajax 
 // to eliminate the amount of calls to server
 // TODO: if browser supports client side storage then use that storage 
 //       to eliminate the amount of AJAX calls to the server
 var citiesCache = Array();
-
 
 // init search form
 $(document).ready(function () {

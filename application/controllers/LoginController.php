@@ -102,7 +102,7 @@ class LoginController extends Zend_Controller_Action
     public function logoutAction()
     {
         Zend_Auth::getInstance()->clearIdentity();
-        $this->_helper->redirector('index'); // back to login page
+        $this->_helper->redirector('index', 'index'); // back to homepage
     }
     
     public function subscribeAction()

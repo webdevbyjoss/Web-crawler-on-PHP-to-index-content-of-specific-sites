@@ -10,13 +10,13 @@ class Searchdata_Model_CitiesDistances extends Zend_Db_Table_Abstract
 	 * @param int $cityId
 	 * @return Zend_Db_Table_Rowset
 	 */
-	public function getNearCities($cityId, $distance = 100)
+	public function getNearCities($cityId, $distance = 60, $limit = 11)
 	{
 		$select = $this->select();
 		$select->where('parent_city_id = ?', $cityId);
-		$select->where('is_region_center = 0');
+		$select->where('is_region_center = ' . Searchdata_Model_Cities::NOT_REGION_CENTER);
 		$select->where('distance <= ?', $distance);
-		$select->limit(11);
+		$select->limit($limit);
 		
 		return $this->fetchAll($select);
 	}
@@ -27,13 +27,13 @@ class Searchdata_Model_CitiesDistances extends Zend_Db_Table_Abstract
 	 * @param int $cityId
 	 * @return Zend_Db_Table_Rowset
 	 */
-	public function getLargeCities($cityId, $distance = 300)
+	public function getLargeCities($cityId, $distance = 250, $limit = 5)
 	{
 		$select = $this->select();
 		$select->where('parent_city_id = ?', $cityId);
-		$select->where('is_region_center > 0');
+		$select->where('is_region_center > ' . Searchdata_Model_Cities::NOT_REGION_CENTER);
 		$select->where('distance <= ?', $distance);
-		$select->limit(5);
+		$select->limit($limit);
 		
 		return $this->fetchAll($select);
 	}

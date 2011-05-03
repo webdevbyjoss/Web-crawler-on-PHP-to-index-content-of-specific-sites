@@ -1,0 +1,19 @@
+<?php
+// get locale to use for interface
+$loc = $this->getLocale();
+?>
+<div id="search-panel-main" class="search-panel">
+	<h2><?php echo $this->T('specialists-search'); ?></h2>
+	<?php /* ?>
+	<div><?php echo $this->T('specify-the-city'); ?></div>
+	<?php */ ?>
+	<div class="city-finder">
+		<select id="city-finder-regions" class="finder-selectbox-control">
+		<option value="0" class="none"> - <?php echo $this->T('select-country-region'); ?> - </option>
+		<?php foreach ($this->regions as $region): ?>
+		<option value="<?php echo $region->region_id ?>"><?php echo ($loc == 'uk') ? $region->name_uk : $region->name ?></option>
+		<?php endforeach; ?>
+		</select>
+		<select id="city-finder-city" class="finder-selectbox-control hidden-element"></select>
+	</div>
+</div>

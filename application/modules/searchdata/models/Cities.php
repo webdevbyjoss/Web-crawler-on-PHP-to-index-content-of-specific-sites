@@ -12,6 +12,9 @@
  */
 class Searchdata_Model_Cities extends Zend_Db_Table_Abstract
 {
+	const REGION_CENTER = 1;
+	const NOT_REGION_CENTER = 0;
+	
     protected $_name = 'city';
     
     /**
@@ -37,6 +40,17 @@ class Searchdata_Model_Cities extends Zend_Db_Table_Abstract
     	$select->order(array('is_region_center DESC'));
     	
     	return $this->fetchAll($select);
+    }
+    
+    /**
+     * Returns city by its unique ID
+     *
+     * @param int $id
+     * @return Zend_Db_Table_Row_Abstract
+     */
+    public function getCityById($id)
+    {
+    	return $this->find($id)->current();
     }
     
     /**
@@ -106,6 +120,7 @@ class Searchdata_Model_Cities extends Zend_Db_Table_Abstract
     
     /**
      * Returns the list of cities that are no more than 250 km from current coordinates
+     * @deprecated use Searchdata_Model_CitiesDistances::methods instead for better performance
      */
     public function getRelatedCities($lat, $lng, $distance = 250)
     {
@@ -135,8 +150,7 @@ class Searchdata_Model_Cities extends Zend_Db_Table_Abstract
 			* SIN(RADIANS( city.longitude - ' . $lng . ')/2) * SIN(RADIANS( city.longitude - ' . $lng . ')/2)))))) * 1.17) BETWEEN 2 AND ' . $distance . '
 		ORDER BY DISTANCE ASC';
     	
-		$cities = $db->fetchAll($sql);
-		return $cities;
+		return $db->fetchAll($sql);
     }
 
 }

@@ -1,0 +1,38 @@
+<?php
+// client side action specific functionality
+$this->headScript()->appendFile('/js/specialists.js');
+
+// load custom title
+$this->headTitle($this->T('site-window-title'));
+
+$this->headMeta()
+	->setName('description', $this->T('meta-description'))
+	->setName('keywords', $this->T('meta-keywords'));
+
+// get locale to use for interface
+$loc = $this->getLocale();
+
+?>
+
+<h1><?php echo $this->T('place-specialists-information') ?></h1>
+
+<ul>
+  <li><?php echo $this->T('for-free')?></li>
+  <li><?php echo $this->T('signup-free')?></li>
+  <li><?php echo $this->T('for-1-minute')?></li>
+</ul>
+
+<p><?php echo $this->T('login-description'); ?></p>
+
+<div id="vk_auth"></div>
+
+<div id="vk_auth"></div>
+<script type="text/javascript">
+VK.Widgets.Auth("vk_auth", {width: "300px", onAuth: function(data) {
+  location.href = '<?php echo '/' . $this->getLocale() . $this->getVk('auth_url') ?>'
+				  + '?uid=' + data['uid']
+				  + '&first_name=' + data['first_name']
+				  + '&last_name=' + data['last_name']
+				  + '&hash=' + data['hash'];
+}});
+</script>

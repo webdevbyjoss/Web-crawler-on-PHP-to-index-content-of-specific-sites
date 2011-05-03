@@ -5,13 +5,15 @@
 // init search form
 $(document).ready(function () {
 	
+	/*
 	var checkEmail = function () {
 		analyzeEmail($(this));
 	};
+	*/
 	
 	// place focus in search field
-	$('#email').focus().keydown(checkEmail).change(checkEmail).mousemove(checkEmail).bind('tick', checkEmail);
-	$.metronome.start(5);
+	// $('#email').focus().keydown(checkEmail).change(checkEmail).mousemove(checkEmail).bind('tick', checkEmail);
+	
 });
 
 

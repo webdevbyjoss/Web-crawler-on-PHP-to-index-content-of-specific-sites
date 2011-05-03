@@ -1,0 +1,44 @@
+@CHARSET "UTF-8";
+
+.name {
+	font-size:2em;
+}
+
+.phone {
+	font-weight: bold;
+	font-size:1.4em;
+}
+
+.description {
+	font-size:1.2em;
+}
+
+/* user profile */
+.editable, .editable-area {
+	cursor: pointer;
+	display: block;
+	padding: 5px;
+
+}
+
+.editable:hover, .editable-area:hover {
+	background-color: #ffffbf;
+}
+
+.editable input, .editable-area textarea {
+	border: 1px solid silver;
+	font-size: 1em;
+	line-height: 1.5em;
+	padding: 5px;
+}
+
+.editable-area textarea {
+	width: 500px;
+	height: 200px;
+	padding: 5px;
+}
+
+#add-button {
+	font-size: 1.4em;
+	color: #7498B2;	
+}

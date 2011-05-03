@@ -61,8 +61,7 @@ class ErrorController extends Zend_Controller_Action
 
     protected function _getFullErrorMessage($error = null)
     {
-    	if (APPLICATION_ENV != 'development')
-    	{
+    	if (!DEBUG_ENABLE) {
     	    return '';
     	}
 

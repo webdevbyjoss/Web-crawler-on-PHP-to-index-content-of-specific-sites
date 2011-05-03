@@ -1,6 +1,12 @@
 <?php
+
 // client side action specific functionality
 $this->headScript()->appendFile('/js/specialists.js');
+
+// client side action specific functionality
+$this->headScript()->appendFile('/js/user-profile.js');
+
+$this->headLink()->appendStylesheet('/css/user-profile.css');
 
 // load custom title
 $this->headTitle($this->T('site-window-title'));
@@ -11,20 +17,47 @@ $this->headMeta()
 
 // get locale to use for interface
 $loc = $this->getLocale();
+
 ?>
-<div class="city-finder">
-<h1><?php echo $this->T('in-what-city-you-are-right-now'); ?></h1>
 
-<div><?php echo $this->T('in-what-city-you-are-right-now-description'); ?></div>
-
-<select id="city-finder-regions" class="finder-selectbox-control">
-<option value="0">[ <?php echo $this->T('select-country-region'); ?> ]</option>
-<?php foreach ($this->regions as $region): ?>
-<option value="<?php echo $region->region_id ?>"><?php echo ($loc == 'uk') ? $region->name_uk : $region->name ?></option>
+<table width="100%" cellspacing="0" cellpadding="20px">
+<?php foreach ($this->items as $item):?>
+<tr>
+	<td valign="top">
+	<span class="editable name" id="name-<?php echo $item->id ?>"><?php echo $item->name ?></span>
+	<span class="editable phone" id="phone-<?php echo $item->id ?>"><?php echo $item->phone ?></span>
+	</td>
+	<td valign="top"><span class="editable-area description" id="description-<?php echo $item->id ?>"><?php echo $item->description ?></span></td>
+	<td><a href="<?php echo $this->url(	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'new',
+		'action' => 'delete',
+		'module' => 'clads',
+		'id' => $item->id,
+	)
+	,'default'); ?>" onclick="return confirm('<?php echo $this->_('are-you-sure') ?>')"><img src="/images/feedback-form/no.png" alt="<?php echo $this->_('remove-action') ?>" border="" /></a></td>
+</tr>
 <?php endforeach; ?>
-</select>
-<select id="city-finder-city" class="finder-selectbox-control hidden-element"></select>
-</div>
+<tr>
+	<td colspan="3"><a id="add-button" href="<?php echo $this->url(	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'new',
+		'action' => 'index',
+		'module' => 'clads',
+	)
+	,'default'); ?>">додати ще одне оголошення</a></td>
+</tr>
+</table>
+
+<?php /* ?>
+
+<h1>Аналітика</h1>
+
+<h2>Покази в результатах пошуку</h2>
+
+<h2>Перегляди за містами</h2>
+
+
 
 <h2><?php echo $this->T('country-administrative-districts') ?></h2>
 
@@ -33,3 +66,5 @@ $loc = $this->getLocale();
 <a href="<?php echo $this->url(array('id' => $region->region_id, 'action' => 'region'), 'default') ?>"><?php echo ($loc == 'uk') ? $region->name_uk : $region->name ?></a>
 <?php endforeach; ?>
 </div>
+
+<?php */ ?>

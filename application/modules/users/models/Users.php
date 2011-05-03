@@ -43,4 +43,15 @@ class Users_Model_Users extends Zend_Db_Table_Abstract
 			$user->save();
 		}
 	}
+	
+	/**
+	 * Return user information by ID
+	 *
+	 * @param int $id
+	 * @return Zend_Db_Table_Abstract
+	 */
+	public function getUserById($id)
+	{
+		return $this->find($id)->current();
+	}
 }

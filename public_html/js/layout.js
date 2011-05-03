@@ -5,7 +5,6 @@
 
 // init search form
 $(document).ready(function () {
-	
 
 	$('#feedbackLink').click(function(){
 		$('#feedback-form').removeClass('feedback-invisible');

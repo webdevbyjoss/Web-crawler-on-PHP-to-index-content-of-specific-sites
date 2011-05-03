@@ -118,6 +118,29 @@ class Nashmaster_Controller_Plugin_Language extends Zend_Controller_Plugin_Abstr
       	
       	
       	
+      	// add footer routes
+      	// http://nash-master.com/ua/terms-and-conditions
+      	// http://nash-master.com/ua/help
+      	$serviceRoute = new Zend_Controller_Router_Route(
+             'terms-and-conditions',
+             array(
+				'controller' => 'terms-and-conditions',
+				'action' => 'index',
+				'module' => 'default',
+          	 )
+      	);
+      	$router->addRoute('terms', $routeLang->chain($serviceRoute));
+
+      	$serviceRoute = new Zend_Controller_Router_Route(
+             'help',
+             array(
+				'controller' => 'help',
+				'action' => 'index',
+				'module' => 'default',
+          	 )
+      	);
+      	$router->addRoute('help', $routeLang->chain($serviceRoute));
+      	
       	/* TEST
 		$info = $cityRoute->assemble(array('city' => 'Заліщики', 'service' => 'Євроремонт'));
 		var_dump($info);

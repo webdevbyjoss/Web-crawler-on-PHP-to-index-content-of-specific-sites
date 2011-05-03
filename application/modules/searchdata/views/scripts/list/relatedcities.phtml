@@ -1,0 +1,41 @@
+<?php
+
+// get locale to use for interface
+$loc = $this->getLocale();
+$cityTitle = ($loc == 'uk') ? $this->cityInfo->name_uk : $this->cityInfo->name;
+
+?>
+
+<span id="selected-city"><?php echo $cityTitle ?></span> [ <a href="#" id="change-city-button"><?php echo $this->_('change-city') ?></a> ]
+<input type="hidden" name="city" value="<?php echo $this->cityInfo->city_id ?>" />
+
+<div class="text-tips"><?php echo $this->_('additionaly-select-near-cities') ?></div>
+
+<div class="select-city-control">
+<?php foreach ($this->nearCities as $city): ?>
+<div class="select-city-item">
+<input id="near-<?php echo $city->city_id ?>" name="near[<?php echo $city->city_id ?>]" type="checkbox" value="<?php echo $city->city_id ?>" />
+<label for="near-<?php echo $city->city_id ?>"><?php echo $city->name_uk ?></label>
+<?php echo $city->distance ?> <?php echo $this->_('km') ?>
+</div>
+<?php endforeach; ?>
+</div>
+
+<div class="text-tips"><?php echo $this->_('additionaly-select-large-cities') ?></div>
+
+<div class="select-city-control">
+<?php foreach ($this->largeCities as $city): ?>
+<div class="select-city-item">
+<input id="large-<?php echo $city->city_id ?>" name="large[<?php echo $city->city_id ?>]" type="checkbox" value="<?php echo $city->city_id ?>" />
+<label for="large-<?php echo $city->city_id ?>"><?php echo $city->name_uk ?></label>
+<?php echo $city->distance ?> <?php echo $this->_('km') ?>
+</div>
+<?php endforeach; ?>
+</div>
+
+<div class="text-tips"><?php echo $this->_('cities-select-hint') ?></div>
+
+<div class="text-tips">
+<span><?php echo $this->_('add-ad-cities') ?></span> &nbsp; > &nbsp;
+<a href="#" class="step-services"><?php echo $this->_('add-ad-services') ?></a>
+</div>

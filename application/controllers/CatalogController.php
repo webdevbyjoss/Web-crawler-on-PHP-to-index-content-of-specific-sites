@@ -14,13 +14,18 @@ class CatalogController extends Nashmaster_Controller_Action
 		$citySeoName = $request->getParam('city');
 		$city = $this->getCityInfo($citySeoName);
 		$this->view->city = $city['city'];
+		/*
 		if (!empty($city['city_near'])) {
 			$this->view->city_near = $city['city_near'];
 		}
 		$this->view->city_large = $city['city_large'];
+		*/
 		// retrieve services information
 		$Services = new Searchdata_Model_Services();
 		$this->view->services = $Services->getAllItems();
+		
+		$Categories = new Searchdata_Model_Categories();
+		$this->view->categories = $Categories->getAllItems();
 	}
 	
 	public function servicesAction()

@@ -57,14 +57,4 @@ $loc = $this->getLocale();
 
 <h2>Перегляди за містами</h2>
 
-
-
-<h2><?php echo $this->T('country-administrative-districts') ?></h2>
-
-<div class="tag-cloud">
-<?php foreach ($this->regions as $region): ?>
-<a href="<?php echo $this->url(array('id' => $region->region_id, 'action' => 'region'), 'default') ?>"><?php echo ($loc == 'uk') ? $region->name_uk : $region->name ?></a>
-<?php endforeach; ?>
-</div>
-
 <?php */ ?>

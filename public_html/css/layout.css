@@ -579,6 +579,7 @@ h4 {
 
 .city-finder {
 	margin-bottom: 5px;
+	float: left;
 }
 
 #city-finder-select-control {
@@ -624,24 +625,31 @@ h4 {
 	top: 5px;
 }
 
-#services-list {
-	padding-top: 10px;
+
+
+
+dservices-list {
+	padding-bottom: 10px;
 }
 
-#services-list .service {
+.services-list .service {
     float: left;
     padding-bottom: 10px;
     width: 32%;
 }
 
-#services-list .service a {
+.services-list .service a {
 	font-size: 1.2em;
 	color: gray;
 }
 
-#services-list .service a:hover {
+.services-list .service a:hover {
 	color: #616161;
 }
+
+
+
+
 
 
 #city-finder-region {
@@ -725,4 +733,45 @@ h4 {
 #create-link {
 	font-size: 1.7em;
 	color: #7498B2;
+}
+
+#breadcrumbs {
+    padding-bottom: 10px;
+}
+
+#breadcrumbs a {
+	color: #7498B2;
+    padding: 5px;
+}
+
+#breadcrumbs span {
+    padding: 5px;
+}
+
+.region-link {
+	min-width: 120px;
+	width: 49%;
+	display: block;
+	float: left;
+
+	color: gray;
+}
+
+.region-link:hover {
+	color: #616161;
+}
+
+.region-link-active {
+	color:#333333;
+	font-weight: bold;
+	text-decoration: none;
+}
+
+#search-panel-regions {
+	padding-top: 10px;
+	margin: 0;
+}
+
+.services-finder {
+	padding-top: 10px;
 }

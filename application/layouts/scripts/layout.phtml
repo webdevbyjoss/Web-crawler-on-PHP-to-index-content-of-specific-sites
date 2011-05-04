@@ -172,6 +172,7 @@ VK.init({apiId:"<?php echo $this->getVk('app_id') ?>"});
 <div id="main">
 <div id="main-inner">
 <div id="page-content">
+<?php echo $this->renderBreadcrumbs() ?>
 <?php echo $this->layout()->content ?>
 </div>
 <div id="panel">
@@ -184,9 +185,12 @@ VK.init({apiId:"<?php echo $this->getVk('app_id') ?>"});
 		));
 	endif; ?>
 	
-	<?php if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'):
+	<?php
+	
+	if ($this->getModuleName() == 'default' && $this->getControllerName() == 'index'):
 		echo $this->partial('search-panel.phtml', array(
-			'regions' => $this->regions
+			'regions' => $this->regions,
+			'currentRegion' => $this->currentRegion
 		));
 	endif; ?>
 	

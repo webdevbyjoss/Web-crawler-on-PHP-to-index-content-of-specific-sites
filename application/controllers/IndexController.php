@@ -47,6 +47,7 @@ class IndexController extends Nashmaster_Controller_Action
     	
     	$Cities = new Searchdata_Model_Cities();
         $this->view->cities = $Cities->getItems($regionId);
+        $this->view->currentRegion = $regionId;
     }
 
 }

@@ -8,6 +8,7 @@ class Nashmaster_View extends Zend_View
 	private $_translate = null;
 	private $_locale = null;
 	private $_request = null;
+	private $_breadcrumbs = null;
 	
 	// social network integration settings
 	private $_vk = null;
@@ -327,7 +328,7 @@ class Nashmaster_View extends Zend_View
 	 */
 	public function setBreadcrumbs($breadcrumbsArray)
 	{
-		foreach ($breadcrumbsArray as  $crumbTitle => $url) {
+		foreach ($breadcrumbsArray as $crumbTitle => $url) {
 			if (empty($url)) {
 				$this->_breadcrumbs[] = '<span>' . $crumbTitle . '</span>';
 			} else {

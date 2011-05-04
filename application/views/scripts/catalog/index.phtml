@@ -13,16 +13,34 @@ $this->headTitle($this->T('what-type-of-service-in-city', $cityTitle));
 $this->headMeta()->setName('description', $this->T('what-type-of-service-in-city', $cityTitle))
 		->setName('keywords', $cityTitle . ', ' . $this->T('meta-keywords'));
 
+// add breadcrump
+$this->setBreadcrumbs(array(
+	$this->_('site-name') => $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'index',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'lang'),
+	$cityTitle => '',
+));
+
 ?>
-<div class="services-finder">
 <h1><?php echo $this->T('what-type-of-service-in-city', $cityTitle); ?> </h1>
 <div><?php echo $this->T('what-type-of-service-description'); ?></div>
 <?php /* ?>
 <input type="text" id="services-finder-select-control" class="finder-select-control" />
 <?php */ ?>
-<div id="services-list">
+<div class="services-finder">
+<?php foreach ($this->categories as $category): ?>
+<h2><?php echo $category->name_uk ?></h2>
+<div class="services-list">
 <?php foreach ($this->services as $service): ?>
+<?php if ($service->category_id == $category->id): ?>
 <div class="service"><a href="<?php echo $this->url(array('service' => ($loc == 'uk') ? $service->seo_name_uk : $service->seo_name, 'city' => $citySeoTitle) ,'city_service_lang'); ?>"><?php echo ($loc == 'uk') ? $service->name_uk : $service->name ?></a></div>
+<?php endif; ?>
 <?php endforeach; ?>
 </div>
+<?php endforeach; ?>
 </div>

@@ -16,9 +16,21 @@ $this->headTitle($this->T('services-in-city', $serviceTitle, $cityTitle));
 $this->headMeta()->setName('description', $this->T('what-type-of-service-in-city', $cityTitle))
 		->setName('keywords', $serviceTitle . ', ' . $cityTitle . ', ' . $this->T('meta-keywords'));
 
-/*
-$this->addSubNavication($this->url(array('city' => $citySeoTitle), 'city_lang'), $this->T('return-to-city-page', $cityTitle) , 'back-button');
-*/
+
+// add breadcrump
+$this->setBreadcrumbs(array(
+	$this->_('site-name') => $this->url(
+	array(
+		'lang' => $this->getLocale(),
+		'controller' => 'index',
+		'action' => 'index',
+		'module' => 'default',
+	)
+	,'lang'),
+	$cityTitle => $this->url(array('city' => $citySeoTitle), 'city_lang'),
+	$serviceTitle => ''
+));
+
 ?>
 <div class="services-finder">
 <h1><?php echo $this->T('services-in-city', $serviceTitle, $cityTitle); ?></h1>

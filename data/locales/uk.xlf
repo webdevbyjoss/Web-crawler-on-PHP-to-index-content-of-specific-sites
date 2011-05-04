@@ -367,9 +367,9 @@
 		<source xml:lang="ru">Поиск специалистов</source>
 		<target xml:lang="uk">Пошук спеціалістів</target>
 	</trans-unit>
-	<trans-unit id="specify-the-city">
-		<source xml:lang="ru">Укажите город для поиска</source>
-		<target xml:lang="uk">Вкажіть місто для пошуку</target>
+	<trans-unit id="specify-the-region">
+		<source xml:lang="ru">Укажыте область для выбора города</source>
+		<target xml:lang="uk">Вкажіть область для вибору міста</target>
 	</trans-unit>
 	<trans-unit id="logout">
 		<source xml:lang="ru">Выйти</source>
@@ -433,19 +433,19 @@
 		<target xml:lang="uk">крок 3: інформація</target>
 	</trans-unit>
 	<trans-unit id="phone-for-contacts">
-		<source xml:lang="ru"></source>
+		<source xml:lang="ru">Телефон для связи</source>
 		<target xml:lang="uk">Телефон для звязку</target>
 	</trans-unit>
 	<trans-unit id="phone-for-name">
-		<source xml:lang="ru"></source>
-		<target xml:lang="uk">Ім’я</target>
+		<source xml:lang="ru">Имя контактной особы</source>
+		<target xml:lang="uk">Ім’я контактної особи</target>
 	</trans-unit>
 	<trans-unit id="phone-for-description">
-		<source xml:lang="ru"></source>
-		<target xml:lang="uk">Кілька слів про себе та свій досвід <i>(не обов’язково)</i></target>
+		<source xml:lang="ru">Несколько слова о себе и своем опыте <i>(минимум 1-2 предложения)</i></source>
+		<target xml:lang="uk">Кілька слів про себе та свій досвід <i>(мінімум 1-2 речення)</i></target>
 	</trans-unit>
 	<trans-unit id="add-ad-done">
-		<source xml:lang="ru"></source>
+		<source xml:lang="ru">готово!</source>
 		<target xml:lang="uk">готово!</target>
 	</trans-unit>
 	<trans-unit id="select-type-of-service">
@@ -453,12 +453,16 @@
 		<target xml:lang="uk">Виберіть види послуг які ви надаєте</target>
 	</trans-unit>
 	<trans-unit id="remove-action">
-		<source xml:lang="ru"></source>
+		<source xml:lang="ru">удалить</source>
 		<target xml:lang="uk">видалити</target>
 	</trans-unit>
 	<trans-unit id="are-you-sure">
 		<source xml:lang="ru">Действительно удалить?</source>
 		<target xml:lang="uk">Дісно видалити?</target>
+	</trans-unit>
+	<trans-unit id="in-what-city-you-are-right-now">
+		<source xml:lang="ru">Какой город Вас интересует?</source>
+		<target xml:lang="uk">Яке місто вас цікавить?</target>
 	</trans-unit>
 </body>
 </file>

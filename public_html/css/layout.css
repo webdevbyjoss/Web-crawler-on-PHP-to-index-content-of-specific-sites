@@ -52,6 +52,13 @@ h4 {
 	font-size:1em;
 }
 
+a {
+	color: #7498B2;
+}
+
+a:hover {
+	color: #616161;
+}
 
 /* HEADER */
 .active-language {
@@ -628,19 +635,19 @@ h4 {
 
 
 
-dservices-list {
+.services-list {
 	padding-bottom: 10px;
+	float: left;
 }
 
 .services-list .service {
     float: left;
-    padding-bottom: 10px;
     width: 32%;
 }
 
 .services-list .service a {
-	font-size: 1.2em;
-	color: gray;
+	font-size: 1em;
+	color: #7498B2;
 }
 
 .services-list .service a:hover {
@@ -729,7 +736,6 @@ dservices-list {
 	font-size: 1.4em;
 }
 
-
 #create-link {
 	font-size: 1.7em;
 	color: #7498B2;
@@ -737,11 +743,17 @@ dservices-list {
 
 #breadcrumbs {
     padding-bottom: 10px;
+    position: relative;
+    left: -5px;
 }
 
 #breadcrumbs a {
 	color: #7498B2;
     padding: 5px;
+}
+
+#breadcrumbs a:hover {
+	color: #616161;
 }
 
 #breadcrumbs span {
@@ -774,4 +786,15 @@ dservices-list {
 
 .services-finder {
 	padding-top: 10px;
+}
+
+a.singup-link {
+	padding: 5px;
+	background-color: #D9FFD9;
+	color: #616161;
+	text-decoration: none;
+}
+
+a.singup-link:hover {
+	text-decoration: underline;
 }

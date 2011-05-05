@@ -49,10 +49,10 @@ class Nashmaster_View extends Zend_View
         }
         
         if ($this->getModuleName() == 'default' && $this->getControllerName() == 'login') {
-        	return ' <span style="color: black;">' . $this->T('signin') . '</span>'; // '[ ' . $this->languageSelector() . ' ] ' .
+        	return '[ ' . $this->languageSelector() . ' ] ' . ' <span style="color: black;">' . $this->T('signin') . '</span>'; //
         }
         
-        return ' <a href="' . $this->url( // '[ ' . $this->languageSelector() . ' ]' .
+        return '[ ' . $this->languageSelector() . ' ]' . ' <a href="' . $this->url( //
 			array(
 				'lang' => $this->getLocale(),
 				'controller' => 'login',

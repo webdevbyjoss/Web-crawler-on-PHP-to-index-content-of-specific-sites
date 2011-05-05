@@ -34,7 +34,7 @@ $this->setBreadcrumbs(array(
 <?php */ ?>
 <div class="services-finder">
 <?php foreach ($this->categories as $category): ?>
-<h2><?php echo $category->name_uk ?></h2>
+<h2><?php echo ($loc == 'uk') ? $category->name_uk : $category->name ?></h2>
 <div class="services-list">
 <?php foreach ($this->services as $service): ?>
 <?php if ($service->category_id == $category->id): ?>

@@ -25,8 +25,6 @@ $loc = $this->getLocale();
 <p><?php echo $this->T('login-description'); ?></p>
 
 <div id="vk_auth"></div>
-
-<div id="vk_auth"></div>
 <script type="text/javascript">
 VK.Widgets.Auth("vk_auth", {width: "300px", onAuth: function(data) {
   location.href = '<?php echo '/' . $this->getLocale() . $this->getVk('auth_url') ?>'

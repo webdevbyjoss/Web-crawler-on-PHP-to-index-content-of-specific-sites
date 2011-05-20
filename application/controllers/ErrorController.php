@@ -40,6 +40,16 @@ class ErrorController extends Zend_Controller_Action
 		        ));
         }
         
+	// email to administrators
+        $emailMessage = "requestUri: " . urldecode($errors->request->getRequestUri()) . "\n\n"
+        ."message: " . $errors->exception->getMessage() . "\n\n"
+	."trace:" . $errors->exception->getTraceAsString() . "\n\n"
+	."params:" . var_export($errors->request->getParams(), true) . "\n\n"
+	."raw:" . $this->_getFullErrorMessage($errors) . "\n\n"
+	;
+
+	mail(ADMIN_EMAIL, '[NASH-MASTER] Error on website', $emailMessage);
+
         $this->view->exception = $errors->exception;
         $this->view->request   = $errors->request;
     }

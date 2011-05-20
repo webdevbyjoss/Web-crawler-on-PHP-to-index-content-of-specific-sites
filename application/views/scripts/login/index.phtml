@@ -14,7 +14,13 @@ $this->headTitle($this->T('signin'));
 
 <div id="vk_auth"></div>
 <script type="text/javascript">
-VK.Widgets.Auth("vk_auth", {width: "100%", authUrl: '<?php echo '/' . $this->getLocale() . $this->getVk('auth_url') ?>'});
+VK.Widgets.Auth("vk_auth", {width: "300px", onAuth: function(data) {
+  location.href = '<?php echo '/' . $this->getLocale() . $this->getVk('auth_url') ?>'
+				  + '?uid=' + data['uid']
+				  + '&first_name=' + data['first_name']
+				  + '&last_name=' + data['last_name']
+				  + '&hash=' + data['hash'];
+}});
 </script>
 
 <p><?php echo $this->T('login-post-description'); ?></p>

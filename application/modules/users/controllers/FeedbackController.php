@@ -14,6 +14,7 @@ class Users_FeedbackController extends Zend_Controller_Action
 	{
 		$this->_helper->layout->disableLayout();
 
+		/*
 		//send feedback message to ofuz over Zend_Http_Client
 		$ofuzUri = "http://todo.nash-master.com/ofuz_helper.php";
 		
@@ -25,15 +26,6 @@ class Users_FeedbackController extends Zend_Controller_Action
 			$category = $category[0];
 		}
 		
-		switch ($category) {
-			case "1": $category = "errors on site"; break;
-			case "2": $category = "search fail"; break;
-			case "3": $category = "too slow"; break;
-			case "4": $category = "make better"; break;
-			case "5": $category = "partnership"; break;
-			case "6": $category = "affiliate"; break;
-		}
-
 		$client->setParameterPost(array(
 			"category" => $category,
 			"message" => $req->getParam("message"),
@@ -41,5 +33,20 @@ class Users_FeedbackController extends Zend_Controller_Action
 			"telephone" => $req->getParam("telephone")
 		));
 		$ofuz_response = $client->request("POST")->getBody();
+		*/
+		
+		$params = $this->getRequest()->getParams();
+
+		switch ($params['category']) {
+			case "1": $category = "errors on site"; break;
+			case "2": $category = "search fail"; break;
+			case "3": $category = "too slow"; break;
+			case "4": $category = "make better"; break;
+			case "5": $category = "partnership"; break;
+			case "6": $category = "affiliate"; break;
+		}
+		
+		mail(ADMIN_EMAIL, '[NASH-MASTER] Support message: ' . $category,
+		'From: ' . $params['email'] . "\n\n" . $params['message']);
 	}
 }

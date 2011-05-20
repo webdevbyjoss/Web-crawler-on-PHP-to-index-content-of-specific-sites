@@ -40,6 +40,15 @@ class CatalogController extends Nashmaster_Controller_Action
 	public function cityserviceAction()
 	{
 		$request = $this->getRequest();
+		
+		// retrieve service and check for availability
+		$serviceSeoName = $request->getParam('service');
+		$Services = new Searchdata_Model_Services();
+		$requestedService = $Services->getBySeoName($serviceSeoName);
+		if (empty($requestedService)) {
+			throw new Zend_Controller_Action_Exception('Specified service "' . $serviceSeoName . '" not found', 404);
+		}
+		
 		// retrieve city information
 		$citySeoName = $request->getParam('city');
 		$city = $this->getCityInfo($citySeoName);
@@ -48,10 +57,8 @@ class CatalogController extends Nashmaster_Controller_Action
 			$this->view->city_near = $city['city_near'];
 		}
 		$this->view->city_large = $city['city_large'];
-		$serviceSeoName = $request->getParam('service');
-		$Services = new Searchdata_Model_Services();
-		$this->view->service = $Services->getBySeoName($serviceSeoName);
-
+		$this->view->service = $requestedService;
+		
 		// prepare search data
 		$serviceIds = array($this->view->service->service_id);
 		$regionIds = array($this->view->city->city_id);

@@ -37,7 +37,6 @@ VK.init({apiId:"<?php echo $this->getVk('app_id') ?>"});
   endif; ?>
 <?php echo $this->headScript()
   	->appendFile('/js/layout.js')
-  	->appendFile('/js/jquery.typing-0.2.0.min.js')
   	->appendFile('/js/jquery.form.js')
   	->appendFile('/js/autoresize.jquery.min.js')
   	;
@@ -264,7 +263,7 @@ VK.init({apiId:"<?php echo $this->getVk('app_id') ?>"});
 	,'default'); ?>"><?php echo $this->T('contacts'); ?></a>
 	<?php */ ?>
 
-	<a id="feedbackLink" title="<?php echo $this->T('send-us-your-feedback') ?>" href="#"><?php echo $this->T('feedback') ?></a>
+	<a id="feedbackLink" title="<?php echo $this->T('send-us-your-feedback') ?>" href="#feedback-form"><?php echo $this->T('feedback') ?></a>
 
 	</div>
 	<div id="copyright">&copy; 2011 nash-master.com</div>

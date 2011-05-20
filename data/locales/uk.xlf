@@ -205,7 +205,7 @@
 	</trans-unit>
 	<trans-unit id="login-post-description">
 		<source xml:lang="ru">Благодаря интеграции с социальной сетью ВКонтакте Вам не надо специально регистрироваться 
-		на нашем сайте запоминая есче один логин и пароль.</source>
+		на нашем сайте запоминая еще один логин и пароль.</source>
 		<target xml:lang="uk">Завдяки інтеграції з соціальною мережею ВКонтакті 
 		Вам не треба окремо реєструватися та запам’ятовувати ще один логін і пароль.</target>
 	</trans-unit>
@@ -346,9 +346,9 @@
 		<target xml:lang="uk">%s – це ваша спеціалізація?</target>
 	</trans-unit>
 	<trans-unit id="is-that-your-specialization-description">
-		<source xml:lang="ru">&lt;a class="singup-link" href="%s">Разместить информацию&lt;/a> о специалисте по виду деятельности <b>%s</b>,
+		<source xml:lang="ru">Можете &lt;a class="singup-link" href="%s">разместить информацию&lt;/a> о специалисте по виду деятельности <b>%s</b>,
 и получить возможность найти новых клиентов из своего региона через наш сайт и сеть партнерских сайтов.</source>
-		<target xml:lang="uk">&lt;a class="singup-link" href="%s">Розмістити інформацію&lt;/a> про спеціаліста з виду діяльності <b>%s</b>,
+		<target xml:lang="uk">Можете &lt;a class="singup-link" href="%s">розмістити інформацію&lt;/a> про спеціаліста з виду діяльності <b>%s</b>,
 та отримайте можливість знайти нових клієнтів зі свого регіону через наш сайт і мережу партнерських сайтів.</target>
 	</trans-unit>
 	<trans-unit id="closest-large-cities">
@@ -404,32 +404,33 @@
 		<target xml:lang="uk">км</target>
 	</trans-unit>
 	<trans-unit id="additionaly-select-near-cities">
-		<source xml:lang="ru"></source>
+		<source xml:lang="ru">Дополнительно можете выбрать ближайшие населенные пункты в которых вы тоже готовы работать:</source>
 		<target xml:lang="uk">Додатково можете вибрати ближні населені пункти в яких ви також готові працювати:</target>
 	</trans-unit>
 	<trans-unit id="additionaly-select-large-cities">
-		<source xml:lang="ru"></source>
+		<source xml:lang="ru">Также укажите ближайшие крупные города где готовы предлагать свої услуги:</source>
 		<target xml:lang="uk">Також вкажіть ближні великі міста де можете надавати свої послуги:</target>
 	</trans-unit>
 	<trans-unit id="cities-select-hint">
-		<source xml:lang="ru"></source>
+		<source xml:lang="ru"><b>ПОДСКАЗКА:</b> Не распылять вашу рекламную кампанию на большое количество городов
+а сконцентрироваться на минимальном перечне населенных пунктов где находиться большенство ваших потенциальных клиентов.</source>
 		<target xml:lang="uk"><b>ПІДКАЗКА:</b> Спробуйте не розпорошувати вашу рекламну кампанію на велику кількість міст
 а зконцентруватися на мінімальному переліку населених пунктів де знаходяться більшість ваших потенційних клієнтів.</target>
 	</trans-unit>
 	<trans-unit id="cities-select-cities">
-		<source xml:lang="ru"></source>
+		<source xml:lang="ru">выбор города</source>
 		<target xml:lang="uk">вибір міст</target>
 	</trans-unit>
 	<trans-unit id="add-ad-cities">
-		<source xml:lang="ru"></source>
+		<source xml:lang="ru">шаг 1: выбор города</source>
 		<target xml:lang="uk">крок 1: вибір міст</target>
 	</trans-unit>
 	<trans-unit id="add-ad-services">
-		<source xml:lang="ru"></source>
+		<source xml:lang="ru">шаг 2: виды работ</source>
 		<target xml:lang="uk">крок 2: види робіт</target>
 	</trans-unit>
 	<trans-unit id="add-ad-description">
-		<source xml:lang="ru"></source>
+		<source xml:lang="ru">шаг 3: информация</source>
 		<target xml:lang="uk">крок 3: інформація</target>
 	</trans-unit>
 	<trans-unit id="phone-for-contacts">
@@ -449,7 +450,7 @@
 		<target xml:lang="uk">готово!</target>
 	</trans-unit>
 	<trans-unit id="select-type-of-service">
-		<source xml:lang="ru"></source>
+		<source xml:lang="ru">Выберите виды предоставляемых услуг</source>
 		<target xml:lang="uk">Виберіть види послуг які ви надаєте</target>
 	</trans-unit>
 	<trans-unit id="remove-action">

@@ -118,16 +118,14 @@ class Nashmaster_Starter
 		   'debug_header' => $debug, // for debugging
 			// lets set global default options
 		   'default_options' => array(
-				'cache' => false // by default do not cache any pages
+				'cache' => true // cache all pages by default
 			),
 		   'regexps' => array(
 		       // cache each matched page for maximum perfomance
 		       // as we have only static content right now there
-		       '^/$'		=> array('cache' => true),
-		       '^/uk/$'		=> array('cache' => true),
-		       '^/uk$'		=> array('cache' => true),
-		       '^/ru/$'		=> array('cache' => true),
-		       '^/ru$'		=> array('cache' => true),
+			   'users/vk/auth' => array('cache' => false),
+			   'mobile/api/search' => array('cache' => false),
+			   'search/build/index' => array('cache' => false),
 		    )
 		);
 		
@@ -179,7 +177,7 @@ class Nashmaster_Starter
 	public function trackTime()
 	{
 		//disable total time calculation if response in JSON format
-		//such  behavior for prevent parseError in browser 
+		//such  behavior for prevent parseError in browser
 		foreach (Zend_Controller_Front::getInstance()->getResponse()->getHeaders() as $header) {
 			if ($header["name"] == "Content-Type" && $header["value"] == "application/json")
 				return;

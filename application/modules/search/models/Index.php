@@ -2,6 +2,11 @@
 
 class Search_Model_Index extends Zend_Db_Table
 {
+	/**
+	 * Maximum results returned by API calls
+	 */
+	const MAX_RESULTS = 25;
+	
 	protected $_name = 'search_index_v2';
 	
 	/**
@@ -147,6 +152,10 @@ class Search_Model_Index extends Zend_Db_Table
 			$relatedCities = $Cities->getRelatedCities($lat, $lng, 50); // max search range is 50km
 			$currentCity = current($relatedCities);
 			
+			if (empty($currentCity['city_id'])) {
+				throw new Search_Model_IndexException('Specified city is not supported. Received lat:' . $lat . 'lng:' . $lng );
+			}
+			
 			// report exceptional situation to administrator
 			mail(ADMIN_EMAIL, '[NASH-MASTER] City-boundaries algorythm error',
 			'City not found using city-boundaries algorythm. Received lat:' . $lat . 'lng:' . $lng
@@ -166,6 +175,7 @@ class Search_Model_Index extends Zend_Db_Table
 		$select->where('region_id IN (' . $cityId . ')');
 		$select->order('informational_index DESC');
 		$select->group('item_id');
+		$select->limit(self::MAX_RESULTS);
 		
 		$return['city_title'] = $cityTitle;
 		$return['data'] = $this->fetchAll($select);

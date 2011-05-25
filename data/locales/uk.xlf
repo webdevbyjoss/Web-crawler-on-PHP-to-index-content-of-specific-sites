@@ -200,8 +200,8 @@
 		<target xml:lang="uk">Ми працюємо над цим розділом, незабаром він буде готовий до запуску</target>
 	</trans-unit>
 	<trans-unit id="login-description">
-		<source xml:lang="ru">Войдите на сайт через ВКонтакте</source>
-		<target xml:lang="uk">Увійдіть до сайту через ВКонтакті</target>
+		<source xml:lang="ru">Для размещения информации войдите на сайт через ВКонтакте</source>
+		<target xml:lang="uk">Для розміщення інформації увійдіть до сайту через ВКонтакті</target>
 	</trans-unit>
 	<trans-unit id="login-post-description">
 		<source xml:lang="ru">Благодаря интеграции с социальной сетью ВКонтакте Вам не надо специально регистрироваться 
@@ -376,8 +376,8 @@
 		<target xml:lang="uk">Вийти</target>
 	</trans-unit>
 	<trans-unit id="place-specialists-information">
-		<source xml:lang="ru">Разместите информацию о себе!</source>
-		<target xml:lang="uk">Розмістіть інформацію про себе!</target>
+		<source xml:lang="ru">Разместите информацию о своем бизнесе</source>
+		<target xml:lang="uk">Розмістіть інформацію про свій бізнес</target>
 	</trans-unit>
 	<trans-unit id="for-free">
 		<source xml:lang="ru">безплатно</source>
@@ -442,8 +442,8 @@
 		<target xml:lang="uk">Ім’я контактної особи</target>
 	</trans-unit>
 	<trans-unit id="phone-for-description">
-		<source xml:lang="ru">Несколько слова о себе и своем опыте <i>(минимум 1-2 предложения)</i></source>
-		<target xml:lang="uk">Кілька слів про себе та свій досвід <i>(мінімум 1-2 речення)</i></target>
+		<source xml:lang="ru">Несколько слова о себе и своем опыте <i>(1-2 предложения)</i></source>
+		<target xml:lang="uk">Кілька слів про себе та свій досвід <i>(1-2 речення)</i></target>
 	</trans-unit>
 	<trans-unit id="add-ad-done">
 		<source xml:lang="ru">готово!</source>
@@ -464,6 +464,14 @@
 	<trans-unit id="in-what-city-you-are-right-now">
 		<source xml:lang="ru">Какой город Вас интересует?</source>
 		<target xml:lang="uk">Яке місто вас цікавить?</target>
+	</trans-unit>
+	<trans-unit id="mobile-search">
+		<source xml:lang="ru">Поиск с мобильного</source>
+		<target xml:lang="uk">Пошук з мобільного</target>
+	</trans-unit>
+		<trans-unit id="download-mobile-search">
+		<source xml:lang="ru">Скачать <a href="%s" target="_blank">Наш Мастер</a> для мобильного</source>
+		<target xml:lang="uk">Завантажуйте <a href="%s" target="_blank">Наш Майстер</a> для мобільного</target>
 	</trans-unit>
 </body>
 </file>

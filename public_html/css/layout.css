@@ -797,3 +797,60 @@ a.singup-link {
 a.singup-link:hover {
 	text-decoration: underline;
 }
+
+#homepage-box-1, #homepage-box-2, #homepage-box-3 {
+	padding: 15px;
+	padding-bottom: 30px;
+	
+	/*border: 1px solid #f1f1f1;*/
+
+	line-height: 1em;
+}
+
+#homepage-box-2, #homepage-box-3 {
+	font-size: 1.6em;
+	padding: 15px;
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
+
+#homepage-box-group {
+	max-width: 650px;
+}
+
+#homepage-box-1 {
+	font-size: 2.4em;
+	padding-top: 30px;
+	margin-top: 10px;
+	padding-left: 40px;
+	padding-right: 40px;
+	background-color: #ffffb2;
+	float: left;
+}
+
+#homepage-box-2 {
+	width: 290px;
+	
+	float: left;
+	margin: auto;
+
+	background-color: #ffd9b2;
+
+}
+
+#homepage-box-3 {
+	width: 290px;
+	margin: auto;
+	float: left;
+
+	background-color: #d9ffb2;
+}
+
+#homepage-box-login {
+	padding-left: 15px;
+	font-size: 1.4em;
+}
+
+#homepage-box-login h1 {
+	padding-top: 30px;
+}

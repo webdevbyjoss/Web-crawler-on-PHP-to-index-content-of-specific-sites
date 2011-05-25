@@ -848,7 +848,11 @@ a.singup-link:hover {
 
 #homepage-box-login {
 	padding-left: 15px;
-	font-size: 1.4em;
+	
+}
+
+#homepage-box-login li {
+	font-size: 1.6em;
 }
 
 #homepage-box-login h1 {
